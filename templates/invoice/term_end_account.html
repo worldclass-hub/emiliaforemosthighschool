@@ -1,0 +1,2716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Outstanding Balance</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* FLOATING HOME BUTTON STYLES */
+        .floating-home-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+            z-index: 10000;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 3px solid rgba(255, 255, 255, 0.9);
+            overflow: hidden;
+        }
+        
+        .floating-home-btn:hover {
+            transform: scale(1.15) rotate(5deg);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.7);
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+        }
+        
+        .floating-home-btn:active {
+            transform: scale(0.95);
+        }
+        
+        /* Pulsing animation */
+        @keyframes pulse-glow {
+            0% {
+                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(59, 130, 246, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+            }
+        }
+        
+        .floating-home-btn.pulse {
+            animation: pulse-glow 2s infinite;
+        }
+        
+        /* Tooltip */
+        .home-btn-tooltip {
+            position: absolute;
+            bottom: 100%;
+            right: 50%;
+            transform: translateX(50%);
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            white-space: nowrap;
+            margin-bottom: 15px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            pointer-events: none;
+            z-index: 10001;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .home-btn-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 6px;
+            border-style: solid;
+            border-color: rgba(0, 0, 0, 0.85) transparent transparent transparent;
+        }
+        
+        .floating-home-btn:hover .home-btn-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .floating-home-btn {
+                width: 60px;
+                height: 60px;
+                bottom: 20px;
+                right: 20px;
+                font-size: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .floating-home-btn {
+                width: 55px;
+                height: 55px;
+                bottom: 15px;
+                right: 15px;
+                font-size: 18px;
+            }
+        }
+        
+        /* Hide during print */
+        @media print {
+            .floating-home-btn,
+            .home-btn-tooltip {
+                display: none !important;
+            }
+        }
+        
+        /* WATERMARK STYLES - FOR BOTH WEB AND PRINT */
+        .table-watermark-container {
+            position: relative;
+            min-height: 400px;
+        }
+
+        /* School logo watermark centered on the table */
+        .table-watermark-container::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            background-image: url('https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/EMILIA%20LOGO.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.08;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Ensure table stays above watermark */
+        #feesTable {
+            position: relative;
+            z-index: 2;
+            background-color: transparent !important;
+        }
+
+        /* REMOVED GREY BACKGROUND: Make table cells transparent */
+        #tableBody tr td {
+            background-color: transparent !important;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Make table header transparent */
+        #feesTable thead tr th {
+            background-color: #1f2937 !important; /* Dark blue header for web */
+            position: relative;
+            z-index: 2;
+            color: white !important;
+        }
+
+        /* Make table footer transparent */
+        #feesTable tfoot tr td {
+            background-color: #1f2937 !important; /* Dark blue footer for web */
+            position: relative;
+            z-index: 2;
+            color: white !important;
+        }
+
+        /* PRINT STYLES - MOST IMPORTANT */
+        @media print {
+            @page {
+                margin: 0.5cm;
+                size: A4 portrait;
+            }
+            
+            body {
+                margin: 0;
+                padding: 0;
+                font-size: 11pt !important;
+                line-height: 1.3;
+                color: black !important;
+                background: white !important;
+                font-family: 'Times New Roman', serif !important;
+            }
+            
+            .no-print {
+                display: none !important;
+            }
+            
+            .table-controls,
+            .edit-row-btn,
+            .delete-row-btn,
+            .add-row-btn,
+            .student-edit-btn,
+            .edit-bank-btn,
+            .edit-notes-btn,
+            .add-note-btn,
+            .delete-note-btn,
+            .edit-instruction {
+                display: none !important;
+            }
+            
+            /* WATERMARK FOR PRINT - MORE VISIBLE */
+            .table-watermark-container::before {
+                opacity: 0.12 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                display: block !important;
+                width: 300px !important;
+                height: 300px !important;
+            }
+            
+            .page-break {
+                page-break-before: always;
+                page-break-inside: avoid;
+                margin-top: 1.5cm !important;
+            }
+            
+            .print-page {
+                page-break-inside: avoid;
+            }
+            
+            .avoid-break {
+                page-break-inside: avoid;
+            }
+            
+            /* Header fix for print */
+            .print-header-container {
+                display: flex !important;
+                align-items: center !important;
+                width: 100% !important;
+                page-break-inside: avoid !important;
+                margin-bottom: 10px !important;
+                gap: 8px !important;
+            }
+            
+            .print-logo-container {
+                flex-shrink: 0 !important;
+                width: 100px !important;
+                height: 100px !important;
+            }
+            
+            .print-school-info {
+                flex: 1 !important;
+                text-align: center !important;
+                padding: 0 !important;
+            }
+            
+            /* INCREASED PRINT FONT SIZES FOR SCHOOL NAME, ADDRESS, PHONE */
+            .print-school-info h1 {
+                font-size: 22pt !important;
+                font-family: Georgia, 'Times New Roman', serif !important;
+                font-weight: bold !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                line-height: 1.1 !important;
+                letter-spacing: 0.5px !important;
+            }
+            
+            .print-school-info .school-address,
+            .print-school-info .school-phone {
+                font-size: 12pt !important;
+                font-family: 'Times New Roman', serif !important;
+                margin: 2px 0 !important;
+                padding: 0 !important;
+                line-height: 1.3 !important;
+            }
+            
+            /* Table fixes - REMOVED GREY BACKGROUND */
+            .invoice-table {
+                border-collapse: collapse !important;
+                width: 100% !important;
+                font-size: 10pt !important;
+                font-family: 'Times New Roman', serif !important;
+                background-color: transparent !important;
+            }
+            
+            .invoice-table th, 
+            .invoice-table td {
+                padding: 4px 6px !important;
+                border: 1px solid #000 !important;
+                background-color: transparent !important;
+            }
+            
+            .invoice-table th {
+                background-color: #f0f0f0 !important; /* Light grey only for print header */
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            
+            .invoice-table tfoot td {
+                background-color: #f0f0f0 !important; /* Light grey only for print footer */
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            
+            /* Remove all shadows and backgrounds */
+            .main-content {
+                box-shadow: none !important;
+                border-radius: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                max-width: 100% !important;
+                background-color: transparent !important;
+            }
+            
+            /* Ensure no overflow */
+            * {
+                overflow: visible !important;
+                max-width: 100% !important;
+            }
+            
+            /* Force black text */
+            h1, h2, h3, h4, p, td, th, div {
+                color: black !important;
+            }
+            
+            /* Adjust spacing for print - COMPACT LAYOUT */
+            .p-6, .p-8, .p-4 {
+                padding: 10px !important; /* Reduced from 15px */
+            }
+            
+            .mb-8, .mb-6, .mb-10 {
+                margin-bottom: 10px !important; /* Reduced from 15px */
+            }
+            
+            .mt-4, .mt-6, .mt-8 {
+                margin-top: 8px !important; /* Reduced from 10px */
+            }
+            
+            /* FOR PRINT: Clean logo without background */
+            .logo-wrapper {
+                background: none !important;
+                border-radius: 0 !important;
+                padding: 0 !important;
+                box-shadow: none !important;
+            }
+            
+            .logo-wrapper img {
+                border-radius: 0 !important;
+            }
+            
+            /* SPECIFIC FIX FOR PAGE 2 - MOVED CONTENT UPWARD */
+            .page-2-header {
+                margin-top: 0.3cm !important;
+                padding-top: 0 !important;
+                margin-bottom: 0.5cm !important;
+            }
+            
+            .page-2-content {
+                margin-top: 0.3cm !important;
+            }
+            
+            /* Ensure page 2 starts properly */
+            .page-break + .print-page {
+                margin-top: 0 !important;
+                padding-top: 0 !important;
+            }
+            
+            /* PAGE 2 SPECIFIC: LARGER LOGO - INCREASED FROM 100px TO 120px */
+            .page-2-logo {
+                width: 120px !important;
+                height: 120px !important;
+            }
+            
+            /* Remove old watermark styles */
+            .watermark,
+            .logo-watermark,
+            .centered-logo-print {
+                display: none !important;
+            }
+            
+            /* Student info table for print */
+            #studentInfoTable td {
+                background-color: transparent !important;
+                border: 1px solid #000 !important;
+            }
+            
+            #studentInfoTable tr:nth-child(even) td {
+                background-color: transparent !important;
+            }
+            
+            /* ============================================== */
+            /* CRITICAL: MOVE BREAKDOWN TITLE AND TABLES UPWARD */
+            /* ============================================== */
+            
+            /* Compact school header */
+            .school-header {
+                padding: 0.2cm 0 !important;
+                margin-bottom: 0.2cm !important;
+            }
+            
+            /* Move the "BREAKDOWN OF OUTSTANDING BALANCE" title upward */
+            .invoice-header {
+                margin-top: 0 !important;
+                margin-bottom: 0.3cm !important;
+                padding: 0 !important;
+                position: relative;
+                top: -0.2cm;
+            }
+            
+            .invoice-header h1 {
+                margin: 0 !important;
+                padding: 0 !important;
+                font-size: 20pt !important; /* Slightly smaller for print */
+                line-height: 1.1 !important;
+            }
+            
+            /* Reduce space between title and student info table */
+            .invoice-header + .mb-10 {
+                margin-top: -0.1cm !important;
+                margin-bottom: 0.2cm !important;
+            }
+            
+            /* Compact student info table area */
+            .student-info-controls + .edit-instruction {
+                display: none !important;
+                margin: 0 !important;
+                height: 0 !important;
+                min-height: 0 !important;
+            }
+            
+            /* Reduce student table size */
+            #studentInfoTable {
+                margin-top: 0.1cm !important;
+                margin-bottom: 0.2cm !important;
+            }
+            
+            #studentInfoTable td {
+                padding: 3px 4px !important;
+            }
+            
+            /* Table controls area - minimized */
+            .table-controls {
+                height: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                min-height: 0 !important;
+                overflow: hidden !important;
+            }
+            
+            /* Move the main fees table upward */
+            .table-watermark-container {
+                margin-top: 0.1cm !important;
+                margin-bottom: 0.2cm !important;
+                min-height: 300px !important; /* Reduced from 400px */
+            }
+            
+            /* Compact table rows */
+            #feesTable td, #feesTable th {
+                padding: 3px 5px !important;
+            }
+            
+            /* Move amount in words upward */
+            .amount-in-words {
+                margin-top: 0.2cm !important;
+                margin-bottom: 0.2cm !important;
+                padding: 4px !important;
+            }
+            
+            /* Compact all sections that follow */
+            .mt-8.p-4.border-l-4 {
+                margin-top: 0.3cm !important;
+                padding: 6px !important;
+                margin-bottom: 0.3cm !important;
+            }
+            
+            /* Compact FOR IMMEDIATE RESOLUTION section */
+            .mt-6.avoid-break {
+                margin-top: 0.3cm !important;
+                margin-bottom: 0.3cm !important;
+            }
+            
+            /* Reduce line height throughout */
+            p, td, th, div, span {
+                line-height: 1.2 !important;
+            }
+            
+            /* Reduce padding in all content sections */
+            .print-page > div:first-of-type > * {
+                margin-top: 0.1cm !important;
+                margin-bottom: 0.1cm !important;
+            }
+            
+            /* Extra compacting for first page */
+            .print-page:first-of-type {
+                padding-top: 0.2cm !important;
+            }
+            
+            .print-page:first-of-type > .p-6 {
+                padding-top: 0.2cm !important;
+            }
+        }
+        
+        /* SCREEN STYLES - REMOVED GREY BACKGROUND */
+        .invoice-table {
+            border-collapse: collapse;
+            width: 100%;
+            background-color: transparent !important;
+        }
+        
+        .invoice-table th, .invoice-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            background-color: transparent !important;
+        }
+        
+        /* REMOVED alternating row colors */
+        .invoice-table tr:nth-child(even) {
+            background-color: transparent !important;
+        }
+        
+        .invoice-table tr:nth-child(odd) {
+            background-color: transparent !important;
+        }
+        
+        .invoice-header {
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+            margin-top: 1rem !important;
+            margin-bottom: 1.5rem !important;
+        }
+        
+        .amount-in-words {
+            background-color: #f0f0f0;
+            padding: 8px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        
+        /* Remove old watermark styles */
+        .watermark {
+            display: none !important;
+        }
+        
+        .logo-watermark {
+            display: none !important;
+        }
+        
+        .centered-logo-screen {
+            display: none !important;
+        }
+        
+        .school-header {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: 0.5rem 0.5rem 0 0;
+        }
+        
+        /* NEW HEADER STYLES - UPDATED */
+        .header-container {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            gap: 0.75rem;
+        }
+        
+        .logo-container {
+            flex-shrink: 0;
+        }
+        
+        /* LOGO WRAPPER WITH WHITE CIRCULAR BACKGROUND FOR WEB VIEW */
+        .logo-wrapper {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            border-radius: 50%;
+            padding: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 50%;
+        }
+        
+        .school-info {
+            flex: 1;
+            text-align: center;
+        }
+        
+        /* REDUCED WEB VIEW FONT SIZES TO NORMAL */
+        .school-name {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-weight: bold;
+            font-size: 1.8rem;
+            line-height: 1.1;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        /* REDUCED WEB VIEW FONT SIZES TO NORMAL */
+        .school-address, .school-phone {
+            font-size: 1rem;
+            line-height: 1.3;
+            margin: 4px 0;
+            font-family: 'Times New Roman', serif;
+            opacity: 0.95;
+        }
+        
+        /* TABLE CONTROL BUTTONS */
+        .table-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #f8fafc;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .edit-row-btn, .delete-row-btn, .student-edit-btn, .edit-bank-btn, .edit-notes-btn, .delete-note-btn {
+            padding: 4px 8px;
+            margin: 0 2px;
+            font-size: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .edit-row-btn, .student-edit-btn, .edit-bank-btn, .edit-notes-btn {
+            background-color: #3b82f6;
+            color: white;
+            border: 1px solid #2563eb;
+        }
+        
+        .edit-row-btn:hover, .student-edit-btn:hover, .edit-bank-btn:hover, .edit-notes-btn:hover {
+            background-color: #2563eb;
+        }
+        
+        .delete-row-btn, .delete-note-btn {
+            background-color: #ef4444;
+            color: white;
+            border: 1px solid #dc2626;
+        }
+        
+        .delete-row-btn:hover, .delete-note-btn:hover {
+            background-color: #dc2626;
+        }
+        
+        .add-row-btn, .add-note-btn {
+            background-color: #10b981;
+            color: white;
+            border: 1px solid #059669;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s;
+        }
+        
+        .add-row-btn:hover, .add-note-btn:hover {
+            background-color: #059669;
+        }
+        
+        /* Responsive adjustments */
+        @media (min-width: 768px) {
+            .logo-wrapper {
+                width: 110px;
+                height: 110px;
+            }
+            
+            .school-name {
+                font-size: 2rem;
+            }
+            
+            .school-address, .school-phone {
+                font-size: 1.1rem;
+            }
+            
+            .header-container {
+                gap: 1rem;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .logo-wrapper {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .school-name {
+                font-size: 2.2rem;
+            }
+            
+            .school-address, .school-phone {
+                font-size: 1.2rem;
+            }
+            
+            .header-container {
+                gap: 1rem;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .logo-wrapper {
+                width: 85px;
+                height: 85px;
+                padding: 6px;
+            }
+            
+            .school-name {
+                font-size: 1.5rem;
+            }
+            
+            .school-address, .school-phone {
+                font-size: 0.9rem;
+            }
+            
+            .header-container {
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            
+            .table-controls {
+                flex-direction: column;
+                gap: 10px;
+                align-items: stretch;
+            }
+            
+            .add-row-btn, .add-note-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .logo-wrapper {
+                width: 75px;
+                height: 75px;
+                padding: 5px;
+            }
+            
+            .school-name {
+                font-size: 1.3rem;
+            }
+            
+            .school-address, .school-phone {
+                font-size: 0.8rem;
+            }
+            
+            .header-container {
+                gap: 0.4rem;
+            }
+        }
+        
+        /* Editable table cells */
+        .editable-cell {
+            position: relative;
+            min-height: 40px;
+        }
+        
+        .editable-cell input,
+        .editable-cell textarea {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: inherit;
+        }
+        
+        .editable-cell input:focus,
+        .editable-cell textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+        }
+        
+        .amount-input {
+            text-align: right;
+            font-family: monospace;
+        }
+        
+        /* Student info table controls */
+        .student-info-controls {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+        
+        /* Student info table styling */
+        #studentInfoTable {
+            background-color: transparent !important;
+        }
+        
+        #studentInfoTable td {
+            background-color: transparent !important;
+        }
+        
+        /* Bank and Notes edit controls */
+        .bank-controls, .notes-controls {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+        
+        /* Editable bank details */
+        .bank-editable {
+            position: relative;
+        }
+        
+        .bank-editable span {
+            cursor: pointer;
+        }
+        
+        .bank-editable input {
+            width: 100%;
+            padding: 4px 6px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: inherit;
+        }
+        
+        /* Editable notes */
+        .notes-editable {
+            position: relative;
+        }
+        
+        .notes-editable li {
+            cursor: pointer;
+            position: relative;
+            padding-right: 20px;
+            padding-left: 1.5em;
+        }
+        
+        .notes-editable li .delete-note-btn {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 2px 6px;
+            font-size: 10px;
+            opacity: 0.7;
+        }
+        
+        .notes-editable li:hover .delete-note-btn {
+            opacity: 1;
+        }
+        
+        .notes-editable textarea {
+            width: 100%;
+            min-height: 60px;
+            padding: 8px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: inherit;
+        }
+        
+        .notes-editable input {
+            width: 100%;
+            padding: 4px 6px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: inherit;
+        }
+        
+        /* Edit instruction notes */
+        .edit-instruction {
+            font-size: 12px;
+            color: #6b7280;
+            font-style: italic;
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .edit-instruction i {
+            font-size: 10px;
+        }
+        
+        /* White edit instruction for header phone */
+        .edit-instruction-white {
+            font-size: 12px;
+            color: white !important;
+            font-style: italic;
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            opacity: 0.9;
+        }
+        
+        .edit-instruction-white i {
+            font-size: 10px;
+            color: white !important;
+        }
+        
+        /* PAGE 2 SPECIFIC STYLES FOR SCREEN */
+        .page-2-header {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .page-2-content {
+            margin-top: 10px;
+        }
+        
+        /* PAGE 2 LOGO - LARGER AND NO WHITE BACKGROUND (INCREASED FROM 70px TO 90px) */
+        .page-2-logo-wrapper {
+            width: 90px;
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: none !important;
+            border-radius: 0 !important;
+            padding: 0 !important;
+            box-shadow: none !important;
+            /* MOVED LOGO DOWN - ADDED MARGIN-TOP */
+            margin-top: 20px;
+        }
+        
+        .page-2-logo-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 0 !important;
+        }
+        
+        /* ADJUST LINE POSITION FOR PAGE 2 */
+        .page-2-border-line {
+            margin-top: 5px !important;
+            margin-bottom: 10px !important;
+        }
+        
+        /* Main content background */
+        .main-content {
+            background-color: transparent !important;
+        }
+        
+        /* Body background for web view */
+        body {
+            background-color: #f9fafb;
+        }
+        
+        /* Editable header phone number styles */
+        .school-phone-editable {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .school-phone-editable:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            padding: 2px 4px;
+            margin: -2px -4px;
+        }
+        
+        .school-phone-input {
+            width: 300px;
+            padding: 4px 8px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: inherit;
+            background-color: white;
+            color: #333;
+        }
+        
+        .school-phone-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+        
+        /* Modal styles for filename display */
+        .filename-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        
+        .filename-modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 500px;
+            text-align: center;
+        }
+        
+        .filename-display {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 1.2rem;
+            word-break: break-all;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .modal-button {
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            border: none;
+            transition: all 0.3s;
+        }
+        
+        .modal-button.print {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .modal-button.print:hover {
+            background: #2563eb;
+        }
+        
+        .modal-button.copy {
+            background: #10b981;
+            color: white;
+        }
+        
+        .modal-button.copy:hover {
+            background: #059669;
+        }
+        
+        .modal-button.cancel {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .modal-button.cancel:hover {
+            background: #dc2626;
+        }
+        
+        /* NEW STYLE FOR PAGE 2 LOGO ALIGNMENT */
+        .page-2-logo-container {
+            display: flex;
+            align-items: flex-start;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 p-4 md:p-8 font-sans">
+    <!-- SUPER INTELLIGENT FLOATING HOME BUTTON -->
+    <div class="floating-home-btn pulse" id="floatingHomeBtn" onclick="goToHomePage()">
+        <i class="fas fa-home"></i>
+        <div class="home-btn-tooltip">
+            Go to Home Page
+        </div>
+    </div>
+    
+    <!-- Print Button - REMOVED THE BLUE BUTTON, KEPT ONLY GREEN PRINT PREVIEW -->
+    <div class="no-print mb-6 flex justify-end">
+        <button onclick="printPreview()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded flex items-center">
+            <i class="fas fa-eye mr-2"></i> Print Preview
+        </button>
+    </div>
+    
+    <!-- Main Invoice Container -->
+    <div class="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden main-content print-page">
+        <!-- UPDATED HEADER DESIGN: Logo with white circular background for web view -->
+        <div class="school-header avoid-break">
+            <div class="header-container print-header-container">
+                <!-- Logo on the LEFT - WITH WHITE CIRCULAR BACKGROUND FOR WEB VIEW -->
+                <div class="logo-container print-logo-container">
+                    <div class="logo-wrapper">
+                        <img src="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/EMILIA%20LOGO.png" 
+                             alt="School Logo" 
+                             class="w-full h-auto">
+                    </div>
+                </div>
+                
+                <!-- School Information CENTERED -->
+                <div class="school-info print-school-info">
+                    <h1 class="school-name">EMILIA FOREMOST HIGH SCHOOL</h1>
+                    <p class="school-address">2, Olasupo Avenue, Off Adeyemi Street, Oke-Agbo, Ojo, Lagos</p>
+                    <p class="school-phone school-phone-editable" onclick="editSchoolPhone()" ondblclick="editSchoolPhone()">
+                        Tel: <span id="schoolPhoneDisplay">08022854677, 09057147497</span>
+                        <input type="text" id="schoolPhoneInput" value="08022854677, 09057147497" 
+                               class="hidden school-phone-input" onblur="saveSchoolPhone()" 
+                               onkeypress="if(event.key === 'Enter') saveSchoolPhone()">
+                    </p>
+                    <!-- EDIT INSTRUCTION FOR PHONE NUMBER - WHITE COLOR -->
+                    <div class="edit-instruction-white no-print mt-1">
+                        <i class="fas fa-info-circle"></i>
+                        Click or double-click on phone number to edit
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Page 1 Content -->
+        <div class="p-6 md:p-8 print-page">
+            <!-- Invoice Title - FIXED: REMOVED # AND ADJUSTED SPACING -->
+            <div class="invoice-header text-center avoid-break">
+                <h1 class="text-2xl md:text-3xl lg:text-4xl font-bold uppercase tracking-wider" style="font-family: 'Times New Roman', serif;">BREAKDOWN OF OUTSTANDING BALANCE</h1>
+            </div>
+            
+            <!-- Student Information Table - NOW EDITABLE -->
+            <div class="mb-10 avoid-break">
+                <div class="student-info-controls no-print">
+                    <button class="student-edit-btn" onclick="editStudentInfo()">
+                        <i class="fas fa-edit mr-1"></i> Edit Student Info
+                    </button>
+                    <button class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-1 px-3 rounded text-sm" onclick="resetStudentInfo()">
+                        <i class="fas fa-redo mr-1"></i> Reset
+                    </button>
+                </div>
+                
+                <!-- EDIT INSTRUCTION NOTE FOR STUDENT TABLE -->
+                <div class="edit-instruction no-print mb-2">
+                    <i class="fas fa-info-circle"></i>
+                    Double-click any cell in the table below to edit student information
+                </div>
+                
+                <table class="invoice-table mb-4" id="studentInfoTable">
+                    <tbody>
+                        <tr>
+                            <td class="font-bold bg-gray-100">NAME</td>
+                            <td class="editable-cell" ondblclick="editStudentField('studentName')" id="nameCell">
+                                <span id="studentName">OYERINDE SAMUEL</span>
+                                <input type="text" id="studentName-input" value="OYERINDE SAMUEL" 
+                                       class="hidden" onblur="saveStudentField('studentName')" 
+                                       onkeypress="if(event.key === 'Enter') saveStudentField('studentName')">
+                            </td>
+                            <td class="font-bold bg-gray-100">TERM</td>
+                            <td class="editable-cell" ondblclick="editStudentField('term')">
+                                <span id="term">2ND TERM</span>
+                                <input type="text" id="term-input" value="2ND TERM" 
+                                       class="hidden" onblur="saveStudentField('term')" 
+                                       onkeypress="if(event.key === 'Enter') saveStudentField('term')">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold bg-gray-100">CLASS</td>
+                            <td class="editable-cell" ondblclick="editStudentField('class')">
+                                <span id="class">JSS 1</span>
+                                <input type="text" id="class-input" value="JSS 1" 
+                                       class="hidden" onblur="saveStudentField('class')" 
+                                       onkeypress="if(event.key === 'Enter') saveStudentField('class')">
+                            </td>
+                            <td class="font-bold bg-gray-100">SESSION</td>
+                            <td class="editable-cell" ondblclick="editStudentField('session')">
+                                <span id="session">2025/2026</span>
+                                <input type="text" id="session-input" value="2025/2026" 
+                                       class="hidden" onblur="saveStudentField('session')" 
+                                       onkeypress="if(event.key === 'Enter') saveStudentField('session')">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Table Controls - ADDED BACK! -->
+            <div class="table-controls no-print">
+                <div class="text-sm text-gray-600">
+                    <i class="fas fa-info-circle mr-1"></i>
+                    Double-click cells to edit, use buttons to add/delete rows
+                </div>
+                <button class="add-row-btn" onclick="addNewRow()">
+                    <i class="fas fa-plus"></i> Add New Row
+                </button>
+            </div>
+            
+            <!-- BREAKDOWN OF OUTSTANDING BALANCE TABLE - EXACTLY FROM PDF BUT NOW EDITABLE -->
+            <div class="overflow-x-auto relative avoid-break table-watermark-container">
+                <table class="invoice-table" id="feesTable">
+                    <thead>
+                        <tr class="bg-gray-800 text-white">
+                            <th>DESCRIPTION</th>
+                            <th style="width: 150px;">AMOUNT (₦)</th>
+                            <th style="width: 100px;" class="no-print">ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Rows will be generated by JavaScript -->
+                    </tbody>
+                    <tfoot>
+                        <tr class="bg-gray-800 text-white font-bold">
+                            <td>GRAND TOTAL OUTSTANDING:</td>
+                            <td class="text-right" id="grandTotal">₦21,000.00</td>
+                            <td class="no-print"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            
+            <!-- EDIT INSTRUCTION FOR AMOUNT IN WORDS -->
+            <div class="edit-instruction no-print mt-2">
+                <i class="fas fa-info-circle"></i>
+                Amount in words updates automatically based on the grand total
+            </div>
+            
+            <!-- Amount in Words -->
+            <div class="mt-6 avoid-break">
+                <div class="amount-in-words">
+                    Amount in Words: <span id="amountInWords">Twenty-One Thousand Naira Only</span>
+                </div>
+            </div>
+
+            <!-- IMPORTANT NOTICE SECTION FROM PDF - NOW EDITABLE -->
+            <div class="mt-8 p-4 border-l-4 border-blue-500 bg-blue-50 avoid-break">
+                <div class="no-print mb-2">
+                    <button class="edit-bank-btn" onclick="editImportantNotice()">
+                        <i class="fas fa-edit mr-1"></i> Edit Important Notice
+                    </button>
+                    <button class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-1 px-3 rounded text-sm" onclick="resetImportantNotice()">
+                        <i class="fas fa-redo mr-1"></i> Reset
+                    </button>
+                </div>
+                
+                <!-- EDIT INSTRUCTION FOR IMPORTANT NOTICE -->
+                <div class="edit-instruction no-print mb-2">
+                    <i class="fas fa-info-circle"></i>
+                    Click or double-click on any text below to edit the Important Notice
+                </div>
+                
+                <h3 class="font-bold text-lg mb-2 bank-editable" onclick="editImportantNoticeField('noticeTitle')" ondblclick="editImportantNoticeField('noticeTitle')" style="font-family: 'Times New Roman', serif; cursor: pointer;">
+                    <span id="noticeTitle">IMPORTANT NOTICE FOR REPORT CARD COLLECTION</span>
+                    <input type="text" id="noticeTitle-input" value="IMPORTANT NOTICE FOR REPORT CARD COLLECTION" 
+                           class="hidden w-full p-2 border border-gray-300 rounded" onblur="saveImportantNoticeField('noticeTitle')" 
+                           onkeypress="if(event.key === 'Enter') saveImportantNoticeField('noticeTitle')">
+                </h3>
+                <p class="mb-2 bank-editable" onclick="editImportantNoticeField('noticePara1')" ondblclick="editImportantNoticeField('noticePara1')" style="font-family: 'Times New Roman', serif; cursor: pointer;">
+                    <span id="noticePara1">To download and collect your ward's First Term Report Card, the account must be in good standing.</span>
+                    <input type="text" id="noticePara1-input" value="To download and collect your ward's First Term Report Card, the account must be in good standing." 
+                           class="hidden w-full p-2 border border-gray-300 rounded" onblur="saveImportantNoticeField('noticePara1')" 
+                           onkeypress="if(event.key === 'Enter') saveImportantNoticeField('noticePara1')">
+                </p>
+                <p class="mb-2 bank-editable" onclick="editImportantNoticeField('noticePara2')" ondblclick="editImportantNoticeField('noticePara2')" style="font-family: 'Times New Roman', serif; cursor: pointer;">
+                    <strong>Required Action:</strong> 
+                    <span id="noticePara2">Please clear the overdue balance of ₦ 12,000.00 to enable report card access.</span>
+                    <input type="text" id="noticePara2-input" value="Please clear the overdue balance of ₦ 12,000.00 to enable report card access." 
+                           class="hidden w-full p-2 border border-gray-300 rounded" onblur="saveImportantNoticeField('noticePara2')" 
+                           onkeypress="if(event.key === 'Enter') saveImportantNoticeField('noticePara2')">
+                </p>
+                <p class="bank-editable" onclick="editImportantNoticeField('noticePara3')" ondblclick="editImportantNoticeField('noticePara3')" style="font-family: 'Times New Roman', serif; cursor: pointer;">
+                    <span id="noticePara3">Full settlement of the entire balance (₦ 21,000.00) is required for seamless re-registration and participation in Second Term activities.</span>
+                    <input type="text" id="noticePara3-input" value="Full settlement of the entire balance (₦ 21,000.00) is required for seamless re-registration and participation in Second Term activities." 
+                           class="hidden w-full p-2 border border-gray-300 rounded" onblur="saveImportantNoticeField('noticePara3')" 
+                           onkeypress="if(event.key === 'Enter') saveImportantNoticeField('noticePara3')">
+                </p>
+            </div>
+
+            <!-- FOR IMMEDIATE RESOLUTION & PAYMENT SECTION - NOW EDITABLE -->
+            <div class="mt-6 avoid-break">
+                <div class="no-print mb-2">
+                    <button class="edit-bank-btn" onclick="editResolutionSection()">
+                        <i class="fas fa-edit mr-1"></i> Edit Resolution Section
+                    </button>
+                    <button class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-1 px-3 rounded text-sm" onclick="resetResolutionSection()">
+                        <i class="fas fa-redo mr-1"></i> Reset
+                    </button>
+                </div>
+                
+                <!-- EDIT INSTRUCTION FOR RESOLUTION SECTION -->
+                <div class="edit-instruction no-print mb-2">
+                    <i class="fas fa-info-circle"></i>
+                    Click or double-click on any text below to edit the Resolution Section
+                </div>
+                
+                <h3 class="font-bold text-lg mb-2 bank-editable" onclick="editResolutionField('resolutionTitle')" ondblclick="editResolutionField('resolutionTitle')" style="font-family: 'Times New Roman', serif; cursor: pointer;">
+                    <span id="resolutionTitle">FOR IMMEDIATE RESOLUTION & PAYMENT</span>
+                    <input type="text" id="resolutionTitle-input" value="FOR IMMEDIATE RESOLUTION & PAYMENT" 
+                           class="hidden w-full p-2 border border-gray-300 rounded" onblur="saveResolutionField('resolutionTitle')" 
+                           onkeypress="if(event.key === 'Enter') saveResolutionField('resolutionTitle')">
+                </h3>
+                <p class="mb-2 bank-editable" onclick="editResolutionField('resolutionIntro')" ondblclick="editResolutionField('resolutionIntro')" style="font-family: 'Times New Roman', serif; cursor: pointer;">
+                    <span id="resolutionIntro">Bank Transfer Details for Payment:</span>
+                    <input type="text" id="resolutionIntro-input" value="Bank Transfer Details for Payment:" 
+                           class="hidden w-full p-2 border border-gray-300 rounded" onblur="saveResolutionField('resolutionIntro')" 
+                           onkeypress="if(event.key === 'Enter') saveResolutionField('resolutionIntro')">
+                </p>
+                <div class="pl-4">
+                    <p class="mb-1 bank-editable" onclick="editResolutionField('bankLine')" ondblclick="editResolutionField('bankLine')" style="font-family: 'Times New Roman', serif; cursor: pointer;">
+                        <strong>Bank:</strong> 
+                        <span id="bankLine">UBA</span>
+                        <input type="text" id="bankLine-input" value="UBA" 
+                               class="hidden" onblur="saveResolutionField('bankLine')" 
+                               onkeypress="if(event.key === 'Enter') saveResolutionField('bankLine')">
+                    </p>
+                    <p class="mb-1 bank-editable" onclick="editResolutionField('accountNameLine')" ondblclick="editResolutionField('accountNameLine')" style="font-family: 'Times New Roman', serif; cursor: pointer;">
+                        <strong>Account Name:</strong> 
+                        <span id="accountNameLine">EMILIA FOREMOST HIGH SCHOOL</span>
+                        <input type="text" id="accountNameLine-input" value="EMILIA FOREMOST HIGH SCHOOL" 
+                               class="hidden" onblur="saveResolutionField('accountNameLine')" 
+                               onkeypress="if(event.key === 'Enter') saveResolutionField('accountNameLine')">
+                    </p>
+                    <p class="mb-1 bank-editable" onclick="editResolutionField('accountNumberLine')" ondblclick="editResolutionField('accountNumberLine')" style="font-family: 'Times New Roman', serif; cursor: pointer;">
+                        <strong>Account Number:</strong> 
+                        <span id="accountNumberLine">2102287521</span>
+                        <input type="text" id="accountNumberLine-input" value="2102287521" 
+                               class="hidden" onblur="saveResolutionField('accountNumberLine')" 
+                               onkeypress="if(event.key === 'Enter') saveResolutionField('accountNumberLine')">
+                    </p>
+                </div>
+                <p class="mt-2 bank-editable" onclick="editResolutionField('paymentReference')" ondblclick="editResolutionField('paymentReference')" style="font-family: 'Times New Roman', serif; cursor: pointer;">
+                    <strong>Payment Reference:</strong> 
+                    <span id="paymentReference">Student Name, Class & ID (e.g., Ige Deborah, JSS 3, EMFHS-YYYY-NNN-XX)</span>
+                    <input type="text" id="paymentReference-input" value="Student Name, Class & ID (e.g., Ige Deborah, JSS 3, EMFHS-YYYY-NNN-XX)" 
+                           class="hidden w-full p-2 border border-gray-300 rounded" onblur="saveResolutionField('paymentReference')" 
+                           onkeypress="if(event.key === 'Enter') saveResolutionField('paymentReference')">
+                </p>
+            </div>
+        </div>
+        
+        <!-- Page Break for Page 2 - WITH LESS SPACE -->
+        <div class="page-break" style="margin-top: 1.5cm;"></div>
+        
+        <!-- Page 2 - WITH ADJUSTED LAYOUT -->
+        <div class="p-6 md:p-8 border-t border-gray-300 print-page page-2-content">
+            <!-- School Header for Page 2 - MOVED UPWARD -->
+            <div class="mb-4 pb-3 border-b border-gray-300 avoid-break page-2-header page-2-border-line">
+                <div class="flex items-center justify-between print-header-container">
+                    <!-- PAGE 2 LOGO CONTAINER - MOVED DOWN -->
+                    <div class="print-logo-container page-2-logo page-2-logo-container" style="width: 120px !important; height: 120px !important;">
+                        <!-- LARGER LOGO FOR PAGE 2 - NO WHITE BACKGROUND -->
+                        <div class="page-2-logo-wrapper">
+                            <img src="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/EMILIA%20LOGO.png" 
+                                 alt="School Logo" 
+                                 class="w-full h-auto">
+                        </div>
+                    </div>
+                    <div class="print-school-info">
+                        <!-- SAME FONT SIZES AS PAGE 1 FOR CONSISTENCY -->
+                        <h2 style="font-size: 22pt !important; font-family: Georgia, 'Times New Roman', serif !important; font-weight: bold !important; margin: 0 !important; line-height: 1.1 !important; letter-spacing: 0.5px !important;">
+                            EMILIA FOREMOST HIGH SCHOOL
+                        </h2>
+                        <p style="font-size: 12pt !important; font-family: 'Times New Roman', serif !important; margin: 3px 0 !important; line-height: 1.3 !important;">
+                            2, Olasupo Avenue, Off Adeyemi Street, Oke-Agbo, Ojo, Lagos
+                        </p>
+                        <!-- EDITABLE PHONE NUMBER ON PAGE 2 -->
+                        <p style="font-size: 12pt !important; font-family: 'Times New Roman', serif !important; margin: 3px 0 !important; line-height: 1.3 !important;" class="school-phone-editable" onclick="editSchoolPhonePage2()" ondblclick="editSchoolPhonePage2()">
+                            Tel: <span id="page2SchoolPhoneDisplay">08022854677, 09057147497</span>
+                            <input type="text" id="page2SchoolPhoneInput" value="08022854677, 09057147497" 
+                                   class="hidden school-phone-input" onblur="saveSchoolPhonePage2()" 
+                                   onkeypress="if(event.key === 'Enter') saveSchoolPhonePage2()">
+                        </p>
+                        <!-- EDIT INSTRUCTION FOR PAGE 2 PHONE -->
+                        <div class="edit-instruction no-print mt-1">
+                            <i class="fas fa-info-circle"></i>
+                            Click or double-click on phone number to edit
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- "PAYMENT INSTRUCTIONS" title moved closer to header -->
+            <h2 class="text-xl md:text-2xl lg:text-3xl font-bold mb-4 md:mb-6 text-center uppercase avoid-break" style="font-family: 'Times New Roman', serif; margin-top: 0.2cm !important;">PAYMENT INSTRUCTIONS</h2>
+            
+            <!-- EDIT INSTRUCTION FOR PAYMENT INSTRUCTIONS PARAGRAPH -->
+            <div class="edit-instruction no-print mb-2">
+                <i class="fas fa-info-circle"></i>
+                Click or double-click on the text below to edit payment instructions
+            </div>
+            
+            <p class="mb-4 md:mb-6 text-lg md:text-xl avoid-break bank-editable" onclick="editPaymentInstructions()" ondblclick="editPaymentInstructions()" style="font-family: 'Times New Roman', serif; cursor: pointer;">
+                <span id="paymentInstructions">Please ensure payment is made on or before the Due Date to facilitate a smooth resumption for your ward.</span>
+                <input type="text" id="paymentInstructions-input" value="Please ensure payment is made on or before the Due Date to facilitate a smooth resumption for your ward." 
+                       class="hidden w-full p-2 border border-gray-300 rounded" onblur="savePaymentInstructions()" 
+                       onkeypress="if(event.key === 'Enter') savePaymentInstructions()">
+            </p>
+            
+            <!-- Bank Transfer Details - NOW EDITABLE -->
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mb-6 md:mb-8 avoid-break">
+                <div class="bank-controls no-print">
+                    <button class="edit-bank-btn" onclick="editBankDetails()">
+                        <i class="fas fa-edit mr-1"></i> Edit Bank Details
+                    </button>
+                    <button class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-1 px-3 rounded text-sm" onclick="resetBankDetails()">
+                        <i class="fas fa-redo mr-1"></i> Reset
+                    </button>
+                </div>
+                
+                <!-- EDIT INSTRUCTION FOR BANK DETAILS -->
+                <div class="edit-instruction no-print mb-2">
+                    <i class="fas fa-info-circle"></i>
+                    Click or double-click on any bank detail to edit it
+                </div>
+                
+                <h3 class="font-bold text-lg md:text-xl mb-2" style="font-family: 'Times New Roman', serif;">Bank Transfer Details</h3>
+                <p class="mb-1 text-base md:text-lg bank-editable" onclick="editBankField('bank')" ondblclick="editBankField('bank')" id="bankCell">
+                    <span class="font-bold">Bank:</span> 
+                    <span id="bank">UBA</span>
+                    <input type="text" id="bank-input" value="UBA" 
+                           class="hidden" onblur="saveBankField('bank')" 
+                           onkeypress="if(event.key === 'Enter') saveBankField('bank')">
+                </p>
+                <p class="mb-1 text-base md:text-lg bank-editable" onclick="editBankField('accountName')" ondblclick="editBankField('accountName')">
+                    <span class="font-bold">Account Name:</span> 
+                    <span id="accountName">EMILIA FOREMOST HIGH SCHOOL</span>
+                    <input type="text" id="accountName-input" value="EMILIA FOREMOST HIGH SCHOOL" 
+                           class="hidden" onblur="saveBankField('accountName')" 
+                           onkeypress="if(event.key === 'Enter') saveBankField('accountName')">
+                </p>
+                <p class="mb-1 text-base md:text-lg bank-editable" onclick="editBankField('accountNumber')" ondblclick="editBankField('accountNumber')">
+                    <span class="font-bold">Account Number:</span> 
+                    <span id="accountNumber">2102287521</span>
+                    <input type="text" id="accountNumber-input" value="2102287521" 
+                           class="hidden" onblur="saveBankField('accountNumber')" 
+                           onkeypress="if(event.key === 'Enter') saveBankField('accountNumber')">
+                </p>
+            </div>
+            
+            <!-- Important Payment Notes - NOW EDITABLE WITH ADD BUTTON -->
+            <div class="mb-6 md:mb-8 avoid-break">
+                <div class="notes-controls no-print">
+                    <div class="flex gap-2">
+                        <button class="edit-notes-btn" onclick="editPaymentNotes()">
+                            <i class="fas fa-edit mr-1"></i> Edit All Notes
+                        </button>
+                        <button class="add-note-btn" onclick="addNewNote()">
+                            <i class="fas fa-plus mr-1"></i> Add New Note
+                        </button>
+                    </div>
+                    <button class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-1 px-3 rounded text-sm" onclick="resetPaymentNotes()">
+                        <i class="fas fa-redo mr-1"></i> Reset
+                    </button>
+                </div>
+                
+                <!-- EDIT INSTRUCTION FOR PAYMENT NOTES -->
+                <div class="edit-instruction no-print mb-2">
+                    <i class="fas fa-info-circle"></i>
+                    Click or double-click on any note to edit it. Use buttons to add/delete notes
+                </div>
+                
+                <h3 class="text-xl md:text-2xl font-bold mb-3 md:mb-4 uppercase" style="font-family: 'Times New Roman', serif;">IMPORTANT PAYMENT NOTES:</h3>
+                <ol class="list-decimal pl-4 md:pl-5 space-y-1 md:space-y-2 text-base md:text-lg notes-editable" style="font-family: 'Times New Roman', serif;" id="paymentNotesList">
+                    <!-- Notes will be generated by JavaScript -->
+                </ol>
+            </div>
+            
+            <!-- For Questions & Enquiries -->
+            <div class="bg-blue-50 p-4 rounded-lg avoid-break">
+                <h3 class="text-xl md:text-2xl font-bold mb-3 md:mb-4 uppercase" style="font-family: 'Times New Roman', serif;">FOR QUESTIONS & ENQUIRES</h3>
+                
+                <!-- EDIT INSTRUCTION FOR CONTACT INFO -->
+                <div class="edit-instruction no-print mb-2">
+                    <i class="fas fa-info-circle"></i>
+                    Click or double-click on email or phone to edit contact information
+                </div>
+                
+                <p class="mb-2 text-base md:text-lg bank-editable" onclick="editContactField('billingEmail')" ondblclick="editContactField('billingEmail')" style="font-family: 'Times New Roman', serif;">
+                    <span class="font-bold">School Billing Offices:</span> Emilia Foremost: 
+                    <span id="billingEmail">emiliaforemost@gmail.com</span>
+                    <input type="text" id="billingEmail-input" value="emiliaforemost@gmail.com" 
+                           class="hidden" onblur="saveContactField('billingEmail')" 
+                           onkeypress="if(event.key === 'Enter') saveContactField('billingEmail')">
+                </p>
+                <p class="mb-2 text-base md:text-lg bank-editable" onclick="editContactField('contactPhone')" ondblclick="editContactField('contactPhone')" style="font-family: 'Times New Roman', serif;">
+                    <span class="font-bold">Phone:</span> 
+                    <span id="contactPhone">08022854677 / 09057147497</span>
+                    <input type="text" id="contactPhone-input" value="08022854677 / 09057147497" 
+                           class="hidden" onblur="saveContactField('contactPhone')" 
+                           onkeypress="if(event.key === 'Enter') saveContactField('contactPhone')">
+                </p>
+            </div>
+            
+            <!-- Thank You Note -->
+            <div class="mt-6 md:mt-10 text-center italic text-gray-700 avoid-break">
+                <!-- EDIT INSTRUCTION FOR THANK YOU NOTE -->
+                <div class="edit-instruction no-print mb-2">
+                    <i class="fas fa-info-circle"></i>
+                    Click or double-click on the thank you note to edit it
+                </div>
+                
+                <p class="text-base md:text-lg bank-editable" onclick="editThankYouNote()" ondblclick="editThankYouNote()" style="font-family: 'Times New Roman', serif; cursor: pointer;">
+                    <span id="thankYouNote">Thank you for your continued partnership in your child's education.</span>
+                    <input type="text" id="thankYouNote-input" value="Thank you for your continued partnership in your child's education." 
+                       class="hidden w-full p-2 border border-gray-300 rounded" onblur="saveThankYouNote()" 
+                       onkeypress="if(event.key === 'Enter') saveThankYouNote()">
+                </p>
+            </div>
+            
+            <!-- Student Info Summary -->
+            <div class="mt-6 md:mt-8 p-4 border border-gray-300 rounded-lg avoid-break">
+                <h3 class="font-bold mb-3 text-lg md:text-xl" style="font-family: 'Times New Roman', serif;">Student Information Summary</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+                    <div>
+                        <p class="text-base md:text-lg" style="font-family: 'Times New Roman', serif;"><span class="font-bold">Student Name:</span> <span id="summaryName">OYERINDE SAMUEL</span></p>
+                        <p class="text-base md:text-lg" style="font-family: 'Times New Roman', serif;"><span class="font-bold">Class:</span> <span id="summaryClass">JSS 1</span></p>
+                    </div>
+                    <div>
+                        <p class="text-base md:text-lg" style="font-family: 'Times New Roman', serif;"><span class="font-bold">Term:</span> <span id="summaryTerm">2ND TERM</span></p>
+                        <p class="text-base md:text-lg" style="font-family: 'Times New Roman', serif;"><span class="font-bold">Session:</span> <span id="summarySession">2025/2026</span></p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Due Date Calculator -->
+            <div class="mt-6 md:mt-10 p-4 border border-gray-300 rounded-lg no-print">
+                <h3 class="font-bold mb-2" style="font-family: 'Times New Roman', serif;">Due Date Calculator</h3>
+                <div class="flex flex-col md:flex-row md:flex-wrap items-start md:items-center gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1" style="font-family: 'Times New Roman', serif;">Select Due Date:</label>
+                        <input type="date" id="dueDate" class="border border-gray-300 rounded px-3 py-2 w-full md:w-auto">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1" style="font-family: 'Times New Roman', serif;">Days Until Due:</label>
+                        <div id="daysUntilDue" class="text-xl font-bold text-blue-600">--</div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1" style="font-family: 'Times New Roman', serif;">Late Fee Applicable:</label>
+                        <div id="lateFeeStatus" class="text-xl font-bold">--</div>
+                    </div>
+                    <button onclick="calculateDueDate()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded w-full md:w-auto">Calculate</button>
+                </div>
+                <div id="totalWithLateFee" class="mt-4 hidden p-3 bg-red-50 border border-red-200 rounded">
+                    <p class="font-bold text-red-700" style="font-family: 'Times New Roman', serif;">Total with Late Fee: <span id="lateFeeTotal">₦0.00</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <div class="mt-8 text-center text-gray-500 text-sm no-print">
+        <p style="font-family: 'Times New Roman', serif;">This is a digital invoice system. All changes are saved automatically.</p>
+        <p class="mt-2" style="font-family: 'Times New Roman', serif;">Generated on: <span id="currentDate"></span></p>
+        <div class="mt-4 flex flex-col md:flex-row justify-center items-center space-y-2 md:space-y-0 md:space-x-4">
+            <div class="w-16 h-16 bg-white rounded-full p-2 shadow-md">
+                <img src="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/EMILIA%20LOGO.png" 
+                     alt="School Logo" 
+                     class="w-full h-auto rounded-full">
+            </div>
+            <p class="font-bold" style="font-family: Georgia, 'Times New Roman', serif;">EMILIA FOREMOST HIGH SCHOOL</p>
+        </div>
+    </div>
+
+    <script>
+        // Set current date
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        
+        // SUPER INTELLIGENT FLOATING HOME BUTTON FUNCTIONALITY
+        function goToHomePage() {
+            // Show a smooth transition effect
+            const homeBtn = document.getElementById('floatingHomeBtn');
+            homeBtn.style.transform = 'scale(0.8)';
+            homeBtn.style.opacity = '0.7';
+            
+            // Add a success animation
+            homeBtn.innerHTML = '<i class="fas fa-check"></i>';
+            homeBtn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+            
+            // Create a ripple effect
+            createRippleEffect(homeBtn);
+            
+            // Navigate to home page after animation
+            setTimeout(() => {
+                window.location.href = "{% url 'general_exam_page' %}";
+            }, 500);
+        }
+        
+        // Create ripple effect for the button
+        function createRippleEffect(button) {
+            const ripple = document.createElement('div');
+            ripple.style.cssText = `
+                position: absolute;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.6);
+                transform: scale(0);
+                animation: ripple-animation 0.6s linear;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+            `;
+            
+            // Add ripple animation styles
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes ripple-animation {
+                    to {
+                        transform: scale(4);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            button.appendChild(ripple);
+            
+            // Remove ripple element after animation
+            setTimeout(() => {
+                if (ripple.parentNode === button) {
+                    button.removeChild(ripple);
+                }
+            }, 600);
+        }
+        
+        // Make button pulse on scroll to attract attention
+        let lastScrollTop = 0;
+        window.addEventListener('scroll', function() {
+            const homeBtn = document.getElementById('floatingHomeBtn');
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            // Pulse when user stops scrolling
+            if (Math.abs(scrollTop - lastScrollTop) < 10) {
+                if (!homeBtn.classList.contains('pulse')) {
+                    homeBtn.classList.add('pulse');
+                    setTimeout(() => {
+                        homeBtn.classList.remove('pulse');
+                    }, 2000);
+                }
+            }
+            
+            lastScrollTop = scrollTop;
+        });
+        
+        // Add keyboard shortcut for home button (Ctrl+H)
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'h') {
+                e.preventDefault();
+                goToHomePage();
+            }
+        });
+        
+        // Smart button position adjustment on mobile
+        function adjustButtonPosition() {
+            const homeBtn = document.getElementById('floatingHomeBtn');
+            if (window.innerWidth <= 768) {
+                // Move button up slightly on mobile if keyboard is visible
+                const visualViewport = window.visualViewport;
+                if (visualViewport && visualViewport.height < window.innerHeight) {
+                    homeBtn.style.bottom = (30 + (window.innerHeight - visualViewport.height)) + 'px';
+                } else {
+                    homeBtn.style.bottom = '20px';
+                }
+            }
+        }
+        
+        // Listen for viewport changes (mobile keyboard)
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', adjustButtonPosition);
+        }
+        
+        // Initial data for the fees table - EXACT DATA FROM PDF
+        const initialData = [
+            { description: "Overdue Balance from Previous Session:", amount: 12000.00 },
+            { description: "Remaining First Term Fee (2025/2026):", amount: 47000.00 },
+            { description: "Late Payment Administrative Fee:", amount: -40000.00 } // Negative value in parentheses
+        ];
+        
+        // Store table data in memory
+        let tableData = [...initialData];
+        
+        // Store student info in memory
+        let studentInfo = {
+            studentName: "OYERINDE SAMUEL",
+            class: "JSS 1",
+            term: "2ND TERM",
+            session: "2025/2026"
+        };
+        
+        // Store school phone number in memory
+        let schoolPhone = "08022854677, 09057147497";
+        
+        // Store bank details in memory
+        let bankDetails = {
+            bank: "UBA",
+            accountName: "EMILIA FOREMOST HIGH SCHOOL",
+            accountNumber: "2102287521"
+        };
+        
+        // Store contact information in memory
+        let contactInfo = {
+            billingEmail: "emiliaforemost@gmail.com",
+            contactPhone: "08022854677 / 09057147497"
+        };
+        
+        // Store other editable content
+        let otherContent = {
+            paymentInstructions: "Please ensure payment is made on or before the Due Date to facilitate a smooth resumption for your ward.",
+            thankYouNote: "Thank you for your continued partnership in your child's education."
+        };
+        
+        // Store important notice content
+        let importantNotice = {
+            noticeTitle: "IMPORTANT NOTICE FOR REPORT CARD COLLECTION",
+            noticePara1: "To download and collect your ward's First Term Report Card, the account must be in good standing.",
+            noticePara2: "Please clear the overdue balance of ₦ 12,000.00 to enable report card access.",
+            noticePara3: "Full settlement of the entire balance (₦ 21,000.00) is required for seamless re-registration and participation in Second Term activities."
+        };
+        
+        // Store resolution section content
+        let resolutionSection = {
+            resolutionTitle: "FOR IMMEDIATE RESOLUTION & PAYMENT",
+            resolutionIntro: "Bank Transfer Details for Payment:",
+            bankLine: "UBA",
+            accountNameLine: "EMILIA FOREMOST HIGH SCHOOL",
+            accountNumberLine: "2102287521",
+            paymentReference: "Student Name, Class & ID (e.g., Ige Deborah, JSS 3, EMFHS-YYYY-NNN-XX)"
+        };
+        
+        // Store payment notes in memory - INITIAL DATA
+        let paymentNotes = [
+            "Please use Student Name & Class as the payment reference.",
+            "Send proof of payment (transfer slip/teller) to the email below.",
+            "Payments made after the due date may incur a late fee of ₦5,000.00"
+        ];
+        
+        // Initial student info
+        const initialStudentInfo = {...studentInfo};
+        const initialSchoolPhone = schoolPhone;
+        const initialBankDetails = {...bankDetails};
+        const initialContactInfo = {...contactInfo};
+        const initialOtherContent = {...otherContent};
+        const initialImportantNotice = {...importantNotice};
+        const initialResolutionSection = {...resolutionSection};
+        const initialPaymentNotes = [...paymentNotes];
+        
+        // Function to format currency with Naira symbol
+        function formatCurrency(amount) {
+            const isNegative = amount < 0;
+            const absAmount = Math.abs(amount);
+            const formatted = '₦' + absAmount.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+            
+            // For negative values (like the administrative fee), wrap in parentheses
+            if (isNegative) {
+                return '(' + formatted + ')';
+            }
+            return formatted;
+        }
+        
+        // Function to calculate grand total
+        function calculateGrandTotal() {
+            let total = 0;
+            tableData.forEach(item => {
+                total += parseFloat(item.amount) || 0;
+            });
+            return total;
+        }
+        
+        // Function to update display
+        function updateDisplay() {
+            const grandTotal = calculateGrandTotal();
+            document.getElementById('grandTotal').textContent = formatCurrency(grandTotal);
+            updateAmountInWords(Math.abs(grandTotal));
+        }
+        
+        // Function to convert number to words
+        function numberToWords(num) {
+            const ones = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
+            const teens = ['Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+            const tens = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+            
+            if (num === 0) return 'Zero';
+            
+            function convertLessThanThousand(n) {
+                if (n === 0) return '';
+                
+                let words = '';
+                
+                if (Math.floor(n / 100) > 0) {
+                    words += ones[Math.floor(n / 100)] + ' Hundred ';
+                    n %= 100;
+                }
+                
+                if (n > 0) {
+                    if (n < 10) {
+                        words += ones[n];
+                    } else if (n < 20) {
+                        words += teens[n - 10];
+                    } else {
+                        words += tens[Math.floor(n / 10)];
+                        if (n % 10 > 0) {
+                            words += ' ' + ones[n % 10];
+                        }
+                    }
+                }
+                
+                return words.trim();
+            }
+            
+            if (num < 1000) {
+                return convertLessThanThousand(num);
+            }
+            
+            const thousands = Math.floor(num / 1000);
+            const remainder = num % 1000;
+            
+            let words = convertLessThanThousand(thousands) + ' Thousand';
+            
+            if (remainder > 0) {
+                words += ' ' + convertLessThanThousand(remainder);
+            }
+            
+            return words.trim();
+        }
+        
+        // Function to update amount in words
+        function updateAmountInWords(amount) {
+            const wholeAmount = Math.floor(amount);
+            const words = numberToWords(wholeAmount);
+            document.getElementById('amountInWords').textContent = words + ' Naira Only';
+        }
+        
+        // Function to update late fee calculator
+        function updateLateFeeCalculator() {
+            const lateFeeTotalElement = document.getElementById('lateFeeTotal');
+            const grandTotal = calculateGrandTotal();
+            const totalWithLateFee = Math.abs(grandTotal) + 5000;
+            lateFeeTotalElement.textContent = formatCurrency(totalWithLateFee);
+        }
+        
+        // Function to update student summary section
+        function updateStudentSummary() {
+            document.getElementById('summaryName').textContent = studentInfo.studentName;
+            document.getElementById('summaryClass').textContent = studentInfo.class;
+            document.getElementById('summaryTerm').textContent = studentInfo.term;
+            document.getElementById('summarySession').textContent = studentInfo.session;
+        }
+        
+        // Function to update both phone numbers
+        function updateAllPhoneNumbers() {
+            document.getElementById('schoolPhoneDisplay').textContent = schoolPhone;
+            document.getElementById('page2SchoolPhoneDisplay').textContent = schoolPhone;
+        }
+        
+        // Function to render fees table rows - NOW WITH EDITABLE CELLS AND ACTION BUTTONS
+        function renderTable() {
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = '';
+            
+            tableData.forEach((item, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="editable-cell font-bold" ondblclick="editDescription(${index})">
+                        <span id="desc-${index}">${item.description}</span>
+                        <input type="text" id="desc-input-${index}" value="${item.description}" 
+                               class="hidden" onblur="saveDescription(${index})" 
+                               onkeypress="if(event.key === 'Enter') saveDescription(${index})">
+                    </td>
+                    <td class="editable-cell text-right" ondblclick="editAmount(${index})">
+                        <span id="amount-${index}">${formatCurrency(item.amount)}</span>
+                        <input type="number" id="amount-input-${index}" value="${item.amount}" 
+                               class="hidden amount-input" step="0.01"
+                               onblur="saveAmount(${index})" 
+                               onkeypress="if(event.key === 'Enter') saveAmount(${index})">
+                    </td>
+                    <td class="no-print text-center">
+                        <button class="edit-row-btn" onclick="editRow(${index})">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="delete-row-btn" onclick="deleteRow(${index})">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+            
+            updateDisplay();
+        }
+        
+        // Function to edit school phone number on page 1
+        function editSchoolPhone() {
+            const displayElement = document.getElementById('schoolPhoneDisplay');
+            const inputElement = document.getElementById('schoolPhoneInput');
+            
+            displayElement.classList.add('hidden');
+            inputElement.classList.remove('hidden');
+            inputElement.focus();
+            inputElement.select();
+        }
+        
+        // Function to save school phone number from page 1
+        function saveSchoolPhone() {
+            const displayElement = document.getElementById('schoolPhoneDisplay');
+            const inputElement = document.getElementById('schoolPhoneInput');
+            
+            const newValue = inputElement.value.trim();
+            if (newValue) {
+                schoolPhone = newValue;
+                updateAllPhoneNumbers();
+            }
+            
+            displayElement.classList.remove('hidden');
+            inputElement.classList.add('hidden');
+        }
+        
+        // Function to edit school phone number on page 2
+        function editSchoolPhonePage2() {
+            const displayElement = document.getElementById('page2SchoolPhoneDisplay');
+            const inputElement = document.getElementById('page2SchoolPhoneInput');
+            
+            displayElement.classList.add('hidden');
+            inputElement.classList.remove('hidden');
+            inputElement.focus();
+            inputElement.select();
+        }
+        
+        // Function to save school phone number from page 2
+        function saveSchoolPhonePage2() {
+            const displayElement = document.getElementById('page2SchoolPhoneDisplay');
+            const inputElement = document.getElementById('page2SchoolPhoneInput');
+            
+            const newValue = inputElement.value.trim();
+            if (newValue) {
+                schoolPhone = newValue;
+                updateAllPhoneNumbers();
+            }
+            
+            displayElement.classList.remove('hidden');
+            inputElement.classList.add('hidden');
+        }
+        
+        // Function to add new row to fees table
+        function addNewRow() {
+            tableData.push({ description: "New Item", amount: 0.00 });
+            renderTable();
+            
+            // Scroll to the new row
+            const tableBody = document.getElementById('tableBody');
+            const lastRow = tableBody.lastElementChild;
+            lastRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            // Auto-edit the new row's description
+            setTimeout(() => editDescription(tableData.length - 1), 100);
+        }
+        
+        // Function to delete row from fees table
+        function deleteRow(index) {
+            if (confirm('Are you sure you want to delete this row?')) {
+                tableData.splice(index, 1);
+                renderTable();
+            }
+        }
+        
+        // Function to edit entire row in fees table
+        function editRow(index) {
+            editDescription(index);
+            setTimeout(() => editAmount(index), 100);
+        }
+        
+        // Function to edit description in fees table
+        function editDescription(index) {
+            const descSpan = document.getElementById(`desc-${index}`);
+            const descInput = document.getElementById(`desc-input-${index}`);
+            
+            descSpan.classList.add('hidden');
+            descInput.classList.remove('hidden');
+            descInput.focus();
+            descInput.select();
+        }
+        
+        // Function to save description in fees table
+        function saveDescription(index) {
+            const descSpan = document.getElementById(`desc-${index}`);
+            const descInput = document.getElementById(`desc-input-${index}`);
+            
+            const newDescription = descInput.value.trim();
+            if (newDescription) {
+                tableData[index].description = newDescription;
+                descSpan.textContent = newDescription;
+            }
+            
+            descSpan.classList.remove('hidden');
+            descInput.classList.add('hidden');
+        }
+        
+        // Function to edit amount in fees table
+        function editAmount(index) {
+            const amountSpan = document.getElementById(`amount-${index}`);
+            const amountInput = document.getElementById(`amount-input-${index}`);
+            
+            amountSpan.classList.add('hidden');
+            amountInput.classList.remove('hidden');
+            amountInput.focus();
+            amountInput.select();
+        }
+        
+        // Function to save amount in fees table
+        function saveAmount(index) {
+            const amountSpan = document.getElementById(`amount-${index}`);
+            const amountInput = document.getElementById(`amount-input-${index}`);
+            
+            const newAmount = parseFloat(amountInput.value) || 0;
+            tableData[index].amount = newAmount;
+            amountSpan.textContent = formatCurrency(newAmount);
+            
+            amountSpan.classList.remove('hidden');
+            amountInput.classList.add('hidden');
+            
+            updateDisplay();
+        }
+        
+        // Function to reset fees table to initial data
+        function resetTable() {
+            if (confirm('Reset fees table to initial data? This will delete all your changes.')) {
+                tableData = [...initialData];
+                renderTable();
+            }
+        }
+        
+        // Function to edit student field
+        function editStudentField(field) {
+            const span = document.getElementById(field);
+            const input = document.getElementById(`${field}-input`);
+            
+            span.classList.add('hidden');
+            input.classList.remove('hidden');
+            input.focus();
+            input.select();
+        }
+        
+        // Function to save student field
+        function saveStudentField(field) {
+            const span = document.getElementById(field);
+            const input = document.getElementById(`${field}-input`);
+            
+            const newValue = input.value.trim();
+            if (newValue) {
+                studentInfo[field] = newValue;
+                span.textContent = newValue;
+                updateStudentSummary();
+            }
+            
+            span.classList.remove('hidden');
+            input.classList.add('hidden');
+        }
+        
+        // Function to edit all student info at once
+        function editStudentInfo() {
+            const nameCell = document.getElementById('nameCell');
+            nameCell.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            setTimeout(() => {
+                editStudentField('studentName');
+            }, 100);
+        }
+        
+        // Function to reset student info
+        function resetStudentInfo() {
+            if (confirm('Reset student information to default?')) {
+                studentInfo = {...initialStudentInfo};
+                
+                document.getElementById('studentName').textContent = studentInfo.studentName;
+                document.getElementById('studentName-input').value = studentInfo.studentName;
+                
+                document.getElementById('class').textContent = studentInfo.class;
+                document.getElementById('class-input').value = studentInfo.class;
+                
+                document.getElementById('term').textContent = studentInfo.term;
+                document.getElementById('term-input').value = studentInfo.term;
+                
+                document.getElementById('session').textContent = studentInfo.session;
+                document.getElementById('session-input').value = studentInfo.session;
+                
+                updateStudentSummary();
+            }
+        }
+        
+        // BANK DETAILS FUNCTIONS
+        
+        // Function to edit bank field
+        function editBankField(field) {
+            const span = document.getElementById(field);
+            const input = document.getElementById(`${field}-input`);
+            
+            span.classList.add('hidden');
+            input.classList.remove('hidden');
+            input.focus();
+            input.select();
+        }
+        
+        // Function to save bank field
+        function saveBankField(field) {
+            const span = document.getElementById(field);
+            const input = document.getElementById(`${field}-input`);
+            
+            const newValue = input.value.trim();
+            if (newValue) {
+                bankDetails[field] = newValue;
+                span.textContent = newValue;
+            }
+            
+            span.classList.remove('hidden');
+            input.classList.add('hidden');
+        }
+        
+        // Function to edit all bank details at once
+        function editBankDetails() {
+            const bankCell = document.getElementById('bankCell');
+            bankCell.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            setTimeout(() => {
+                editBankField('bank');
+            }, 100);
+        }
+        
+        // Function to reset bank details
+        function resetBankDetails() {
+            if (confirm('Reset bank details to default?')) {
+                bankDetails = {...initialBankDetails};
+                
+                document.getElementById('bank').textContent = bankDetails.bank;
+                document.getElementById('bank-input').value = bankDetails.bank;
+                
+                document.getElementById('accountName').textContent = bankDetails.accountName;
+                document.getElementById('accountName-input').value = bankDetails.accountName;
+                
+                document.getElementById('accountNumber').textContent = bankDetails.accountNumber;
+                document.getElementById('accountNumber-input').value = bankDetails.accountNumber;
+            }
+        }
+        
+        // CONTACT INFORMATION FUNCTIONS
+        
+        // Function to edit contact field
+        function editContactField(field) {
+            const span = document.getElementById(field);
+            const input = document.getElementById(`${field}-input`);
+            
+            span.classList.add('hidden');
+            input.classList.remove('hidden');
+            input.focus();
+            input.select();
+        }
+        
+        // Function to save contact field
+        function saveContactField(field) {
+            const span = document.getElementById(field);
+            const input = document.getElementById(`${field}-input`);
+            
+            const newValue = input.value.trim();
+            if (newValue) {
+                contactInfo[field] = newValue;
+                span.textContent = newValue;
+            }
+            
+            span.classList.remove('hidden');
+            input.classList.add('hidden');
+        }
+        
+        // OTHER CONTENT FUNCTIONS
+        
+        // Function to edit payment instructions
+        function editPaymentInstructions() {
+            const span = document.getElementById('paymentInstructions');
+            const input = document.getElementById('paymentInstructions-input');
+            
+            span.classList.add('hidden');
+            input.classList.remove('hidden');
+            input.focus();
+            input.select();
+        }
+        
+        // Function to save payment instructions
+        function savePaymentInstructions() {
+            const span = document.getElementById('paymentInstructions');
+            const input = document.getElementById('paymentInstructions-input');
+            
+            const newValue = input.value.trim();
+            if (newValue) {
+                otherContent.paymentInstructions = newValue;
+                span.textContent = newValue;
+            }
+            
+            span.classList.remove('hidden');
+            input.classList.add('hidden');
+        }
+        
+        // Function to edit thank you note
+        function editThankYouNote() {
+            const span = document.getElementById('thankYouNote');
+            const input = document.getElementById('thankYouNote-input');
+            
+            span.classList.add('hidden');
+            input.classList.remove('hidden');
+            input.focus();
+            input.select();
+        }
+        
+        // Function to save thank you note
+        function saveThankYouNote() {
+            const span = document.getElementById('thankYouNote');
+            const input = document.getElementById('thankYouNote-input');
+            
+            const newValue = input.value.trim();
+            if (newValue) {
+                otherContent.thankYouNote = newValue;
+                span.textContent = newValue;
+            }
+            
+            span.classList.remove('hidden');
+            input.classList.add('hidden');
+        }
+        
+        // IMPORTANT NOTICE FUNCTIONS
+        
+        // Function to edit important notice field
+        function editImportantNoticeField(field) {
+            const span = document.getElementById(field);
+            const input = document.getElementById(`${field}-input`);
+            
+            span.classList.add('hidden');
+            input.classList.remove('hidden');
+            input.focus();
+            input.select();
+        }
+        
+        // Function to save important notice field
+        function saveImportantNoticeField(field) {
+            const span = document.getElementById(field);
+            const input = document.getElementById(`${field}-input`);
+            
+            const newValue = input.value.trim();
+            if (newValue) {
+                importantNotice[field] = newValue;
+                span.textContent = newValue;
+            }
+            
+            span.classList.remove('hidden');
+            input.classList.add('hidden');
+        }
+        
+        // Function to edit all important notice at once
+        function editImportantNotice() {
+            const noticeTitle = document.getElementById('noticeTitle');
+            noticeTitle.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            setTimeout(() => {
+                editImportantNoticeField('noticeTitle');
+            }, 100);
+        }
+        
+        // Function to reset important notice
+        function resetImportantNotice() {
+            if (confirm('Reset Important Notice to default?')) {
+                importantNotice = {...initialImportantNotice};
+                
+                document.getElementById('noticeTitle').textContent = importantNotice.noticeTitle;
+                document.getElementById('noticeTitle-input').value = importantNotice.noticeTitle;
+                
+                document.getElementById('noticePara1').textContent = importantNotice.noticePara1;
+                document.getElementById('noticePara1-input').value = importantNotice.noticePara1;
+                
+                document.getElementById('noticePara2').textContent = importantNotice.noticePara2;
+                document.getElementById('noticePara2-input').value = importantNotice.noticePara2;
+                
+                document.getElementById('noticePara3').textContent = importantNotice.noticePara3;
+                document.getElementById('noticePara3-input').value = importantNotice.noticePara3;
+            }
+        }
+        
+        // RESOLUTION SECTION FUNCTIONS
+        
+        // Function to edit resolution section field
+        function editResolutionField(field) {
+            const span = document.getElementById(field);
+            const input = document.getElementById(`${field}-input`);
+            
+            span.classList.add('hidden');
+            input.classList.remove('hidden');
+            input.focus();
+            input.select();
+        }
+        
+        // Function to save resolution section field
+        function saveResolutionField(field) {
+            const span = document.getElementById(field);
+            const input = document.getElementById(`${field}-input`);
+            
+            const newValue = input.value.trim();
+            if (newValue) {
+                resolutionSection[field] = newValue;
+                span.textContent = newValue;
+            }
+            
+            span.classList.remove('hidden');
+            input.classList.add('hidden');
+        }
+        
+        // Function to edit all resolution section at once
+        function editResolutionSection() {
+            const resolutionTitle = document.getElementById('resolutionTitle');
+            resolutionTitle.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            setTimeout(() => {
+                editResolutionField('resolutionTitle');
+            }, 100);
+        }
+        
+        // Function to reset resolution section
+        function resetResolutionSection() {
+            if (confirm('Reset Resolution Section to default?')) {
+                resolutionSection = {...initialResolutionSection};
+                
+                document.getElementById('resolutionTitle').textContent = resolutionSection.resolutionTitle;
+                document.getElementById('resolutionTitle-input').value = resolutionSection.resolutionTitle;
+                
+                document.getElementById('resolutionIntro').textContent = resolutionSection.resolutionIntro;
+                document.getElementById('resolutionIntro-input').value = resolutionSection.resolutionIntro;
+                
+                document.getElementById('bankLine').textContent = resolutionSection.bankLine;
+                document.getElementById('bankLine-input').value = resolutionSection.bankLine;
+                
+                document.getElementById('accountNameLine').textContent = resolutionSection.accountNameLine;
+                document.getElementById('accountNameLine-input').value = resolutionSection.accountNameLine;
+                
+                document.getElementById('accountNumberLine').textContent = resolutionSection.accountNumberLine;
+                document.getElementById('accountNumberLine-input').value = resolutionSection.accountNumberLine;
+                
+                document.getElementById('paymentReference').textContent = resolutionSection.paymentReference;
+                document.getElementById('paymentReference-input').value = resolutionSection.paymentReference;
+            }
+        }
+        
+        // PAYMENT NOTES FUNCTIONS
+        
+        // Function to render payment notes
+        function renderPaymentNotes() {
+            const notesList = document.getElementById('paymentNotesList');
+            notesList.innerHTML = '';
+            
+            paymentNotes.forEach((note, index) => {
+                const li = document.createElement('li');
+                li.className = 'relative';
+                li.setAttribute('onclick', `editNoteField(${index})`);
+                li.setAttribute('ondblclick', `editNoteField(${index})`);
+                
+                const displayNote = index === 2 && note.includes('₦5,000.00') 
+                    ? note.replace('₦5,000.00', '<span class="font-bold">₦5,000.00</span>')
+                    : note;
+                
+                li.innerHTML = `
+                    <span id="note-${index}">${displayNote}</span>
+                    <input type="text" id="note-input-${index}" value="${note.replace(/<[^>]*>/g, '')}" 
+                           class="hidden" onblur="saveNoteField(${index})" 
+                           onkeypress="if(event.key === 'Enter') saveNoteField(${index})">
+                    <button class="delete-note-btn no-print" onclick="deleteNote(${index})" title="Delete this note">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                `;
+                notesList.appendChild(li);
+            });
+        }
+        
+        // Function to edit note field
+        function editNoteField(index) {
+            const span = document.getElementById(`note-${index}`);
+            const input = document.getElementById(`note-input-${index}`);
+            
+            span.classList.add('hidden');
+            input.classList.remove('hidden');
+            input.focus();
+            input.select();
+        }
+        
+        // Function to save note field
+        function saveNoteField(index) {
+            const span = document.getElementById(`note-${index}`);
+            const input = document.getElementById(`note-input-${index}`);
+            
+            const newValue = input.value.trim();
+            if (newValue) {
+                paymentNotes[index] = newValue;
+                if (newValue.includes('₦5,000.00')) {
+                    span.innerHTML = newValue.replace('₦5,000.00', '<span class="font-bold">₦5,000.00</span>');
+                } else {
+                    span.textContent = newValue;
+                }
+            }
+            
+            span.classList.remove('hidden');
+            input.classList.add('hidden');
+        }
+        
+        // Function to add new payment note
+        function addNewNote() {
+            paymentNotes.push("New payment note");
+            renderPaymentNotes();
+            
+            const notesList = document.getElementById('paymentNotesList');
+            const lastNote = notesList.lastElementChild;
+            lastNote.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            setTimeout(() => editNoteField(paymentNotes.length - 1), 100);
+        }
+        
+        // Function to delete payment note
+        function deleteNote(index) {
+            if (confirm('Are you sure you want to delete this payment note?')) {
+                paymentNotes.splice(index, 1);
+                renderPaymentNotes();
+            }
+        }
+        
+        // Function to edit all payment notes at once
+        function editPaymentNotes() {
+            const notesList = document.getElementById('paymentNotesList');
+            if (notesList.firstElementChild) {
+                notesList.firstElementChild.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            
+            setTimeout(() => {
+                if (paymentNotes.length > 0) {
+                    editNoteField(0);
+                }
+            }, 100);
+        }
+        
+        // Function to reset payment notes
+        function resetPaymentNotes() {
+            if (confirm('Reset payment notes to default?')) {
+                paymentNotes = [...initialPaymentNotes];
+                renderPaymentNotes();
+            }
+        }
+        
+        // Due date calculator function
+        function calculateDueDate() {
+            const dueDateInput = document.getElementById('dueDate').value;
+            
+            if (!dueDateInput) {
+                alert('Please select a due date');
+                return;
+            }
+            
+            const dueDate = new Date(dueDateInput);
+            const today = new Date();
+            
+            const timeDiff = dueDate.getTime() - today.getTime();
+            const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            
+            const daysUntilDueElement = document.getElementById('daysUntilDue');
+            daysUntilDueElement.textContent = daysDiff + ' days';
+            
+            const lateFeeStatusElement = document.getElementById('lateFeeStatus');
+            const totalWithLateFeeElement = document.getElementById('totalWithLateFee');
+            
+            if (daysDiff < 0) {
+                lateFeeStatusElement.textContent = 'YES';
+                lateFeeStatusElement.className = 'text-xl font-bold text-red-600';
+                totalWithLateFeeElement.classList.remove('hidden');
+            } else if (daysDiff === 0) {
+                lateFeeStatusElement.textContent = 'DUE TODAY';
+                lateFeeStatusElement.className = 'text-xl font-bold text-orange-600';
+                totalWithLateFeeElement.classList.add('hidden');
+            } else {
+                lateFeeStatusElement.textContent = 'NO';
+                lateFeeStatusElement.className = 'text-xl font-bold text-green-600';
+                totalWithLateFeeElement.classList.add('hidden');
+            }
+        }
+        
+        // Set default due date to 30 days from now
+        const defaultDueDate = new Date();
+        defaultDueDate.setDate(defaultDueDate.getDate() + 30);
+        document.getElementById('dueDate').valueAsDate = defaultDueDate;
+        
+        // Initialize everything on page load
+        window.onload = function() {
+            calculateDueDate();
+            renderTable();
+            renderPaymentNotes();
+            updateStudentSummary();
+            updateAllPhoneNumbers();
+            
+            console.log("Interactive invoice system loaded:");
+            console.log("✓ Fixed title spacing - removed # and adjusted margin");
+            console.log("✓ Added back table controls (add/edit/delete buttons)");
+            console.log("✓ Table is now editable like the original");
+            console.log("✓ All functionality restored");
+            console.log("✓ BREAKDOWN title and tables moved upward for print view");
+            console.log("✓ IMPORTANT NOTICE section is now editable");
+            console.log("✓ FOR IMMEDIATE RESOLUTION section is now editable");
+            console.log("✓ Removed blue Print/Save PDF button, kept only green Print Preview button");
+            
+            // Make floating home button pulse initially to attract attention
+            const homeBtn = document.getElementById('floatingHomeBtn');
+            setTimeout(() => {
+                homeBtn.classList.remove('pulse');
+                setTimeout(() => homeBtn.classList.add('pulse'), 1000);
+            }, 2000);
+        };
+        
+        // Print preview function
+        function printPreview() {
+            window.print();
+        }
+        
+        // Function to generate a filename based on student info
+        function generatePrintFilename() {
+            // Clean the student name for filename (remove spaces, special chars)
+            const cleanName = studentInfo.studentName
+                .toLowerCase()
+                .replace(/[^a-z0-9]/gi, '_')  // Replace non-alphanumeric with underscore
+                .replace(/_+/g, '_')           // Replace multiple underscores with single
+                .replace(/^_+|_+$/g, '');      // Remove leading/trailing underscores
+            
+            const cleanClass = studentInfo.class
+                .toLowerCase()
+                .replace(/[^a-z0-9]/gi, '_')
+                .replace(/_+/g, '_')
+                .replace(/^_+|_+$/g, '');
+            
+            const cleanTerm = studentInfo.term
+                .toLowerCase()
+                .replace(/[^a-z0-9]/gi, '_')
+                .replace(/_+/g, '_')
+                .replace(/^_+|_+$/g, '');
+            
+            const cleanSession = studentInfo.session
+                .toLowerCase()
+                .replace(/[^a-z0-9]/gi, '_')
+                .replace(/_+/g, '_')
+                .replace(/^_+|_+$/g, '');
+            
+            // Get current date for timestamp
+            const now = new Date();
+            const dateStamp = now.toISOString().split('T')[0].replace(/-/g, '');
+            
+            // Create filename
+            const filename = `outstanding_balance_${cleanName}_${cleanClass}_${cleanTerm}_${cleanSession}_${dateStamp}.pdf`;
+            
+            return filename;
+        }
+        
+        // Function to show filename instructions
+        function showFilenameInstructions() {
+            const filename = generatePrintFilename();
+            
+            // Create a modal to show the filename
+            const modal = document.createElement('div');
+            modal.className = 'filename-modal';
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.7);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 9999;
+            `;
+            
+            modal.innerHTML = `
+                <div class="filename-modal-content">
+                    <h3 style="color: #1e40af; margin-bottom: 20px; font-size: 1.5rem;">Save PDF with Student Information</h3>
+                    <p style="margin-bottom: 15px; font-size: 1.1rem;">When saving as PDF, use this filename:</p>
+                    <div class="filename-display">
+                        ${filename}
+                    </div>
+                    <p style="margin-bottom: 20px; color: #666;">This includes: ${studentInfo.studentName} - ${studentInfo.class} - ${studentInfo.term} - ${studentInfo.session}</p>
+                    <div class="modal-buttons">
+                        <button class="modal-button print" onclick="window.print(); this.parentElement.parentElement.parentElement.remove();">
+                            Print Now
+                        </button>
+                        <button class="modal-button copy" onclick="copyToClipboard('${filename}'); this.parentElement.parentElement.parentElement.remove();">
+                            Copy Filename
+                        </button>
+                        <button class="modal-button cancel" onclick="this.parentElement.parentElement.parentElement.remove()">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+        
+        // Function to copy filename to clipboard
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Filename copied to clipboard!\n\nNow click "Print Now" to proceed with printing.');
+                
+                // Re-show the modal after copying
+                setTimeout(() => {
+                    showFilenameInstructions();
+                }, 1000);
+                
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                alert('Could not copy to clipboard. Please manually copy the filename.');
+            });
+        }
+        
+        // Override the window.print() function to set filename
+        const originalPrint = window.print;
+        window.print = function() {
+            // Try to set the PDF filename before printing
+            try {
+                // Method 1: Using document.title (works in some browsers)
+                const originalTitle = document.title;
+                const filename = generatePrintFilename();
+                document.title = filename;
+                
+                // Method 2: Try to set via iframe (for more browser support)
+                setTimeout(() => {
+                    try {
+                        // Create a hidden iframe to try setting the filename
+                        const iframe = document.createElement('iframe');
+                        iframe.style.display = 'none';
+                        iframe.onload = function() {
+                            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                            iframeDoc.title = filename;
+                            document.body.removeChild(iframe);
+                        };
+                        document.body.appendChild(iframe);
+                    } catch(e) {
+                        console.log("Could not set PDF filename via iframe method");
+                    }
+                }, 100);
+                
+                // Restore original title after printing
+                setTimeout(() => {
+                    document.title = originalTitle;
+                }, 1000);
+                
+            } catch(e) {
+                console.log("Could not set PDF filename:", e);
+            }
+            
+            // Call the original print function
+            originalPrint.call(window);
+        };
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'n') {
+                e.preventDefault();
+                addNewRow();
+            }
+            
+            if (e.ctrlKey && e.key === 'b') {
+                e.preventDefault();
+                addNewNote();
+            }
+            
+            if (e.ctrlKey && e.key === 'p') {
+                e.preventDefault();
+                printPreview();
+            }
+            
+            if (e.ctrlKey && e.key === 'e') {
+                e.preventDefault();
+                editStudentInfo();
+            }
+            
+            if (e.ctrlKey && e.key === 'k') {
+                e.preventDefault();
+                editBankDetails();
+            }
+            
+            if (e.ctrlKey && e.key === 'm') {
+                e.preventDefault();
+                editPaymentNotes();
+            }
+            
+            if (e.ctrlKey && e.key === 'i') {
+                e.preventDefault();
+                editImportantNotice();
+            }
+            
+            if (e.ctrlKey && e.key === 'r') {
+                e.preventDefault();
+                editResolutionSection();
+            }
+            
+            if (e.key === 'Escape') {
+                const inputs = document.querySelectorAll('.editable-cell input, .bank-editable input, .notes-editable input, #paymentInstructions-input, #thankYouNote-input, #billingEmail-input, #contactPhone-input, #schoolPhoneInput, #page2SchoolPhoneInput, #noticeTitle-input, #noticePara1-input, #noticePara2-input, #noticePara3-input, #resolutionTitle-input, #resolutionIntro-input, #bankLine-input, #accountNameLine-input, #accountNumberLine-input, #paymentReference-input');
+                inputs.forEach(input => {
+                    if (!input.classList.contains('hidden')) {
+                        input.blur();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
