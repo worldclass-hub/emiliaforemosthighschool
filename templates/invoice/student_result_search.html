@@ -20,6 +20,11 @@
     
     <!-- ==================== ULTIMATE ANTI-OVERSCROLL SYSTEM ==================== -->
     <style>
+        /* SMOOTH SCROLLING SYSTEM */
+        html {
+            scroll-behavior: smooth;
+        }
+        
         /* 1. FIXED POSITION BODY - Prevents any movement beyond boundaries */
         html, body {
             width: 100%;
@@ -37,7 +42,7 @@
             bottom: 0;
         }
         
-        /* 2. SINGLE SCROLL CONTAINER - Only this can scroll internally */
+        /* 2. SMOOTH SCROLL CONTAINER */
         .scroll-container {
             width: 100%;
             height: 100%;
@@ -46,6 +51,7 @@
             position: relative;
             background: #f9fafb;
             -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
         }
         
         /* 3. PREVENT TOUCH OVERSCROLL */
@@ -66,6 +72,7 @@
             .scroll-container {
                 -webkit-overflow-scrolling: touch;
                 overscroll-behavior: contain;
+                scroll-behavior: smooth;
             }
         }
         
@@ -766,6 +773,7 @@
             position: relative;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
         }
         
         /* FIXED: Smooth scrolling boundaries */
@@ -1384,16 +1392,6 @@
                                             <i class="fas fa-info-circle mr-1"></i>
                                             Enter your complete school ID number exactly as it appears on the report card
                                         </p>
-                                        <div class="id-hint">
-                                            <strong>ID Examples (Found on top of report card):</strong><br>
-                                            <span class="id-example">EMFHS-2025-A7K-B9</span> (NEW FORMAT - mixed alphanumeric)<br>
-                                            <span class="id-example">EMFHS-2025-001-A4</span> (OLD FORMAT - sequential numbers)<br>
-                                            <span class="id-example">2025-A7K-B9</span> (NEW without EMFHS prefix)<br>
-                                            <span class="id-example">2025-001-3N</span> (OLD without EMFHS prefix)<br>
-                                            <span class="id-example">EMFHS-2009-032-1N</span> (Backwards compatible)<br>
-                                            <br>
-                                            <small class="text-wrap-anywhere">System supports BOTH old and new ID formats</small>
-                                        </div>
                                     </div>
 
                                     <!-- Class Selection -->
@@ -1513,10 +1511,6 @@
                                             Example: Student with ID <span class="bg-yellow-100 px-1 font-bold text-wrap-anywhere">EMFHS-2009-032</span> can access results from 2009/2010 session.
                                             <br><br>
                                             <strong class="text-green-700 text-wrap-anywhere">✅ All years supported (2000 - Present)</strong>
-                                            <br><br>
-                                            <strong class="text-purple-700 text-wrap-anywhere">✅ Supports NEW ID Format: EMFHS-YYYY-XXX-XX (mixed alphanumeric)</strong>
-                                            <br>
-                                            <strong class="text-blue-700 text-wrap-anywhere">✅ Also supports OLD ID Format: EMFHS-YYYY-NNN-XX (sequential numbers)</strong>
                                         </p>
                                     </div>
                                 </div>
@@ -1686,9 +1680,10 @@
             
             // 1. FIXED POSITION BODY already set in CSS
             
-            // 2. SINGLE SCROLL CONTAINER management
+            // 2. SMOOTH SCROLL CONTAINER management
             scrollContainer.style.overflowY = 'auto';
             scrollContainer.style.overflowX = 'hidden';
+            scrollContainer.style.scrollBehavior = 'smooth';
             
             // 3. PREVENT TOUCH OVERSCROLL
             if ('ontouchstart' in window) {
