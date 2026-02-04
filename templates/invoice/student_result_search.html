@@ -46,20 +46,6 @@
             position: relative;
             background: #f9fafb;
             -webkit-overflow-scrolling: touch;
-            scroll-behavior: smooth;
-        }
-        
-        /* 2.1 SCROLL BOUNDARY ENFORCEMENT - New additions */
-        .scroll-container.scroll-locked {
-            overflow-y: hidden;
-        }
-        
-        .scroll-container.at-top {
-            box-shadow: inset 0 10px 10px -10px rgba(0,0,0,0.05);
-        }
-        
-        .scroll-container.at-bottom {
-            box-shadow: inset 0 -10px 10px -10px rgba(0,0,0,0.05);
         }
         
         /* 3. PREVENT TOUCH OVERSCROLL */
@@ -73,7 +59,6 @@
             width: 100%;
             min-height: 100%;
             background: #f9fafb;
-            position: relative;
         }
         
         /* 5. MOBILE-SPECIFIC FIXES */
@@ -102,24 +87,6 @@
             opacity: 1;
         }
         
-        /* 6.1 TOP BOUNDARY INDICATOR */
-        .scroll-boundary-top {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, #1a237e, #1b5e20);
-            z-index: 9999;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .scroll-boundary-top.visible {
-            opacity: 1;
-        }
-        
         /* 7. FULL WIDTH FOOTER - FIXED TO BE FULL WIDTH */
         .full-width-footer {
             width: 100vw;
@@ -143,42 +110,6 @@
             .content-container {
                 padding: 10px;
             }
-        }
-        
-        /* 9. VISUAL FEEDBACK FOR BOUNDARIES */
-        .boundary-feedback {
-            position: fixed;
-            pointer-events: none;
-            z-index: 9998;
-            transition: all 0.2s ease;
-        }
-        
-        .boundary-feedback-top {
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(to bottom, rgba(26, 35, 126, 0.1), transparent);
-            opacity: 0;
-        }
-        
-        .boundary-feedback-bottom {
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(to top, rgba(27, 94, 32, 0.1), transparent);
-            opacity: 0;
-        }
-        
-        .boundary-feedback-top.active {
-            opacity: 1;
-            height: 15px;
-        }
-        
-        .boundary-feedback-bottom.active {
-            opacity: 1;
-            height: 15px;
         }
         
         /* 9. PRESERVED FUNCTIONALITY - Original styles continue below */
@@ -1303,15 +1234,8 @@
 </head>
 <body class="no-overscroll">
     <!-- ==================== ULTIMATE SCROLL RESTRICTION SYSTEM ==================== -->
-    <!-- Top Scroll Boundary Indicator -->
-    <div id="scrollBoundaryTop" class="scroll-boundary-top"></div>
-    
-    <!-- Bottom Scroll Boundary Indicator -->
+    <!-- Scroll Boundary Indicator -->
     <div id="scrollBoundary" class="scroll-boundary"></div>
-    
-    <!-- Visual feedback for boundaries -->
-    <div id="boundaryFeedbackTop" class="boundary-feedback boundary-feedback-top"></div>
-    <div id="boundaryFeedbackBottom" class="boundary-feedback boundary-feedback-bottom"></div>
     
     <!-- 2. SINGLE SCROLL CONTAINER -->
     <div class="scroll-container" id="scrollContainer">
@@ -1751,17 +1675,6 @@
         
         function setupScrollManagement() {
             const scrollContainer = document.getElementById('scrollContainer');
-            const boundaryTop = document.getElementById('scrollBoundaryTop');
-            const boundaryBottom = document.getElementById('scrollBoundary');
-            const feedbackTop = document.getElementById('boundaryFeedbackTop');
-            const feedbackBottom = document.getElementById('boundaryFeedbackBottom');
-            
-            let isScrolling = false;
-            let scrollTimeout;
-            let isLocked = false;
-            let lastScrollTop = 0;
-            let velocity = 0;
-            let lastTimestamp = 0;
             
             // 1. FIXED POSITION BODY already set in CSS
             
@@ -1780,164 +1693,40 @@
                         e.preventDefault();
                     }
                 }, { passive: false });
+                
+                // Prevent rubber band effect
+                document.body.addEventListener('touchstart', function() {
+                    if (scrollContainer.scrollTop === 0) {
+                        scrollContainer.scrollTop = 1;
+                    }
+                    if (scrollContainer.scrollHeight - scrollContainer.scrollTop === scrollContainer.clientHeight) {
+                        scrollContainer.scrollTop = scrollContainer.scrollTop - 1;
+                    }
+                });
             }
             
-            // 6. SCROLL EDGE DETECTION AND ENFORCEMENT
-            scrollContainer.addEventListener('scroll', function(e) {
-                if (isLocked) return;
+            // 6. SCROLL EDGE DETECTION
+            scrollContainer.addEventListener('scroll', function() {
+                // Show boundary indicator when near bottom
+                const distanceFromBottom = this.scrollHeight - (this.scrollTop + this.clientHeight);
+                const boundary = document.getElementById('scrollBoundary');
                 
-                const currentTime = Date.now();
-                const deltaTime = currentTime - lastTimestamp;
-                lastTimestamp = currentTime;
-                
-                const currentScrollTop = this.scrollTop;
-                velocity = (currentScrollTop - lastScrollTop) / (deltaTime || 1);
-                lastScrollTop = currentScrollTop;
-                
-                // Calculate boundaries
-                const isAtTop = currentScrollTop <= 0;
-                const isAtBottom = currentScrollTop + this.clientHeight >= this.scrollHeight;
-                
-                // Show/hide boundary indicators
-                if (isAtTop) {
-                    boundaryTop.classList.add('visible');
-                    feedbackTop.classList.add('active');
-                    scrollContainer.classList.add('at-top');
+                if (distanceFromBottom <= 50 && distanceFromBottom > 0) {
+                    boundary.classList.add('visible');
                 } else {
-                    boundaryTop.classList.remove('visible');
-                    feedbackTop.classList.remove('active');
-                    scrollContainer.classList.remove('at-top');
+                    boundary.classList.remove('visible');
                 }
                 
-                if (isAtBottom) {
-                    boundaryBottom.classList.add('visible');
-                    feedbackBottom.classList.add('active');
-                    scrollContainer.classList.add('at-bottom');
-                } else {
-                    boundaryBottom.classList.remove('visible');
-                    feedbackBottom.classList.remove('active');
-                    scrollContainer.classList.remove('at-bottom');
+                // Prevent overscroll at top
+                if (this.scrollTop <= 0) {
+                    this.scrollTop = 1;
                 }
                 
-                // ENFORCE BOUNDARIES - PREVENT OVERSCROLLING
-                if (isAtTop && velocity < 0) {
-                    // Trying to scroll above top
-                    this.scrollTop = 0;
-                    isLocked = true;
-                    scrollContainer.classList.add('scroll-locked');
-                    
-                    // Visual feedback for top boundary
-                    feedbackTop.style.height = '20px';
-                    feedbackTop.style.opacity = '0.5';
-                    
-                    setTimeout(() => {
-                        isLocked = false;
-                        scrollContainer.classList.remove('scroll-locked');
-                        feedbackTop.style.height = '';
-                        feedbackTop.style.opacity = '';
-                    }, 100);
+                // Prevent overscroll at bottom
+                if (this.scrollTop + this.clientHeight >= this.scrollHeight) {
+                    this.scrollTop = this.scrollHeight - this.clientHeight - 1;
                 }
-                
-                if (isAtBottom && velocity > 0) {
-                    // Trying to scroll below bottom
-                    this.scrollTop = this.scrollHeight - this.clientHeight;
-                    isLocked = true;
-                    scrollContainer.classList.add('scroll-locked');
-                    
-                    // Visual feedback for bottom boundary
-                    feedbackBottom.style.height = '20px';
-                    feedbackBottom.style.opacity = '0.5';
-                    
-                    setTimeout(() => {
-                        isLocked = false;
-                        scrollContainer.classList.remove('scroll-locked');
-                        feedbackBottom.style.height = '';
-                        feedbackBottom.style.opacity = '';
-                    }, 100);
-                }
-                
-                // Clear any existing timeout
-                clearTimeout(scrollTimeout);
-                
-                // Set scrolling flag
-                isScrolling = true;
-                
-                // Set timeout to clear scrolling flag
-                scrollTimeout = setTimeout(() => {
-                    isScrolling = false;
-                }, 100);
             });
-            
-            // Add wheel event listener for mouse wheel scrolling
-            scrollContainer.addEventListener('wheel', function(e) {
-                if (isLocked) {
-                    e.preventDefault();
-                    return false;
-                }
-                
-                const isAtTop = this.scrollTop <= 0;
-                const isAtBottom = this.scrollTop + this.clientHeight >= this.scrollHeight;
-                
-                // Prevent wheel scrolling past boundaries
-                if ((isAtTop && e.deltaY < 0) || (isAtBottom && e.deltaY > 0)) {
-                    e.preventDefault();
-                    
-                    // Add bounce effect
-                    if (isAtTop && e.deltaY < 0) {
-                        feedbackTop.classList.add('active');
-                        setTimeout(() => feedbackTop.classList.remove('active'), 300);
-                    }
-                    if (isAtBottom && e.deltaY > 0) {
-                        feedbackBottom.classList.add('active');
-                        setTimeout(() => feedbackBottom.classList.remove('active'), 300);
-                    }
-                    
-                    return false;
-                }
-            }, { passive: false });
-            
-            // Add touch events for mobile
-            let touchStartY = 0;
-            let touchStartScrollTop = 0;
-            
-            scrollContainer.addEventListener('touchstart', function(e) {
-                touchStartY = e.touches[0].clientY;
-                touchStartScrollTop = this.scrollTop;
-            }, { passive: true });
-            
-            scrollContainer.addEventListener('touchmove', function(e) {
-                if (isLocked) {
-                    e.preventDefault();
-                    return;
-                }
-                
-                const touchY = e.touches[0].clientY;
-                const deltaY = touchStartY - touchY;
-                const isAtTop = this.scrollTop <= 0;
-                const isAtBottom = this.scrollTop + this.clientHeight >= this.scrollHeight;
-                
-                // Prevent touch scrolling past boundaries
-                if ((isAtTop && deltaY < 0) || (isAtBottom && deltaY > 0)) {
-                    e.preventDefault();
-                    
-                    // Add visual feedback
-                    if (isAtTop && deltaY < 0) {
-                        feedbackTop.classList.add('active');
-                        setTimeout(() => feedbackTop.classList.remove('active'), 300);
-                    }
-                    if (isAtBottom && deltaY > 0) {
-                        feedbackBottom.classList.add('active');
-                        setTimeout(() => feedbackBottom.classList.remove('active'), 300);
-                    }
-                    
-                    return false;
-                }
-            }, { passive: false });
-            
-            scrollContainer.addEventListener('touchend', function() {
-                touchStartY = 0;
-                touchStartScrollTop = 0;
-            }, { passive: true });
             
             // 7. PRESERVED FUNCTIONALITY - All original functionality preserved
         }
