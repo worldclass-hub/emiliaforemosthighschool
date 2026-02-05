@@ -125,24 +125,142 @@
             opacity: 1;
         }
         
+        /* ==================== FIXED TABLE STYLING ==================== */
+        
+        /* Proper table styling with clear column separation */
+        .fixed-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed; /* This ensures columns have fixed widths */
+        }
+        
+        .fixed-table th,
+        .fixed-table td {
+            padding: 12px 8px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+            vertical-align: middle;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .fixed-table th {
+            background-color: #f9fafb;
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .fixed-table td {
+            background-color: white;
+            font-size: 0.875rem;
+        }
+        
+        .fixed-table tr:hover td {
+            background-color: #f9fafb;
+        }
+        
+        /* Fixed column widths */
+        .col-number {
+            width: 60px;
+            min-width: 60px;
+            max-width: 60px;
+            text-align: center;
+        }
+        
+        .col-id {
+            width: 200px;
+            min-width: 200px;
+            max-width: 200px;
+        }
+        
+        .col-name {
+            width: 200px;
+            min-width: 200px;
+            max-width: 200px;
+        }
+        
+        .col-class {
+            width: 80px;
+            min-width: 80px;
+            max-width: 80px;
+            text-align: center;
+        }
+        
+        .col-actions {
+            width: 120px;
+            min-width: 120px;
+            max-width: 120px;
+            text-align: center;
+        }
+        
+        /* Table container with proper scrolling */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            background: white;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .table-container::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        .table-container::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        
+        .table-container::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        
+        .table-container::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        /* Text truncation for table cells */
+        .truncate-cell {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: block;
+        }
+        
+        .truncate-cell:hover {
+            overflow: visible;
+            white-space: normal;
+            word-break: break-word;
+            position: absolute;
+            background: white;
+            padding: 8px;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 20;
+            max-width: 300px;
+        }
+        
         /* ==================== PERFORMANCE OPTIMIZATIONS ==================== */
         
-        /* Hardware acceleration for smooth animations */
         .performance-optimized {
             transform: translateZ(0);
             backface-visibility: hidden;
             perspective: 1000;
-            will-change: transform, opacity;
         }
         
-        /* Debounced scroll handler */
         .scroll-debounced {
             scroll-behavior: smooth;
-        }
-        
-        /* Prevent layout thrashing */
-        .layout-stable {
-            contain: layout style paint;
         }
         
         /* ==================== ORIGINAL STYLES ==================== */
@@ -325,42 +443,6 @@
         @keyframes wave {
             0%, 100% { transform: scaleY(0.5); }
             50% { transform: scaleY(1.5); }
-        }
-        
-        /* Performance optimized tables */
-        .optimized-table {
-            transform: translateZ(0);
-            contain: content;
-        }
-        
-        .optimized-table tbody {
-            display: block;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-        
-        .optimized-table thead,
-        .optimized-table tbody tr {
-            display: table;
-            width: 100%;
-            table-layout: fixed;
-        }
-        
-        /* Prevent long text breaking layout */
-        .text-break-words {
-            overflow-wrap: break-word;
-            word-break: break-word;
-        }
-        
-        /* Optimize image rendering */
-        img {
-            content-visibility: auto;
-        }
-        
-        /* Lazy loading for off-screen elements */
-        .lazy-load {
-            content-visibility: auto;
-            contain-intrinsic-size: 1px 100px;
         }
     </style>
     
@@ -679,7 +761,7 @@
                                         <i class="fas fa-user text-gray-500 mr-2"></i>Full Name
                                     </label>
                                     <input type="text" id="fullName" 
-                                           class="w-full p-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-300 text-break-words"
+                                           class="w-full p-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-300"
                                            placeholder="Enter student's full name" required>
                                 </div>
                                 
@@ -689,7 +771,7 @@
                                     </label>
                                     <select id="enrollmentYear" 
                                             class="w-full p-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-300">
-                                        <!-- Years will be dynamically populated from 2020 to 3000 -->
+                                        <!-- Years will be dynamically populated from 2020 to 2030 -->
                                     </select>
                                 </div>
                                 
@@ -768,7 +850,7 @@
                     </div>
                     
                     <!-- Bulk Operations -->
-                    <div class="bg-white rounded-2xl shadow-card p-6 id-card performance-optimized lazy-load">
+                    <div class="bg-white rounded-2xl shadow-card p-6 id-card performance-optimized">
                         <h3 class="text-xl font-bold text-dark mb-4 flex items-center">
                             <i class="fas fa-bolt text-accent mr-3"></i>
                             Bulk Operations
@@ -779,7 +861,7 @@
                                     <i class="fas fa-users text-gray-500 mr-2"></i>Generate Multiple IDs
                                 </label>
                                 <textarea id="bulkNames" 
-                                          class="w-full p-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-300 h-32 resize-none text-break-words"
+                                          class="w-full p-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-300 h-32 resize-none"
                                           placeholder="Enter student names (one per line)&#10;Example:&#10;Adekunle Joy&#10;Bello Samuel&#10;Chukwu Emeka"></textarea>
                                 <div class="text-sm text-gray-500 mt-1">Names will be assigned to the selected class and year</div>
                             </div>
@@ -818,13 +900,13 @@
                             <div class="flex-1">
                                 <div class="mb-4">
                                     <div class="text-gray-500 text-sm">STUDENT NAME</div>
-                                    <div class="text-xl font-bold text-dark text-break-words" id="previewName">[Student Name]</div>
+                                    <div class="text-xl font-bold text-dark" id="previewName">[Student Name]</div>
                                 </div>
                                 
                                 <div class="grid grid-cols-2 gap-4 mb-6">
                                     <div>
                                         <div class="text-gray-500 text-sm">STUDENT ID</div>
-                                        <div class="text-lg font-mono font-bold text-primary text-break-words" id="previewId">EMFHS-2025-A7K-B9</div>
+                                        <div class="text-lg font-mono font-bold text-primary" id="previewId">EMFHS-2025-A7K-B9</div>
                                     </div>
                                     <div>
                                         <div class="text-gray-500 text-sm">CLASS</div>
@@ -856,7 +938,7 @@
                         </div>
                     </div>
                     
-                    <!-- Search & Generated IDs -->
+                    <!-- Search & Generated IDs - FIXED TABLE -->
                     <div class="bg-white rounded-2xl shadow-card p-6 id-card performance-optimized">
                         <div class="flex flex-col md:flex-row justify-between items-center mb-6">
                             <h2 class="text-2xl font-bold text-dark flex items-center mb-4 md:mb-0">
@@ -866,7 +948,7 @@
                             
                             <div class="relative w-full md:w-64">
                                 <input type="text" id="searchInput" 
-                                       class="w-full p-3 pl-10 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-300 text-break-words"
+                                       class="w-full p-3 pl-10 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-300"
                                        placeholder="Search students...">
                                 <i class="fas fa-search text-gray-400 absolute left-3 top-3.5"></i>
                             </div>
@@ -888,23 +970,22 @@
                             </div>
                         </div>
                         
-                        <div class="overflow-hidden rounded-xl border-2 border-gray-200 max-h-96">
-                            <div class="optimized-table">
-                                <table class="min-w-full divide-y divide-gray-200">
-                                    <thead class="bg-gray-50">
-                                        <tr>
-                                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">No.</th>
-                                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Student ID</th>
-                                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Name</th>
-                                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Class</th>
-                                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="idList" class="bg-white divide-y divide-gray-200">
-                                        <!-- IDs will be populated here -->
-                                    </tbody>
-                                </table>
-                            </div>
+                        <!-- FIXED TABLE CONTAINER -->
+                        <div class="table-container">
+                            <table class="fixed-table">
+                                <thead>
+                                    <tr>
+                                        <th class="col-number">No.</th>
+                                        <th class="col-id">Student ID</th>
+                                        <th class="col-name">Name</th>
+                                        <th class="col-class">Class</th>
+                                        <th class="col-actions">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="idList">
+                                    <!-- IDs will be populated here -->
+                                </tbody>
+                            </table>
                         </div>
                         
                         <div class="mt-4 text-center text-gray-500" id="emptyMessage">
@@ -944,14 +1025,14 @@
     
     <script>
         // ====================
-        // ULTIMATE SYSTEM - PERFORMANCE OPTIMIZED
+        // ULTIMATE SYSTEM - WITH FIXED TABLE
         // ====================
         
         // Configuration
-        const ITEMS_PER_PAGE = 50; // Increased for better performance
+        const ITEMS_PER_PAGE = 20;
         const STORAGE_LIMIT = 5 * 1024 * 1024; // 5MB
         const START_YEAR = 2020;
-        const END_YEAR = 2030; // Reduced from 3000 for performance
+        const END_YEAR = 2030;
         
         // State management
         let students = [];
@@ -961,7 +1042,7 @@
         let sessionTimerInterval;
         let sessionTime = 1800; // 30 minutes in seconds
         
-        // Character sets - reduced for better performance
+        // Character sets
         const ALPHANUMERIC_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
         const ALPHABET_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
         
@@ -996,45 +1077,6 @@
                     }
                 }, 16); // Match to 60fps
             });
-        }
-        
-        // ==================== PERFORMANCE OPTIMIZED FUNCTIONS ====================
-        
-        // Debounce function for performance
-        function debounce(func, wait) {
-            let timeout;
-            return function executedFunction(...args) {
-                const later = () => {
-                    clearTimeout(timeout);
-                    func(...args);
-                };
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-            };
-        }
-        
-        // Throttle function for performance
-        function throttle(func, limit) {
-            let inThrottle;
-            return function() {
-                const args = arguments;
-                const context = this;
-                if (!inThrottle) {
-                    func.apply(context, args);
-                    inThrottle = true;
-                    setTimeout(() => inThrottle = false, limit);
-                }
-            };
-        }
-        
-        // Optimized DOM updates
-        function batchDOMUpdates(callback) {
-            if (document.createDocumentFragment) {
-                const fragment = document.createDocumentFragment();
-                callback(fragment);
-                return fragment;
-            }
-            return callback();
         }
         
         // ==================== ENHANCED LOGOUT SYSTEM ====================
@@ -1117,17 +1159,8 @@
             
             // After 2 seconds, submit Django logout form
             setTimeout(() => {
-                // Create and submit Django logout form
                 const logoutForm = document.getElementById('djangoLogoutForm');
                 if (logoutForm) {
-                    // Add CSRF token if not present
-                    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-                    const csrfInput = document.createElement('input');
-                    csrfInput.type = 'hidden';
-                    csrfInput.name = 'csrfmiddlewaretoken';
-                    csrfInput.value = csrfToken;
-                    logoutForm.appendChild(csrfInput);
-                    
                     logoutForm.submit();
                 } else {
                     // Fallback: Redirect to logout URL
@@ -1168,7 +1201,6 @@
         function createConfetti(count = 25) {
             const colors = ['#ef4444', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6'];
             const container = document.body;
-            const confettiElements = [];
             
             for (let i = 0; i < count; i++) {
                 const confetti = document.createElement('div');
@@ -1178,27 +1210,18 @@
                 confetti.style.animation = `confetti-fall ${Math.random() * 3 + 2}s linear forwards`;
                 confetti.style.animationDelay = Math.random() * 0.5 + 's';
                 container.appendChild(confetti);
-                confettiElements.push(confetti);
                 
                 // Remove after animation
                 setTimeout(() => {
                     confetti.remove();
                 }, 5000);
             }
-            
-            // Clean up function
-            return () => {
-                confettiElements.forEach(el => {
-                    if (el.parentNode) el.parentNode.removeChild(el);
-                });
-            };
         }
         
         // Create enhanced confetti for success (optimized)
         function createEnhancedConfetti(count = 30) {
             const shapes = ['●', '■', '▲', '◆', '★'];
             const container = document.body;
-            const confettiElements = [];
             
             for (let i = 0; i < count; i++) {
                 const confetti = document.createElement('div');
@@ -1215,19 +1238,12 @@
                 confetti.style.animation = `confetti-fall ${Math.random() * 4 + 2}s linear forwards`;
                 confetti.style.animationDelay = Math.random() * 1 + 's';
                 container.appendChild(confetti);
-                confettiElements.push(confetti);
                 
                 // Remove after animation
                 setTimeout(() => {
                     confetti.remove();
                 }, 6000);
             }
-            
-            return () => {
-                confettiElements.forEach(el => {
-                    if (el.parentNode) el.parentNode.removeChild(el);
-                });
-            };
         }
         
         // Clear all local data
@@ -1359,6 +1375,33 @@
             
             console.timeEnd('App Initialization');
         });
+        
+        // Debounce function for performance
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+        
+        // Throttle function for performance
+        function throttle(func, limit) {
+            let inThrottle;
+            return function() {
+                const args = arguments;
+                const context = this;
+                if (!inThrottle) {
+                    func.apply(context, args);
+                    inThrottle = true;
+                    setTimeout(() => inThrottle = false, limit);
+                }
+            };
+        }
         
         // Populate year options (optimized)
         function populateYearOptions() {
@@ -1636,7 +1679,6 @@
             
             setTimeout(() => {
                 const includeTimestamp = document.getElementById('includeTimestamp').checked;
-                const includeChecksum = document.getElementById('includeChecksum').checked;
                 
                 let content = `
                 <!DOCTYPE html>
@@ -1964,7 +2006,7 @@
         
         // ==================== UI FUNCTIONS ====================
         
-        // Render student list with pagination (optimized)
+        // FIXED: Render student list with proper table layout
         function renderStudentList() {
             const now = Date.now();
             if (now - lastRenderTime < RENDER_DEBOUNCE_TIME) {
@@ -2027,15 +2069,17 @@
                 const row = document.createElement('tr');
                 row.className = 'hover:bg-gray-50 transition';
                 row.innerHTML = `
-                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">${actualIndex + 1}</td>
-                    <td class="px-4 py-3 whitespace-nowrap text-sm font-mono font-bold text-primary">
-                        <span class="cursor-pointer hover:text-secondary" onclick="copyToClipboard('${student.id}')" title="Click to copy">
+                    <td class="col-number text-center font-medium text-gray-900">${actualIndex + 1}</td>
+                    <td class="col-id">
+                        <span class="cursor-pointer hover:text-primary font-mono font-bold text-primary truncate-cell" onclick="copyToClipboard('${student.id}')" title="${student.id}">
                             ${student.id}
                         </span>
                     </td>
-                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">${student.name}</td>
-                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${student.class}</td>
-                    <td class="px-4 py-3 whitespace-nowrap text-sm">
+                    <td class="col-name">
+                        <span class="truncate-cell" title="${student.name}">${student.name}</span>
+                    </td>
+                    <td class="col-class text-center font-medium text-gray-700">${student.class}</td>
+                    <td class="col-actions text-center">
                         <button onclick="viewStudent(${students.indexOf(student)})" class="text-accent hover:text-secondary mr-3" title="View">
                             <i class="fas fa-eye"></i>
                         </button>
@@ -2052,6 +2096,21 @@
             
             tbody.innerHTML = '';
             tbody.appendChild(fragment);
+            
+            // Add hover effects for truncation
+            setTimeout(() => {
+                const truncateCells = document.querySelectorAll('.truncate-cell');
+                truncateCells.forEach(cell => {
+                    cell.addEventListener('mouseenter', function(e) {
+                        if (this.scrollWidth > this.clientWidth) {
+                            this.classList.add('hover:overflow-visible');
+                        }
+                    });
+                    cell.addEventListener('mouseleave', function(e) {
+                        this.classList.remove('hover:overflow-visible');
+                    });
+                });
+            }, 100);
         }
         
         function changePage(delta) {
