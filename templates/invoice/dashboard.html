@@ -11,76 +11,51 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/EMILIA%20LOGO.png">
     
-    <!-- ==================== ULTIMATE ANTI-OVERSCROLL SYSTEM ==================== -->
+    <!-- ==================== PROPER SCROLL MANAGEMENT SYSTEM ==================== -->
     <style>
-        /* 1. FIXED POSITION BODY - Prevents any movement beyond boundaries */
+        /* SIMPLIFIED SCROLL MANAGEMENT - No fixed positioning */
         html, body {
             width: 100%;
             height: 100%;
-            position: fixed;
-            overflow: hidden;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
             margin: 0;
             padding: 0;
-            touch-action: pan-y;
-            overscroll-behavior: none;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-        }
-        
-        /* 2. SINGLE SCROLL CONTAINER - Only this can scroll internally */
-        .scroll-container {
-            width: 100%;
-            height: 100%;
-            overflow-y: auto;
             overflow-x: hidden;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+        }
+        
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        /* Main container */
+        .page-container {
+            flex: 1 0 auto;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 100%;
             position: relative;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
-            -webkit-overflow-scrolling: touch;
         }
         
-        /* 3. PREVENT TOUCH OVERSCROLL */
-        .no-overscroll {
-            touch-action: pan-y;
-            overscroll-behavior: contain;
-        }
-        
-        /* 4. NO WHITE BORDERS EVER - Content completely contained */
-        .main-wrapper {
+        /* Content wrapper */
+        .content-wrapper {
+            flex: 1 0 auto;
             width: 100%;
-            min-height: 100%;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            max-width: 100%;
+            position: relative;
         }
         
-        /* 5. MOBILE-SPECIFIC FIXES */
-        @media (max-width: 768px) {
-            .scroll-container {
-                -webkit-overflow-scrolling: touch;
-                overscroll-behavior: contain;
-            }
-        }
-        
-        /* 6. SCROLL EDGE DETECTION HELPER */
-        .scroll-boundary {
-            position: fixed;
-            bottom: 0;
-            left: 0;
+        /* Footer - fixed at bottom */
+        .page-footer {
+            flex-shrink: 0;
             width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, #1e3c72, #2a5298);
-            z-index: 9999;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%);
+            margin-top: auto;
         }
         
-        .scroll-boundary.visible {
-            opacity: 1;
-        }
-        
-        /* 7. FULL WIDTH FOOTER */
+        /* Full width footer - FIXED */
         .full-width-footer {
             width: 100vw;
             position: relative;
@@ -91,7 +66,20 @@
             background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%);
         }
         
-        /* 8. CONTENT CONTAINER - Main content area */
+        /* Header - NOT STICKY (removed sticky positioning) */
+        .page-header {
+            width: 100%;
+            background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%);
+            z-index: 40;
+            position: relative; /* Changed from sticky to relative */
+        }
+        
+        /* Prevent overscroll */
+        .no-overscroll {
+            overscroll-behavior: none;
+        }
+        
+        /* Content container */
         .content-container {
             max-width: 7xl;
             margin: 0 auto;
@@ -103,8 +91,6 @@
                 padding: 10px;
             }
         }
-        
-        /* 9. PRESERVED FUNCTIONALITY - Original styles continue below */
         
         /* ==================== ORIGINAL STYLES FROM CODE D ==================== */
         * {
@@ -260,6 +246,24 @@
             margin-bottom: 1.5rem;
         }
         
+        /* Scroll Boundary Indicator */
+        .scroll-boundary {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #1e3c72, #2a5298);
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .scroll-boundary.visible {
+            opacity: 1;
+        }
+        
         /* Responsive contact info */
         @media (max-width: 640px) {
             .contact-link {
@@ -282,426 +286,400 @@
     </style>
 </head>
 <body class="no-overscroll">
-    <!-- ==================== ULTIMATE SCROLL RESTRICTION SYSTEM ==================== -->
     <!-- Scroll Boundary Indicator -->
     <div id="scrollBoundary" class="scroll-boundary"></div>
     
-    <!-- 2. SINGLE SCROLL CONTAINER -->
-    <div class="scroll-container" id="scrollContainer">
-        <div class="main-wrapper">
-            <!-- Modal for System Guide -->
-            <div id="systemGuideModal" class="modal-overlay">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div>
-                            <h3 class="text-xl font-bold">EMIFORHS System Guide</h3>
-                            <p class="text-blue-200 text-sm mt-1">Complete guide to our management tools</p>
+    <!-- Modal for System Guide -->
+    <div id="systemGuideModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h3 class="text-xl font-bold">EMIFORHS System Guide</h3>
+                    <p class="text-blue-200 text-sm mt-1">Complete guide to our management tools</p>
+                </div>
+                <button id="closeModal" class="text-white hover:text-gray-200 text-2xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-6">
+                    <h4 class="text-lg font-bold mb-3 text-gray-900">Welcome to EMIFORHS Management System</h4>
+                    <p class="text-gray-600 mb-4">
+                        This comprehensive guide will help you understand and navigate our four main management tools. Each tool is designed to streamline specific school operations and improve efficiency.
+                    </p>
+                </div>
+                
+                <div class="tool-card">
+                    <h5 class="font-bold text-lg mb-2 text-blue-700">1. Exam Report Card Maker</h5>
+                    <p class="text-gray-600 mb-2">
+                        This tool allows teachers and administrators to generate professional exam report cards with detailed performance analysis. Key features include:
+                    </p>
+                    <ul class="text-gray-600 list-disc pl-5 mb-3">
+                        <li>Automated grade calculation based on custom grading scales</li>
+                        <li>Multiple customizable templates for different exam types</li>
+                        <li>Performance analytics and trend analysis</li>
+                        <li>Export to PDF for printing and distribution</li>
+                    </ul>
+                </div>
+                
+                <div class="tool-card" style="border-left-color: #16a34a;">
+                    <h5 class="font-bold text-lg mb-2 text-green-700">2. Student Result Checker</h5>
+                    <p class="text-gray-600 mb-2">
+                        A secure platform for students and parents to access examination results in real-time. Key features include:
+                    </p>
+                    <ul class="text-gray-600 list-disc pl-5 mb-3">
+                        <li>Secure student authentication system</li>
+                        <li>Real-time result updates as soon as they're published</li>
+                        <li>Performance trends across multiple exam periods</li>
+                        <li>Mobile-friendly interface for on-the-go access</li>
+                    </ul>
+                </div>
+                
+                <div class="tool-card" style="border-left-color: #9333ea;">
+                    <h5 class="font-bold text-lg mb-2 text-purple-700">3. Tuition & Bill Summary</h5>
+                    <p class="text-gray-600 mb-2">
+                        Comprehensive financial management tool for generating tuition statements and financial reports. Key features include:
+                    </p>
+                    <ul class="text-gray-600 list-disc pl-5 mb-3">
+                        <li>Automated billing based on student enrollment</li>
+                        <li>Complete payment history tracking</li>
+                        <li>Term-end financial statement generation</li>
+                        <li>Export to PDF and Excel formats</li>
+                    </ul>
+                </div>
+                
+                <div class="tool-card" style="border-left-color: #dc2626;">
+                    <h5 class="font-bold text-lg mb-2 text-red-700">4. Student ID Maker</h5>
+                    <p class="text-gray-600 mb-2">
+                        Professional ID card creation tool for student identification and campus security. Key features include:
+                    </p>
+                    <ul class="text-gray-600 list-disc pl-5 mb-3">
+                        <li>Customizable ID card templates</li>
+                        <li>Barcode and QR code generation for quick scanning</li>
+                        <li>Batch printing for entire classes or grades</li>
+                        <li>Security features to prevent forgery</li>
+                    </ul>
+                </div>
+                
+                <div class="contact-info">
+                    <h5 class="font-bold text-lg mb-3 text-gray-900">Need Further Assistance?</h5>
+                    <p class="text-gray-600 mb-3">
+                        If you require additional help or have specific questions about any of our management tools, please don't hesitate to contact our technical support team.
+                    </p>
+                    <div class="space-y-2">
+                        <div class="flex items-center">
+                            <i class="fas fa-envelope text-blue-600 mr-3"></i>
+                            <a href="mailto:emiliaforemost@gmail.com" class="contact-link">emiliaforemost@gmail.com</a>
                         </div>
-                        <button id="closeModal" class="text-white hover:text-gray-200 text-2xl">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-6">
-                            <h4 class="text-lg font-bold mb-3 text-gray-900">Welcome to EMIFORHS Management System</h4>
-                            <p class="text-gray-600 mb-4">
-                                This comprehensive guide will help you understand and navigate our four main management tools. Each tool is designed to streamline specific school operations and improve efficiency.
-                            </p>
+                        <div class="flex items-center">
+                            <i class="fas fa-phone text-green-600 mr-3"></i>
+                            <a href="tel:09057147497" class="contact-link">09057147497</a>
                         </div>
-                        
-                        <div class="tool-card">
-                            <h5 class="font-bold text-lg mb-2 text-blue-700">1. Exam Report Card Maker</h5>
-                            <p class="text-gray-600 mb-2">
-                                This tool allows teachers and administrators to generate professional exam report cards with detailed performance analysis. Key features include:
-                            </p>
-                            <ul class="text-gray-600 list-disc pl-5 mb-3">
-                                <li>Automated grade calculation based on custom grading scales</li>
-                                <li>Multiple customizable templates for different exam types</li>
-                                <li>Performance analytics and trend analysis</li>
-                                <li>Export to PDF for printing and distribution</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="tool-card" style="border-left-color: #16a34a;">
-                            <h5 class="font-bold text-lg mb-2 text-green-700">2. Student Result Checker</h5>
-                            <p class="text-gray-600 mb-2">
-                                A secure platform for students and parents to access examination results in real-time. Key features include:
-                            </p>
-                            <ul class="text-gray-600 list-disc pl-5 mb-3">
-                                <li>Secure student authentication system</li>
-                                <li>Real-time result updates as soon as they're published</li>
-                                <li>Performance trends across multiple exam periods</li>
-                                <li>Mobile-friendly interface for on-the-go access</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="tool-card" style="border-left-color: #9333ea;">
-                            <h5 class="font-bold text-lg mb-2 text-purple-700">3. Tuition & Bill Summary</h5>
-                            <p class="text-gray-600 mb-2">
-                                Comprehensive financial management tool for generating tuition statements and financial reports. Key features include:
-                            </p>
-                            <ul class="text-gray-600 list-disc pl-5 mb-3">
-                                <li>Automated billing based on student enrollment</li>
-                                <li>Complete payment history tracking</li>
-                                <li>Term-end financial statement generation</li>
-                                <li>Export to PDF and Excel formats</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="tool-card" style="border-left-color: #dc2626;">
-                            <h5 class="font-bold text-lg mb-2 text-red-700">4. Student ID Maker</h5>
-                            <p class="text-gray-600 mb-2">
-                                Professional ID card creation tool for student identification and campus security. Key features include:
-                            </p>
-                            <ul class="text-gray-600 list-disc pl-5 mb-3">
-                                <li>Customizable ID card templates</li>
-                                <li>Barcode and QR code generation for quick scanning</li>
-                                <li>Batch printing for entire classes or grades</li>
-                                <li>Security features to prevent forgery</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="contact-info">
-                            <h5 class="font-bold text-lg mb-3 text-gray-900">Need Further Assistance?</h5>
-                            <p class="text-gray-600 mb-3">
-                                If you require additional help or have specific questions about any of our management tools, please don't hesitate to contact our technical support team.
-                            </p>
-                            <div class="space-y-2">
-                                <div class="flex items-center">
-                                    <i class="fas fa-envelope text-blue-600 mr-3"></i>
-                                    <a href="mailto:emiliaforemost@gmail.com" class="contact-link">emiliaforemost@gmail.com</a>
-                                </div>
-                                <div class="flex items-center">
-                                    <i class="fas fa-phone text-green-600 mr-3"></i>
-                                    <a href="tel:09057147497" class="contact-link">09057147497</a>
-                                </div>
-                                <div class="flex items-center">
-                                    <i class="fas fa-comment text-green-600 mr-3"></i>
-                                    <span class="text-gray-600">WhatsApp: <a href="https://wa.me/2349057147497" target="_blank" class="contact-link">09057147497</a></span>
-                                </div>
-                            </div>
-                            <p class="text-gray-500 text-sm mt-4">
-                                Our support team is available Monday to Friday, 8:00 AM to 5:00 PM. Response time is typically within 2 hours during business hours.
-                            </p>
+                        <div class="flex items-center">
+                            <i class="fas fa-comment text-green-600 mr-3"></i>
+                            <span class="text-gray-600">WhatsApp: <a href="https://wa.me/2349057147497" target="_blank" class="contact-link">09057147497</a></span>
                         </div>
                     </div>
+                    <p class="text-gray-500 text-sm mt-4">
+                        Our support team is available Monday to Friday, 8:00 AM to 5:00 PM. Response time is typically within 2 hours during business hours.
+                    </p>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <!-- Header -->
-            <header class="gradient-bg text-white shadow-lg">
-                <div class="container mx-auto px-4 py-6">
-                    <div class="flex flex-col md:flex-row justify-between items-center">
-                        <div class="flex items-center space-x-4 mb-4 md:mb-0">
-                            <div class="school-logo bg-white p-2 rounded-full">
-                                <img src="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/EMILIA%20LOGO.png" 
-                                     alt="EMILIA FOREMOST HIGH SCHOOL Logo" 
-                                     class="h-16 w-16 object-contain">
-                            </div>
-                            <div>
-                                <h1 class="text-2xl md:text-3xl font-bold">EMILIA FOREMOST HIGH SCHOOL</h1>
-                                <p class="text-blue-200 font-medium">Excellence in Education Since 2007</p>
-                                <div class="flex items-center mt-1">
-                                    <span class="bg-blue-800 text-xs px-3 py-1 rounded-full font-bold">EMIFORHS</span>
-                                </div>
-                            </div>
+    <!-- Main Page Container -->
+    <div class="page-container" id="pageContainer">
+        <!-- Header - NO LONGER STICKY (scrolls with page) -->
+        <header class="page-header gradient-bg text-white shadow-lg">
+            <div class="container mx-auto px-4 py-6">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="flex items-center space-x-4 mb-4 md:mb-0">
+                        <div class="school-logo bg-white p-2 rounded-full">
+                            <img src="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/EMILIA%20LOGO.png" 
+                                 alt="EMILIA FOREMOST HIGH SCHOOL Logo" 
+                                 class="h-16 w-16 object-contain">
                         </div>
-                        
-                        <div class="text-center md:text-right">
-                            <p class="text-lg font-semibold">School Management System</p>
-                            <p class="text-blue-200">Integrated Digital Solutions</p>
-                            <div class="mt-2 flex items-center justify-center md:justify-end space-x-2">
-                                <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-                                <span class="text-sm">System Online</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </header>
-
-            <!-- Main Content -->
-            <main class="container mx-auto px-4 py-10">
-                <!-- Hero Section -->
-                <div class="text-center mb-16">
-                    <h2 class="text-4xl md:text-5xl font-bold mb-4 text-gray-900">Welcome to EMIFORHS Portal</h2>
-                    <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-                        Access our comprehensive school management tools designed to streamline academic processes, 
-                        enhance communication, and improve educational outcomes.
-                    </p>
-                    <div class="flex flex-wrap justify-center gap-4">
-                        <div class="bg-blue-100 text-blue-800 px-4 py-2 rounded-full font-medium">
-                            <i class="fas fa-users mr-2"></i> 2,450+ Students
-                        </div>
-                        <div class="bg-green-100 text-green-800 px-4 py-2 rounded-full font-medium">
-                            <i class="fas fa-chalkboard-teacher mr-2"></i> 185+ Staff
-                        </div>
-                        <div class="bg-purple-100 text-purple-800 px-4 py-2 rounded-full font-medium">
-                            <i class="fas fa-graduation-cap mr-2"></i> 98% Success Rate
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Cards Grid -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-                    <!-- Card 1: Exam Report Card Maker -->
-                    <div class="card-hover bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
-                        <div class="p-6">
-                            <div class="flex items-center justify-between mb-6">
-                                <div class="bg-blue-100 p-4 rounded-xl">
-                                    <i class="fas fa-file-invoice text-blue-600 text-3xl"></i>
-                                </div>
-                                <span class="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full">NEW</span>
-                            </div>
-                            <h3 class="text-2xl font-bold mb-3 text-gray-900">Exam Report Card Maker</h3>
-                            <p class="text-gray-600 mb-6">
-                                Generate professional exam report cards with detailed performance analysis, grade calculations, and customizable templates.
-                            </p>
-                            <ul class="mb-8 space-y-2">
-                                <li class="flex items-center">
-                                    <i class="fas fa-check text-green-500 mr-2"></i>
-                                    <span>Automated grade calculation</span>
-                                </li>
-                                <li class="flex items-center">
-                                    <i class="fas fa-check text-green-500 mr-2"></i>
-                                    <span>Customizable templates</span>
-                                </li>
-                                <li class="flex items-center">
-                                    <i class="fas fa-check text-green-500 mr-2"></i>
-                                    <span>Performance analytics</span>
-                                </li>
-                            </ul>
-                            <a href="/student_report_card_maker/" class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl transition duration-300 flex items-center justify-center">
-                                <span>Access Tool</span>
-                                <i class="fas fa-arrow-right ml-2"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Card 2: Student Result Checker -->
-                    <div class="card-hover bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
-                        <div class="p-6">
-                            <div class="flex items-center justify-between mb-6">
-                                <div class="bg-green-100 p-4 rounded-xl">
-                                    <i class="fas fa-search text-green-600 text-3xl"></i>
-                                </div>
-                                <span class="bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full">POPULAR</span>
-                            </div>
-                            <h3 class="text-2xl font-bold mb-3 text-gray-900">Student Result Checker</h3>
-                            <p class="text-gray-600 mb-6">
-                                Real-time access to student examination results with secure authentication and detailed performance breakdown.
-                            </p>
-                            <ul class="mb-8 space-y-2">
-                                <li class="flex items-center">
-                                    <i class="fas fa-check text-green-500 mr-2"></i>
-                                    <span>Secure student login</span>
-                                </li>
-                                <li class="flex items-center">
-                                    <i class="fas fa-check text-green-500 mr-2"></i>
-                                    <span>Real-time result updates</span>
-                                </li>
-                                <li class="flex items-center">
-                                    <i class="fas fa-check text-green-500 mr-2"></i>
-                                    <span>Performance trends</span>
-                                </li>
-                            </ul>
-                            <a href="/student_result_search/"  class="block w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-xl transition duration-300 flex items-center justify-center">
-                                <span>Access Tool</span>
-                                <i class="fas fa-arrow-right ml-2"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Card 3: Tuition & Bill Summary -->
-                    <div class="card-hover bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
-                        <div class="p-6">
-                            <div class="flex items-center justify-between mb-6">
-                                <div class="bg-purple-100 p-4 rounded-xl">
-                                    <i class="fas fa-file-alt text-purple-600 text-3xl"></i>
-                                </div>
-                                <span class="bg-purple-600 text-white text-xs font-bold px-3 py-1 rounded-full">UPDATED</span>
-                            </div>
-                            <h3 class="text-2xl font-bold mb-3 text-gray-900">Tuition & Bill Summary</h3>
-                            <p class="text-gray-600 mb-6">
-                                Generate comprehensive tuition statements, fee summaries, and term-end financial reports for students and parents.
-                            </p>
-                            <ul class="mb-8 space-y-2">
-                                <li class="flex items-center">
-                                    <i class="fas fa-check text-green-500 mr-2"></i>
-                                    <span>Automated billing</span>
-                                </li>
-                                <li class="flex items-center">
-                                    <i class="fas fa-check text-green-500 mr-2"></i>
-                                    <span>Payment history tracking</span>
-                                </li>
-                                <li class="flex items-center">
-                                    <i class="fas fa-check text-green-500 mr-2"></i>
-                                    <span>Export to PDF</span>
-                                </li>
-                            </ul>
-                            <a href="/general_exam_page/" class="block w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-xl transition duration-300 flex items-center justify-center">
-                                <span>Access Tool</span>
-                                <i class="fas fa-arrow-right ml-2"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Card 4: Student ID Maker -->
-                    <div class="card-hover bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
-                        <div class="p-6">
-                            <div class="flex items-center justify-between mb-6">
-                                <div class="bg-red-100 p-4 rounded-xl">
-                                    <i class="fas fa-id-card text-red-600 text-3xl"></i>
-                                </div>
-                                <span class="bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full">ESSENTIAL</span>
-                            </div>
-                            <h3 class="text-2xl font-bold mb-3 text-gray-900">Student ID Maker</h3>
-                            <p class="text-gray-600 mb-6">
-                                Design and print professional student ID cards with photos, barcodes, and security features for campus identification.
-                            </p>
-                            <ul class="mb-8 space-y-2">
-                                <li class="flex items-center">
-                                    <i class="fas fa-check text-green-500 mr-2"></i>
-                                    <span>Custom ID templates</span>
-                                </li>
-                                <li class="flex items-center">
-                                    <i class="fas fa-check text-green-500 mr-2"></i>
-                                    <span>Barcode/QR code generation</span>
-                                </li>
-                                <li class="flex items-center">
-                                    <i class="fas fa-check text-green-500 mr-2"></i>
-                                    <span>Batch printing</span>
-                                </li>
-                            </ul>
-                            <a href="/student_id_maker/"  class="block w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-xl transition duration-300 flex items-center justify-center">
-                                <span>Access Tool</span>
-                                <i class="fas fa-arrow-right ml-2"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- System Stats - Fixed with responsive numbers -->
-                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 mb-16">
-                    <h3 class="text-2xl md:text-3xl font-bold mb-6 md:mb-8 text-center text-gray-900">EMIFORHS System Statistics</h3>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-                        <div class="text-center p-4 md:p-6 bg-blue-50 rounded-xl overflow-hidden">
-                            <div class="stat-number text-blue-700 mb-1 md:mb-2" id="studentCount">0</div>
-                            <p class="text-gray-700 font-medium text-sm md:text-base">Active Students</p>
-                        </div>
-                        <div class="text-center p-4 md:p-6 bg-green-50 rounded-xl overflow-hidden">
-                            <div class="stat-number text-green-700 mb-1 md:mb-2" id="reportCount">0</div>
-                            <p class="text-gray-700 font-medium text-sm md:text-base">Reports Generated</p>
-                        </div>
-                        <div class="text-center p-4 md:p-6 bg-purple-50 rounded-xl overflow-hidden">
-                            <div class="stat-number text-purple-700 mb-1 md:mb-2" id="idCount">0</div>
-                            <p class="text-gray-700 font-medium text-sm md:text-base">ID Cards Created</p>
-                        </div>
-                        <div class="text-center p-4 md:p-6 bg-red-50 rounded-xl overflow-hidden">
-                            <div class="stat-number text-red-700 mb-1 md:mb-2" id="billsCount">0</div>
-                            <p class="text-gray-700 font-medium text-sm md:text-base">Bills Processed</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Quick Links -->
-                <div class="text-center mb-16">
-                    <h3 class="text-3xl font-bold mb-6 text-gray-900">Need Assistance?</h3>
-                    <div class="flex flex-wrap justify-center gap-4 md:gap-6">
-                        <button id="openSystemGuide" class="flex items-center bg-gray-100 hover:bg-gray-200 px-4 md:px-6 py-2 md:py-3 rounded-xl font-medium transition duration-300 text-sm md:text-base">
-                            <i class="fas fa-question-circle text-blue-600 mr-2"></i>
-                            <span>System Guide</span>
-                        </button>
-                        <a href="https://wa.me/2349057147497" target="_blank" class="flex items-center bg-gray-100 hover:bg-gray-200 px-4 md:px-6 py-2 md:py-3 rounded-xl font-medium transition duration-300 text-sm md:text-base">
-                            <i class="fas fa-phone-alt text-green-600 mr-2"></i>
-                            <span>Contact Support</span>
-                        </a>
-                        <a href="#" class="flex items-center bg-gray-100 hover:bg-gray-200 px-4 md:px-6 py-2 md:py-3 rounded-xl font-medium transition duration-300 text-sm md:text-base">
-                            <i class="fas fa-download text-purple-600 mr-2"></i>
-                            <span>Download Resources</span>
-                        </a>
-                    </div>
-                </div>
-            </main>
-
-            <!-- FULL WIDTH FOOTER -->
-            <footer class="full-width-footer text-white pt-10 pb-6">
-                <div class="max-w-7xl mx-auto px-4">
-                    <div class="flex flex-col md:flex-row justify-between items-center">
-                        <div class="mb-6 md:mb-0 text-center md:text-left">
-                            <div class="flex flex-col md:flex-row items-center space-y-3 md:space-y-0 md:space-x-3">
-                                <img src="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/EMILIA%20LOGO.png" 
-                                     alt="EMILIA FOREMOST HIGH SCHOOL Logo" 
-                                     class="h-12 w-12 object-contain bg-white p-1 rounded-full">
-                                <div>
-                                    <h3 class="text-xl font-bold">EMILIA FOREMOST HIGH SCHOOL</h3>
-                                    <p class="text-blue-200">EMIFORHS Management System v3.0</p>
-                                </div>
-                            </div>
-                            <p class="mt-4 text-blue-100 max-w-md text-center md:text-left">
-                                Providing world-class educational management solutions since 2007. 
-                                Our integrated system ensures seamless academic administration.
-                            </p>
-                        </div>
-                        
-                        <div class="text-center md:text-right">
-                            <h4 class="text-lg font-bold mb-4">Quick Access</h4>
-                            <div class="flex flex-col space-y-2">
-                                <a href="/student_report_card_maker/"  class="text-blue-100 hover:text-white text-sm md:text-base">Administrator Portal</a>
-                                <a href="/student_report_card_maker/" class="text-blue-100 hover:text-white text-sm md:text-base">Staff Portal</a>
-                                <a href="/student_result_search/" target="_blank" class="text-blue-100 hover:text-white text-sm md:text-base">Parent Portal</a>
-                                <a href="https://t.me/emiliaforemosthighschool" target="_blank" class="text-blue-100 hover:text-white text-sm md:text-base">School Updates</a>
+                        <div>
+                            <h1 class="text-2xl md:text-3xl font-bold">EMILIA FOREMOST HIGH SCHOOL</h1>
+                            <p class="text-blue-200 font-medium">Excellence in Education Since 2007</p>
+                            <div class="flex items-center mt-1">
+                                <span class="bg-blue-800 text-xs px-3 py-1 rounded-full font-bold">EMIFORHS</span>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="border-t border-blue-800 mt-10 pt-6 text-center text-blue-200">
-                        <p class="text-sm md:text-base">&copy; 2023 EMILIA FOREMOST HIGH SCHOOL (EMIFORHS). All rights reserved.</p>
-                        <p class="mt-2 text-xs md:text-sm">For optimal performance, we recommend using modern web browsers.</p>
+                    <div class="text-center md:text-right">
+                        <p class="text-lg font-semibold">School Management System</p>
+                        <p class="text-blue-200">Integrated Digital Solutions</p>
+                        <div class="mt-2 flex items-center justify-center md:justify-end space-x-2">
+                            <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                            <span class="text-sm">System Online</span>
+                        </div>
                     </div>
                 </div>
-            </footer>
-        </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="content-wrapper container mx-auto px-4 py-10">
+            <!-- Hero Section -->
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4 text-gray-900">Welcome to EMIFORHS Portal</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+                    Access our comprehensive school management tools designed to streamline academic processes, 
+                    enhance communication, and improve educational outcomes.
+                </p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <div class="bg-blue-100 text-blue-800 px-4 py-2 rounded-full font-medium">
+                        <i class="fas fa-users mr-2"></i> 2,450+ Students
+                    </div>
+                    <div class="bg-green-100 text-green-800 px-4 py-2 rounded-full font-medium">
+                        <i class="fas fa-chalkboard-teacher mr-2"></i> 185+ Staff
+                    </div>
+                    <div class="bg-purple-100 text-purple-800 px-4 py-2 rounded-full font-medium">
+                        <i class="fas fa-graduation-cap mr-2"></i> 98% Success Rate
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+                <!-- Card 1: Exam Report Card Maker -->
+                <div class="card-hover bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="bg-blue-100 p-4 rounded-xl">
+                                <i class="fas fa-file-invoice text-blue-600 text-3xl"></i>
+                            </div>
+                            <span class="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full">NEW</span>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3 text-gray-900">Exam Report Card Maker</h3>
+                        <p class="text-gray-600 mb-6">
+                            Generate professional exam report cards with detailed performance analysis, grade calculations, and customizable templates.
+                        </p>
+                        <ul class="mb-8 space-y-2">
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                <span>Automated grade calculation</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                <span>Customizable templates</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                <span>Performance analytics</span>
+                            </li>
+                        </ul>
+                        <a href="/student_report_card_maker/" class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl transition duration-300 flex items-center justify-center">
+                            <span>Access Tool</span>
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Card 2: Student Result Checker -->
+                <div class="card-hover bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="bg-green-100 p-4 rounded-xl">
+                                <i class="fas fa-search text-green-600 text-3xl"></i>
+                            </div>
+                            <span class="bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full">POPULAR</span>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3 text-gray-900">Student Result Checker</h3>
+                        <p class="text-gray-600 mb-6">
+                            Real-time access to student examination results with secure authentication and detailed performance breakdown.
+                        </p>
+                        <ul class="mb-8 space-y-2">
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                <span>Secure student login</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                <span>Real-time result updates</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                <span>Performance trends</span>
+                            </li>
+                        </ul>
+                        <a href="/student_result_search/"  class="block w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-xl transition duration-300 flex items-center justify-center">
+                            <span>Access Tool</span>
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Card 3: Tuition & Bill Summary -->
+                <div class="card-hover bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="bg-purple-100 p-4 rounded-xl">
+                                <i class="fas fa-file-alt text-purple-600 text-3xl"></i>
+                            </div>
+                            <span class="bg-purple-600 text-white text-xs font-bold px-3 py-1 rounded-full">UPDATED</span>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3 text-gray-900">Tuition & Bill Summary</h3>
+                        <p class="text-gray-600 mb-6">
+                            Generate comprehensive tuition statements, fee summaries, and term-end financial reports for students and parents.
+                        </p>
+                        <ul class="mb-8 space-y-2">
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                <span>Automated billing</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                <span>Payment history tracking</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                <span>Export to PDF</span>
+                            </li>
+                        </ul>
+                        <a href="/general_exam_page/" class="block w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-xl transition duration-300 flex items-center justify-center">
+                            <span>Access Tool</span>
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Card 4: Student ID Maker -->
+                <div class="card-hover bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="bg-red-100 p-4 rounded-xl">
+                                <i class="fas fa-id-card text-red-600 text-3xl"></i>
+                            </div>
+                            <span class="bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full">ESSENTIAL</span>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3 text-gray-900">Student ID Maker</h3>
+                        <p class="text-gray-600 mb-6">
+                            Design and print professional student ID cards with photos, barcodes, and security features for campus identification.
+                        </p>
+                        <ul class="mb-8 space-y-2">
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                <span>Custom ID templates</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                <span>Barcode/QR code generation</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                <span>Batch printing</span>
+                            </li>
+                        </ul>
+                        <a href="/student_id_maker/"  class="block w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-xl transition duration-300 flex items-center justify-center">
+                            <span>Access Tool</span>
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Stats - Fixed with responsive numbers -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 mb-16">
+                <h3 class="text-2xl md:text-3xl font-bold mb-6 md:mb-8 text-center text-gray-900">EMIFORHS System Statistics</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                    <div class="text-center p-4 md:p-6 bg-blue-50 rounded-xl overflow-hidden">
+                        <div class="stat-number text-blue-700 mb-1 md:mb-2" id="studentCount">0</div>
+                        <p class="text-gray-700 font-medium text-sm md:text-base">Active Students</p>
+                    </div>
+                    <div class="text-center p-4 md:p-6 bg-green-50 rounded-xl overflow-hidden">
+                        <div class="stat-number text-green-700 mb-1 md:mb-2" id="reportCount">0</div>
+                        <p class="text-gray-700 font-medium text-sm md:text-base">Reports Generated</p>
+                    </div>
+                    <div class="text-center p-4 md:p-6 bg-purple-50 rounded-xl overflow-hidden">
+                        <div class="stat-number text-purple-700 mb-1 md:mb-2" id="idCount">0</div>
+                        <p class="text-gray-700 font-medium text-sm md:text-base">ID Cards Created</p>
+                    </div>
+                    <div class="text-center p-4 md:p-6 bg-red-50 rounded-xl overflow-hidden">
+                        <div class="stat-number text-red-700 mb-1 md:mb-2" id="billsCount">0</div>
+                        <p class="text-gray-700 font-medium text-sm md:text-base">Bills Processed</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="text-center mb-16">
+                <h3 class="text-3xl font-bold mb-6 text-gray-900">Need Assistance?</h3>
+                <div class="flex flex-wrap justify-center gap-4 md:gap-6">
+                    <button id="openSystemGuide" class="flex items-center bg-gray-100 hover:bg-gray-200 px-4 md:px-6 py-2 md:py-3 rounded-xl font-medium transition duration-300 text-sm md:text-base">
+                        <i class="fas fa-question-circle text-blue-600 mr-2"></i>
+                        <span>System Guide</span>
+                    </button>
+                    <a href="https://wa.me/2349057147497" target="_blank" class="flex items-center bg-gray-100 hover:bg-gray-200 px-4 md:px-6 py-2 md:py-3 rounded-xl font-medium transition duration-300 text-sm md:text-base">
+                        <i class="fas fa-phone-alt text-green-600 mr-2"></i>
+                        <span>Contact Support</span>
+                    </a>
+                    <a href="#" class="flex items-center bg-gray-100 hover:bg-gray-200 px-4 md:px-6 py-2 md:py-3 rounded-xl font-medium transition duration-300 text-sm md:text-base">
+                        <i class="fas fa-download text-purple-600 mr-2"></i>
+                        <span>Download Resources</span>
+                    </a>
+                </div>
+            </div>
+        </main>
+
+        <!-- FULL WIDTH FOOTER -->
+        <footer class="full-width-footer page-footer text-white pt-10 pb-6">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-6 md:mb-0 text-center md:text-left">
+                        <div class="flex flex-col md:flex-row items-center space-y-3 md:space-y-0 md:space-x-3">
+                            <img src="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/EMILIA%20LOGO.png" 
+                                 alt="EMILIA FOREMOST HIGH SCHOOL Logo" 
+                                 class="h-12 w-12 object-contain bg-white p-1 rounded-full">
+                            <div>
+                                <h3 class="text-xl font-bold">EMILIA FOREMOST HIGH SCHOOL</h3>
+                                <p class="text-blue-200">EMIFORHS Management System v3.0</p>
+                            </div>
+                        </div>
+                        <p class="mt-4 text-blue-100 max-w-md text-center md:text-left">
+                            Providing world-class educational management solutions since 2007. 
+                            Our integrated system ensures seamless academic administration.
+                        </p>
+                    </div>
+                    
+                    <div class="text-center md:text-right">
+                        <h4 class="text-lg font-bold mb-4">Quick Access</h4>
+                        <div class="flex flex-col space-y-2">
+                            <a href="/student_report_card_maker/"  class="text-blue-100 hover:text-white text-sm md:text-base">Administrator Portal</a>
+                            <a href="/student_report_card_maker/" class="text-blue-100 hover:text-white text-sm md:text-base">Staff Portal</a>
+                            <a href="/student_result_search/" target="_blank" class="text-blue-100 hover:text-white text-sm md:text-base">Parent Portal</a>
+                            <a href="https://t.me/emiliaforemosthighschool" target="_blank" class="text-blue-100 hover:text-white text-sm md:text-base">School Updates</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="border-t border-blue-800 mt-10 pt-6 text-center text-blue-200">
+                    <p class="text-sm md:text-base">&copy; 2023 EMILIA FOREMOST HIGH SCHOOL (EMIFORHS). All rights reserved.</p>
+                    <p class="mt-2 text-xs md:text-sm">For optimal performance, we recommend using modern web browsers.</p>
+                </div>
+            </div>
+        </footer>
     </div>
 
     <script>
-        // ==================== ENHANCED SCROLL MANAGEMENT ====================
+        // ==================== PROPER SCROLL MANAGEMENT ====================
         
         function setupScrollManagement() {
-            const scrollContainer = document.getElementById('scrollContainer');
+            // Simple scroll management - body handles scrolling naturally
+            document.body.style.overflowY = 'auto';
+            document.body.style.overflowX = 'hidden';
             
-            // 1. FIXED POSITION BODY already set in CSS
-            
-            // 2. SINGLE SCROLL CONTAINER management
-            scrollContainer.style.overflowY = 'auto';
-            scrollContainer.style.overflowX = 'hidden';
-            
-            // 3. PREVENT TOUCH OVERSCROLL
-            if ('ontouchstart' in window) {
-                // iOS specific fixes
-                scrollContainer.style.WebkitOverflowScrolling = 'touch';
-                
-                // Prevent pull-to-refresh
-                document.addEventListener('touchmove', function(e) {
-                    if (scrollContainer.scrollTop <= 0) {
-                        e.preventDefault();
-                    }
-                }, { passive: false });
-                
-                // Prevent rubber band effect
-                document.body.addEventListener('touchstart', function() {
-                    if (scrollContainer.scrollTop === 0) {
-                        scrollContainer.scrollTop = 1;
-                    }
-                    if (scrollContainer.scrollHeight - scrollContainer.scrollTop === scrollContainer.clientHeight) {
-                        scrollContainer.scrollTop = scrollContainer.scrollTop - 1;
-                    }
-                });
-            }
-            
-            // 6. SCROLL EDGE DETECTION
-            scrollContainer.addEventListener('scroll', function() {
+            // SCROLL EDGE DETECTION
+            window.addEventListener('scroll', function() {
                 // Show boundary indicator when near bottom
-                const distanceFromBottom = this.scrollHeight - (this.scrollTop + this.clientHeight);
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const scrollHeight = document.documentElement.scrollHeight;
+                const clientHeight = document.documentElement.clientHeight;
+                
+                const distanceFromBottom = scrollHeight - (scrollTop + clientHeight);
                 const boundary = document.getElementById('scrollBoundary');
                 
                 if (distanceFromBottom <= 50 && distanceFromBottom > 0) {
@@ -709,19 +687,7 @@
                 } else {
                     boundary.classList.remove('visible');
                 }
-                
-                // Prevent overscroll at top
-                if (this.scrollTop <= 0) {
-                    this.scrollTop = 1;
-                }
-                
-                // Prevent overscroll at bottom
-                if (this.scrollTop + this.clientHeight >= this.scrollHeight) {
-                    this.scrollTop = this.scrollHeight - this.clientHeight - 1;
-                }
             });
-            
-            // 7. PRESERVED FUNCTIONALITY - All original functionality preserved
         }
 
         // Animated counter for stats
@@ -764,21 +730,16 @@
             const modal = document.getElementById('systemGuideModal');
             const openModalBtn = document.getElementById('openSystemGuide');
             const closeModalBtn = document.getElementById('closeModal');
-            const scrollContainer = document.getElementById('scrollContainer');
             
             // Open modal
             openModalBtn.addEventListener('click', function() {
                 modal.classList.add('active');
-                // Disable main scroll container scroll when modal is open
-                scrollContainer.style.overflow = 'hidden';
                 document.body.classList.add('modal-open');
             });
             
             // Close modal
             closeModalBtn.addEventListener('click', function() {
                 modal.classList.remove('active');
-                // Re-enable main scroll container scroll when modal is closed
-                scrollContainer.style.overflow = 'auto';
                 document.body.classList.remove('modal-open');
             });
             
@@ -786,7 +747,6 @@
             modal.addEventListener('click', function(e) {
                 if (e.target === modal) {
                     modal.classList.remove('active');
-                    scrollContainer.style.overflow = 'auto';
                     document.body.classList.remove('modal-open');
                 }
             });
@@ -795,7 +755,6 @@
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape' && modal.classList.contains('active')) {
                     modal.classList.remove('active');
-                    scrollContainer.style.overflow = 'auto';
                     document.body.classList.remove('modal-open');
                 }
             });

@@ -18,7 +18,7 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     
-    <!-- ==================== ULTIMATE ANTI-OVERSCROLL SYSTEM ==================== -->
+    <!-- ==================== PROPER SCROLL MANAGEMENT SYSTEM ==================== -->
     <style>
         /* SIMPLIFIED SCROLL MANAGEMENT - No fixed positioning */
         html, body {
@@ -73,6 +73,14 @@
             background: #111827;
         }
         
+        /* Header - NOT STICKY (removed sticky positioning) */
+        .page-header {
+            width: 100%;
+            background: linear-gradient(135deg, rgba(26, 35, 126, 0.95) 0%, rgba(27, 94, 32, 0.95) 100%);
+            z-index: 40;
+            position: relative; /* Changed from sticky to relative */
+        }
+        
         /* Prevent overscroll */
         .no-overscroll {
             overscroll-behavior: none;
@@ -89,6 +97,24 @@
             .content-container {
                 padding: 10px;
             }
+        }
+        
+        /* Scroll Boundary Indicator */
+        .scroll-boundary {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #1a237e, #1b5e20);
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .scroll-boundary.visible {
+            opacity: 1;
         }
         
         /* 9. PRESERVED FUNCTIONALITY - Original styles continue below */
@@ -457,24 +483,6 @@
             }
         }
         
-        /* FIXED: Scroll boundary indicator */
-        .scroll-boundary {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, #1a237e, #1b5e20);
-            z-index: 9999;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .scroll-boundary.visible {
-            opacity: 1;
-        }
-        
         /* Modal overlay fix */
         .modal-overlay {
             position: fixed;
@@ -536,13 +544,6 @@
             border: 2px solid transparent;
             background: linear-gradient(white, white) padding-box,
                         linear-gradient(135deg, #1a237e, #1b5e20) border-box;
-        }
-        .header-gradient {
-            background: linear-gradient(135deg, rgba(26, 35, 126, 0.95) 0%, rgba(27, 94, 32, 0.95) 100%);
-            backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
-            z-index: 50;
         }
         .subject-row:hover {
             background-color: #f0f7ff;
@@ -1170,10 +1171,15 @@
                 gap: 0.5rem;
             }
         }
+        
+        /* Prevent body scroll when modal is open */
+        body.modal-open {
+            overflow: hidden;
+        }
     </style>
 </head>
 <body class="no-overscroll">
-    <!-- ==================== ULTIMATE SCROLL RESTRICTION SYSTEM ==================== -->
+    <!-- ==================== PROPER SCROLL MANAGEMENT SYSTEM ==================== -->
     <!-- Scroll Boundary Indicator -->
     <div id="scrollBoundary" class="scroll-boundary"></div>
     
@@ -1233,8 +1239,8 @@
             </div>
         </div>
 
-        <!-- Main Header - ENHANCED FOR STIFFNESS -->
-        <header class="header-gradient text-white py-4 sticky top-0 z-50 shadow-lg">
+        <!-- Main Header - NO LONGER STICKY (scrolls with page) -->
+        <header class="page-header text-white py-4 shadow-lg">
             <div class="max-w-7xl mx-auto px-4">
                 <div class="flex flex-col md:flex-row justify-between items-center">
                     <!-- School Logo & Name - Clickable to Dashboard -->
@@ -1272,7 +1278,7 @@
         </header>
 
         <!-- Main Content -->
-        <main class="content-wrapper max-w-7xl mx-auto px-4 py-8">
+        <main class="content-wrapper container mx-auto px-4 py-8">
             <!-- Page Title -->
             <div class="text-center mb-10">
                 <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 mb-3">Student Result Portal</h2>
@@ -1606,14 +1612,14 @@
 
     <!-- JavaScript -->
     <script>
-        // ==================== ENHANCED SCROLL MANAGEMENT ====================
+        // ==================== PROPER SCROLL MANAGEMENT ====================
         
         function setupScrollManagement() {
             // Simple scroll management - body handles scrolling naturally
             document.body.style.overflowY = 'auto';
             document.body.style.overflowX = 'hidden';
             
-            // 6. SCROLL EDGE DETECTION
+            // SCROLL EDGE DETECTION
             window.addEventListener('scroll', function() {
                 // Show boundary indicator when near bottom
                 const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -1628,19 +1634,7 @@
                 } else {
                     boundary.classList.remove('visible');
                 }
-                
-                // Prevent overscroll at top
-                if (scrollTop <= 0) {
-                    window.scrollTo(0, 1);
-                }
-                
-                // Prevent overscroll at bottom
-                if (scrollTop + clientHeight >= scrollHeight) {
-                    window.scrollTo(0, scrollHeight - clientHeight - 1);
-                }
             });
-            
-            // 7. PRESERVED FUNCTIONALITY - All original functionality preserved
         }
 
         // ==================== ADMIN FLOATING BUTTON SYSTEM ====================
