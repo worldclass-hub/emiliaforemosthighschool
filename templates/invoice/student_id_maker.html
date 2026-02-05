@@ -17,54 +17,58 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- ==================== SIMPLIFIED SCROLL SYSTEM ==================== -->
+    <!-- ==================== PROPER LAYOUT SYSTEM ==================== -->
     <style>
-        /* SIMPLIFIED SCROLL - Just let the browser handle it naturally */
+        /* RESET AND BASE STYLES */
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
         
         html, body {
+            height: 100%;
             width: 100%;
-            min-height: 100vh;
             overflow-x: hidden;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             position: relative;
-            scroll-behavior: smooth;
         }
         
-        /* Natural scrolling container */
-        .main-scroll-container {
-            width: 100%;
+        /* MAIN LAYOUT CONTAINER - FIXED FOOTER SOLUTION */
+        #app-container {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            position: relative;
         }
         
-        /* Content area - grows naturally */
-        .content-area {
-            flex: 1;
-            width: 100%;
-            max-width: 100%;
-            padding: 20px;
-        }
-        
-        /* Simple header - not sticky */
-        .page-header {
+        /* HEADER - Fixed at top */
+        .app-header {
             width: 100%;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            padding: 20px;
+            position: relative;
+            z-index: 10;
+            flex-shrink: 0;
         }
         
-        /* Footer stays at bottom */
-        .page-footer {
+        /* MAIN CONTENT - Grows to fill space */
+        .app-main {
+            flex: 1 0 auto;
+            width: 100%;
+            padding: 20px 0;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* FOOTER - Fixed at bottom */
+        .app-footer {
             width: 100%;
             background: #111827;
+            flex-shrink: 0;
             margin-top: auto;
             position: relative;
+            z-index: 10;
         }
         
         /* Full width footer */
@@ -78,7 +82,7 @@
             background: #111827;
         }
         
-        /* Content container */
+        /* Content container - keeps content centered */
         .content-container {
             max-width: 7xl;
             margin: 0 auto;
@@ -405,6 +409,26 @@
             0%, 100% { transform: scaleY(0.5); }
             50% { transform: scaleY(1.5); }
         }
+        
+        /* Bottom border for header */
+        .header-bottom-border {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.3), transparent);
+        }
+        
+        /* Top border for footer */
+        .footer-top-border {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.3), transparent);
+        }
     </style>
     
     <script>
@@ -461,8 +485,8 @@
     </script>
 </head>
 <body class="pattern-bg">
-    <!-- Main Scroll Container -->
-    <div class="main-scroll-container">
+    <!-- Main App Container with Fixed Footer Layout -->
+    <div id="app-container">
         <!-- ================ ULTIMATE LOGOUT SYSTEM ================ -->
         
         <!-- Floating Download Button -->
@@ -652,10 +676,10 @@
             </div>
         </div>
         
-        <!-- ==================== MAIN CONTENT ==================== -->
-        <div class="page-header">
+        <!-- ==================== HEADER - FIXED AT TOP ==================== -->
+        <header class="app-header py-6">
+            <div class="header-bottom-border"></div>
             <div class="content-container">
-                <!-- Header -->
                 <div class="flex flex-col md:flex-row items-center justify-between mb-6">
                    <a href="{% url 'dashboard_exam_page' %}" class="flex items-center mb-4 md:mb-0 hover:opacity-80 transition-opacity">
                         <div class="w-16 h-16 rounded-full premium-gradient flex items-center justify-center mr-4 shadow-float animate-bounce-slow">
@@ -701,10 +725,10 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </header>
         
-        <!-- Content Area -->
-        <div class="content-area">
+        <!-- ==================== MAIN CONTENT ==================== -->
+        <main class="app-main">
             <div class="content-container">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     <!-- Left Column: Input Form & Stats -->
@@ -959,20 +983,23 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </main>
         
-        <!-- FULL WIDTH FOOTER -->
-        <footer class="full-width-footer page-footer mt-16">
-            <div class="max-w-7xl mx-auto px-4 py-6 sm:py-8">
-                <div class="text-center">
-                    <p class="mb-2 text-white"><strong>EMFORHS Student ID Generator System • Ultimate Edition • AI-Powered</strong></p>
-                    <p class="text-sm text-gray-400">Storage Capacity: 5MB • Supports 10,000+ Records • JSS/SSS Class System</p>
-                </div>
-                
-                <div class="border-t border-gray-800 mt-6 sm:mt-8 pt-6 sm:pt-8 text-center">
-                    <p class="text-gray-500 text-xs sm:text-sm">
-                        &copy; 2024 EMILIA FOREMOST HIGH SCHOOL. All Rights Reserved. • Secure Student ID Generator v3.0
-                    </p>
+        <!-- ==================== FOOTER - FIXED AT BOTTOM ==================== -->
+        <footer class="app-footer py-8">
+            <div class="footer-top-border"></div>
+            <div class="full-width-footer">
+                <div class="max-w-7xl mx-auto px-4 py-6 sm:py-8">
+                    <div class="text-center">
+                        <p class="mb-2 text-white"><strong>EMFORHS Student ID Generator System • Ultimate Edition • AI-Powered</strong></p>
+                        <p class="text-sm text-gray-400">Storage Capacity: 5MB • Supports 10,000+ Records • JSS/SSS Class System</p>
+                    </div>
+                    
+                    <div class="border-t border-gray-800 mt-6 sm:mt-8 pt-6 sm:pt-8 text-center">
+                        <p class="text-gray-500 text-xs sm:text-sm">
+                            &copy; 2024 EMILIA FOREMOST HIGH SCHOOL. All Rights Reserved. • Secure Student ID Generator v3.0
+                        </p>
+                    </div>
                 </div>
             </div>
         </footer>
@@ -1013,25 +1040,21 @@
         let lastRenderTime = 0;
         const RENDER_DEBOUNCE_TIME = 100; // ms
         
-        // ==================== SIMPLE SCROLL MANAGEMENT ====================
+        // ==================== FIXED FOOTER LAYOUT ====================
         
-        function setupScrollManagement() {
-            // Let the browser handle scrolling naturally
-            // Remove any complex scroll restrictions
-            document.body.style.overflowY = 'auto';
-            document.body.style.overflowX = 'hidden';
-            document.documentElement.style.overflowY = 'auto';
-            document.documentElement.style.overflowX = 'hidden';
+        function setupFixedLayout() {
+            // Simple setup - the CSS flexbox handles everything
+            // Make sure body has proper height
+            document.body.style.minHeight = '100vh';
+            document.body.style.display = 'flex';
+            document.body.style.flexDirection = 'column';
             
-            // Add smooth scrolling to top buttons
-            document.querySelectorAll('a[href="#"]').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    if (this.getAttribute('href') === '#') {
-                        e.preventDefault();
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }
-                });
-            });
+            // The #app-container already has flex: 1
+            // This ensures footer stays at bottom
+            const appContainer = document.getElementById('app-container');
+            if (appContainer) {
+                appContainer.style.minHeight = 'calc(100vh - 1px)';
+            }
         }
         
         // ==================== ENHANCED LOGOUT SYSTEM ====================
@@ -1223,8 +1246,8 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.time('App Initialization');
             
-            // Setup SIMPLE scroll management
-            setupScrollManagement();
+            // Setup fixed layout FIRST
+            setupFixedLayout();
             
             // Initialize session timer
             initSessionTimer();
