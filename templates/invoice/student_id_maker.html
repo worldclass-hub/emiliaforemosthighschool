@@ -17,10 +17,31 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- ==================== ULTIMATE ANTI-OVERSCROLL SYSTEM ==================== -->
+    <!-- ==================== ULTIMATE NO-OVERSCROLL SYSTEM ==================== -->
     <style>
-        /* 1. FIXED POSITION BODY - Prevents any movement beyond boundaries */
-        html, body {
+        /* 1. COMPLETE OVERSCROLL ELIMINATION */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* 2. HTML - COMPLETELY LOCKED */
+        html {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            overflow: hidden;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            touch-action: none;
+            overscroll-behavior: none;
+            -webkit-overflow-scrolling: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        /* 3. BODY - ABSOLUTELY NO SCROLL */
+        body {
             width: 100%;
             height: 100%;
             position: fixed;
@@ -28,16 +49,17 @@
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             margin: 0;
             padding: 0;
-            touch-action: pan-y;
-            overscroll-behavior: none;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
+            touch-action: none;
+            overscroll-behavior: none;
+            -webkit-overflow-scrolling: none;
         }
         
-        /* 2. SINGLE SCROLL CONTAINER - Only this can scroll internally */
-        .scroll-container {
+        /* 4. MAIN CONTAINER - SINGLE SCROLL AREA */
+        #mainScrollContainer {
             width: 100%;
             height: 100%;
             overflow-y: auto;
@@ -45,34 +67,14 @@
             position: relative;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             -webkit-overflow-scrolling: touch;
-        }
-        
-        /* 3. PREVENT TOUCH OVERSCROLL */
-        .no-overscroll {
-            touch-action: pan-y;
             overscroll-behavior: contain;
         }
         
-        /* 4. NO WHITE BORDERS EVER - Content completely contained */
-        .main-wrapper {
-            width: 100%;
-            min-height: 100%;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-        }
-        
-        /* 5. MOBILE-SPECIFIC FIXES */
-        @media (max-width: 768px) {
-            .scroll-container {
-                -webkit-overflow-scrolling: touch;
-                overscroll-behavior: contain;
-            }
-        }
-        
-        /* 6. SCROLL EDGE DETECTION HELPER */
-        .scroll-boundary {
+        /* 5. HARD SCROLL BOUNDARIES */
+        #mainScrollContainer::before,
+        #mainScrollContainer::after {
+            content: '';
             position: fixed;
-            bottom: 0;
-            left: 0;
             width: 100%;
             height: 4px;
             background: linear-gradient(90deg, #1e40af, #3b82f6);
@@ -82,35 +84,80 @@
             transition: opacity 0.3s ease;
         }
         
-        .scroll-boundary.visible {
+        #mainScrollContainer::before {
+            top: 0;
+            left: 0;
+        }
+        
+        #mainScrollContainer::after {
+            bottom: 0;
+            left: 0;
+        }
+        
+        /* 6. SCROLL BOUNDARY DETECTION */
+        #mainScrollContainer.scroll-top::before,
+        #mainScrollContainer.scroll-bottom::after {
             opacity: 1;
         }
         
-        /* 7. FULL WIDTH FOOTER */
-        .full-width-footer {
-            width: 100vw;
+        /* 7. CONTENT WRAPPER - Prevents any overflow */
+        .content-wrapper {
+            width: 100%;
+            min-height: 100%;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             position: relative;
-            left: 50%;
-            right: 50%;
-            margin-left: -50vw;
-            margin-right: -50vw;
+        }
+        
+        /* 8. FULL WIDTH FOOTER - No horizontal overflow */
+        .full-width-footer {
+            width: 100%;
+            position: relative;
             background: #111827;
+            margin: 0;
+            padding: 0;
         }
         
-        /* 8. CONTENT CONTAINER - Main content area */
-        .content-container {
-            max-width: 7xl;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
+        /* 9. MOBILE SPECIFIC FIXES */
         @media (max-width: 768px) {
-            .content-container {
-                padding: 10px;
+            #mainScrollContainer {
+                -webkit-overflow-scrolling: touch;
+                overscroll-behavior-y: contain;
+            }
+            
+            /* Prevent iOS rubber band effect */
+            body {
+                position: fixed;
+                overflow: hidden;
+                height: 100%;
+                width: 100%;
             }
         }
         
-        /* 9. PRESERVED FUNCTIONALITY - Original styles continue below */
+        /* 10. SCROLLBAR STYLING */
+        #mainScrollContainer::-webkit-scrollbar {
+            width: 12px;
+        }
+        
+        #mainScrollContainer::-webkit-scrollbar-track {
+            background: linear-gradient(to bottom, #f1f5f9, #e2e8f0);
+            border-radius: 10px;
+        }
+        
+        #mainScrollContainer::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #3b82f6, #1e40af);
+            border-radius: 10px;
+            border: 3px solid #f1f5f9;
+        }
+        
+        #mainScrollContainer::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, #2563eb, #1e3a8a);
+        }
+        
+        /* Firefox scrollbar */
+        #mainScrollContainer {
+            scrollbar-width: thin;
+            scrollbar-color: #3b82f6 #f1f5f9;
+        }
         
         /* ==================== ORIGINAL STYLES ==================== */
         .logout-glow {
@@ -292,6 +339,21 @@
             0%, 100% { transform: scaleY(0.5); }
             50% { transform: scaleY(1.5); }
         }
+        
+        /* Prevent text selection on scroll */
+        .no-select {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+        /* Hardware acceleration */
+        .gpu-accelerated {
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            perspective: 1000px;
+        }
     </style>
     
     <script>
@@ -347,13 +409,10 @@
         }
     </script>
 </head>
-<body class="pattern-bg no-overscroll">
-    <!-- Scroll Boundary Indicator -->
-    <div id="scrollBoundary" class="scroll-boundary"></div>
-    
-    <!-- 2. SINGLE SCROLL CONTAINER -->
-    <div class="scroll-container" id="scrollContainer">
-        <div class="main-wrapper">
+<body class="pattern-bg no-select">
+    <!-- Main Scroll Container -->
+    <div id="mainScrollContainer" class="gpu-accelerated">
+        <div class="content-wrapper">
             <!-- ================ ULTIMATE LOGOUT SYSTEM ================ -->
             
             <!-- Floating Download Button -->
@@ -544,7 +603,7 @@
             </div>
             
             <!-- ==================== MAIN CONTENT ==================== -->
-            <div class="content-container">
+            <div class="max-w-7xl mx-auto px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
                 <!-- Header -->
                 <header class="mb-8 md:mb-12 text-center">
                     <div class="flex flex-col md:flex-row items-center justify-between mb-6">
@@ -561,9 +620,8 @@
                         </a>
                         
                         <div class="flex flex-col items-end">
-                            <!-- REMOVED: User Profile & Logout Button Section -->
+                            <!-- Simple Logout Button -->
                             <div class="flex items-center mb-3">
-                                <!-- Simple Logout Button without user profile pop-up -->
                                 <button onclick="showEnhancedLogout()" 
                                         class="px-4 py-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white rounded-xl font-medium flex items-center shadow-lg hover:shadow-danger-glow transition-all duration-300">
                                     <i class="fas fa-power-off mr-2"></i>
@@ -893,72 +951,163 @@
         let sessionTime = 1800; // 30 minutes in seconds
         
         // CHARACTER SETS FOR ID GENERATION
-        const ALPHANUMERIC_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // Removed confusing chars: 0, O, 1, I
-        const NUMERIC_CHARS = '23456789'; // Only numbers 2-9 (avoid 0,1)
-        const ALPHABET_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ'; // Removed confusing letters
+        const ALPHANUMERIC_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+        const NUMERIC_CHARS = '23456789';
+        const ALPHABET_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
         
-        // ==================== ENHANCED SCROLL MANAGEMENT ====================
+        // ==================== ULTIMATE SCROLL MANAGEMENT ====================
         
         function setupScrollManagement() {
-            const scrollContainer = document.getElementById('scrollContainer');
+            const scrollContainer = document.getElementById('mainScrollContainer');
             
-            // 1. FIXED POSITION BODY already set in CSS
+            // 1. COMPLETELY LOCK HTML AND BODY (already in CSS)
             
-            // 2. SINGLE SCROLL CONTAINER management
-            scrollContainer.style.overflowY = 'auto';
-            scrollContainer.style.overflowX = 'hidden';
-            
-            // 3. PREVENT TOUCH OVERSCROLL
-            if ('ontouchstart' in window) {
-                // iOS specific fixes
-                scrollContainer.style.WebkitOverflowScrolling = 'touch';
+            // 2. HARD SCROLL BOUNDARIES
+            function enforceScrollBoundaries() {
+                const scrollTop = scrollContainer.scrollTop;
+                const scrollHeight = scrollContainer.scrollHeight;
+                const clientHeight = scrollContainer.clientHeight;
                 
-                // Prevent pull-to-refresh
-                document.addEventListener('touchmove', function(e) {
-                    if (scrollContainer.scrollTop <= 0) {
-                        e.preventDefault();
-                    }
-                }, { passive: false });
+                // Remove boundary classes first
+                scrollContainer.classList.remove('scroll-top', 'scroll-bottom');
                 
-                // Prevent rubber band effect
-                document.body.addEventListener('touchstart', function() {
-                    if (scrollContainer.scrollTop === 0) {
-                        scrollContainer.scrollTop = 1;
+                // Check if at top
+                if (scrollTop <= 0) {
+                    scrollContainer.scrollTop = 0;
+                    scrollContainer.classList.add('scroll-top');
+                    
+                    // Prevent any bounce effect
+                    if (scrollTop < 0) {
+                        scrollContainer.scrollTop = 0;
                     }
-                    if (scrollContainer.scrollHeight - scrollContainer.scrollTop === scrollContainer.clientHeight) {
-                        scrollContainer.scrollTop = scrollContainer.scrollTop - 1;
-                    }
-                });
-            }
-            
-            // 4. NO WHITE BORDERS - Content already contained
-            
-            // 5. MOBILE-SPECIFIC FIXES already in CSS
-            
-            // 6. SCROLL EDGE DETECTION
-            scrollContainer.addEventListener('scroll', function() {
-                // Show boundary indicator when near bottom
-                const distanceFromBottom = this.scrollHeight - (this.scrollTop + this.clientHeight);
-                const boundary = document.getElementById('scrollBoundary');
-                
-                if (distanceFromBottom <= 50 && distanceFromBottom > 0) {
-                    boundary.classList.add('visible');
-                } else {
-                    boundary.classList.remove('visible');
                 }
                 
+                // Check if at bottom
+                const distanceFromBottom = scrollHeight - (scrollTop + clientHeight);
+                if (distanceFromBottom <= 0) {
+                    scrollContainer.scrollTop = scrollHeight - clientHeight;
+                    scrollContainer.classList.add('scroll-bottom');
+                    
+                    // Prevent any bounce effect
+                    if (distanceFromBottom < 0) {
+                        scrollContainer.scrollTop = scrollHeight - clientHeight;
+                    }
+                }
+            }
+            
+            // 3. TOUCH EVENT PREVENTION
+            function preventTouchOverscroll(event) {
+                const scrollTop = scrollContainer.scrollTop;
+                const scrollHeight = scrollContainer.scrollHeight;
+                const clientHeight = scrollContainer.clientHeight;
+                
                 // Prevent overscroll at top
-                if (this.scrollTop <= 0) {
-                    this.scrollTop = 1;
+                if (scrollTop <= 0 && event.deltaY < 0) {
+                    event.preventDefault();
+                    return false;
                 }
                 
                 // Prevent overscroll at bottom
-                if (this.scrollTop + this.clientHeight >= this.scrollHeight) {
-                    this.scrollTop = this.scrollHeight - this.clientHeight - 1;
+                if (scrollTop + clientHeight >= scrollHeight && event.deltaY > 0) {
+                    event.preventDefault();
+                    return false;
                 }
-            });
+            }
             
-            // 7. PRESERVED FUNCTIONALITY - All original functionality preserved
+            // 4. iOS SPECIFIC FIXES
+            function setupIOSFixes() {
+                if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
+                    // Disable elastic scrolling
+                    document.body.style.overflow = 'hidden';
+                    document.body.style.position = 'fixed';
+                    document.body.style.width = '100%';
+                    document.body.style.height = '100%';
+                    
+                    // Prevent double-tap zoom
+                    let lastTouchEnd = 0;
+                    document.addEventListener('touchend', function(event) {
+                        const now = Date.now();
+                        if (now - lastTouchEnd <= 300) {
+                            event.preventDefault();
+                        }
+                        lastTouchEnd = now;
+                    }, false);
+                    
+                    // Prevent pull-to-refresh
+                    let startY = 0;
+                    scrollContainer.addEventListener('touchstart', function(event) {
+                        startY = event.touches[0].clientY;
+                    }, { passive: true });
+                    
+                    scrollContainer.addEventListener('touchmove', function(event) {
+                        const scrollTop = scrollContainer.scrollTop;
+                        if (scrollTop <= 0 && event.touches[0].clientY > startY) {
+                            event.preventDefault();
+                        }
+                    }, { passive: false });
+                }
+            }
+            
+            // 5. WHEEL EVENT PREVENTION
+            function setupWheelPrevention() {
+                scrollContainer.addEventListener('wheel', function(event) {
+                    const scrollTop = scrollContainer.scrollTop;
+                    const scrollHeight = scrollContainer.scrollHeight;
+                    const clientHeight = scrollContainer.clientHeight;
+                    
+                    // Prevent overscroll at top
+                    if (scrollTop <= 0 && event.deltaY < 0) {
+                        event.preventDefault();
+                        return false;
+                    }
+                    
+                    // Prevent overscroll at bottom
+                    if (scrollTop + clientHeight >= scrollHeight && event.deltaY > 0) {
+                        event.preventDefault();
+                        return false;
+                    }
+                }, { passive: false });
+            }
+            
+            // 6. INITIALIZE ALL SCROLL CONTROLS
+            function initializeScrollControls() {
+                // Enforce boundaries on load
+                enforceScrollBoundaries();
+                
+                // Monitor scroll events
+                scrollContainer.addEventListener('scroll', enforceScrollBoundaries);
+                
+                // Prevent default touch behaviors
+                document.addEventListener('touchmove', function(event) {
+                    if (event.scale !== 1) {
+                        event.preventDefault();
+                    }
+                }, { passive: false });
+                
+                // Setup wheel prevention
+                setupWheelPrevention();
+                
+                // Setup iOS fixes
+                setupIOSFixes();
+                
+                // Resize handler
+                window.addEventListener('resize', enforceScrollBoundaries);
+                
+                // Ensure scroll is properly positioned on load
+                setTimeout(() => {
+                    scrollContainer.scrollTop = 0;
+                    enforceScrollBoundaries();
+                }, 100);
+            }
+            
+            // Initialize
+            initializeScrollControls();
+            
+            // Return cleanup function
+            return function cleanup() {
+                scrollContainer.removeEventListener('scroll', enforceScrollBoundaries);
+                window.removeEventListener('resize', enforceScrollBoundaries);
+            };
         }
         
         // ==================== ENHANCED LOGOUT SYSTEM ====================
@@ -1177,8 +1326,8 @@
         
         // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
-            // Setup scroll management FIRST
-            setupScrollManagement();
+            // Setup scroll management FIRST - this prevents all white borders
+            const cleanupScrollManagement = setupScrollManagement();
             
             // Initialize session timer
             initSessionTimer();
@@ -1278,6 +1427,9 @@
                     updateSessionTimerDisplay();
                 });
             });
+            
+            // Cleanup on page unload
+            window.addEventListener('beforeunload', cleanupScrollManagement);
         });
         
         // Populate year options from 2020 to 3000
