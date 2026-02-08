@@ -17,286 +17,141 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- ==================== ULTIMATE SCROLLING SYSTEM ==================== -->
+    <!-- ==================== PROFESSIONAL SCROLLING SYSTEM ==================== -->
     <style>
-        /* PERFECT SMOOTH SCROLL BASE */
-        :root {
-            --scrollbar-width: 12px;
-            --scrollbar-track-color: #f1f5f9;
-            --scrollbar-thumb-color: linear-gradient(180deg, #3b82f6, #1e40af, #8b5cf6);
-            --scroll-speed: 0.6s;
-            --scroll-timing: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        /* PERFECT SMOOTH SCROLLING */
+        /* SMOOTH SCROLLING BASE */
         html {
             scroll-behavior: smooth;
-            scroll-padding-top: 80px;
-            overflow-x: hidden;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-gutter: stable;
+            scroll-padding-top: 20px;
         }
-
-        /* MODERN CUSTOM SCROLLBAR */
-        * {
+        
+        body {
+            scroll-behavior: smooth;
+            overflow-y: scroll;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        /* OPTIMIZED SCROLL CONTAINERS */
+        .scroll-container {
+            overflow-y: auto;
             scrollbar-width: thin;
             scrollbar-color: #3b82f6 #f1f5f9;
         }
-
-        *::-webkit-scrollbar {
-            width: var(--scrollbar-width);
-            height: var(--scrollbar-width);
-        }
-
-        *::-webkit-scrollbar-track {
-            background: var(--scrollbar-track-color);
-            border-radius: 10px;
-            margin: 4px;
-        }
-
-        *::-webkit-scrollbar-thumb {
-            background: var(--scrollbar-thumb-color);
-            border-radius: 10px;
-            border: 3px solid transparent;
-            background-clip: content-box;
-            transition: all 0.3s ease;
-            min-height: 40px;
-        }
-
-        *::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(180deg, #2563eb, #1e3a8a, #7c3aed);
-            border: 2px solid transparent;
-            transform: scale(1.05);
-        }
-
-        *::-webkit-scrollbar-thumb:active {
-            background: linear-gradient(180deg, #1d4ed8, #1e3a8a, #6d28d9);
-            transform: scale(1.02);
-        }
-
-        *::-webkit-scrollbar-corner {
-            background: transparent;
-        }
-
-        /* ENHANCED SCROLL CONTAINERS */
-        .scroll-container {
-            overflow-y: auto;
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
-            scroll-snap-type: y proximity;
-        }
-
+        
         .scroll-container::-webkit-scrollbar {
             width: 8px;
         }
-
+        
         .scroll-container::-webkit-scrollbar-track {
-            background: rgba(241, 245, 249, 0.8);
-            backdrop-filter: blur(10px);
-        }
-
-        .scroll-container::-webkit-scrollbar-thumb {
-            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+            background: #f1f5f9;
             border-radius: 4px;
         }
-
-        /* PROFESSIONAL TABLE SCROLL */
+        
+        .scroll-container::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #3b82f6, #1e40af);
+            border-radius: 4px;
+        }
+        
+        .scroll-container::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, #2563eb, #1e3a8a);
+        }
+        
+        /* SMOOTH SCROLL ANIMATIONS */
+        .smooth-scroll {
+            scroll-behavior: smooth;
+            transition: scroll-behavior 0.3s ease;
+        }
+        
+        /* FLUID SCROLL EFFECTS */
+        .scroll-fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        
+        .scroll-fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* ENHANCED TABLE SCROLLING */
         .table-scroll-container {
-            max-height: 500px;
+            max-height: 400px;
             overflow-y: auto;
             scroll-behavior: smooth;
-            position: relative;
-            scrollbar-width: thin;
         }
-
-        .table-scroll-container thead {
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            backdrop-filter: blur(10px);
-            background: rgba(255, 255, 255, 0.95);
+        
+        /* SMOOTH PAGE TRANSITIONS */
+        .page-transition {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
-        /* INERTIA SCROLL EFFECT */
-        .inertia-scroll {
-            scroll-behavior: smooth;
-            overscroll-behavior: contain;
-        }
-
-        /* GRADIENT SCROLL PROGRESS */
-        .scroll-progress-container {
+        
+        /* SCROLL PROGRESS INDICATOR */
+        .scroll-progress {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 4px;
-            background: transparent;
+            height: 3px;
+            background: linear-gradient(to right, #3b82f6, #8b5cf6, #10b981);
+            transform-origin: 0%;
             z-index: 9999;
-            pointer-events: none;
             opacity: 0;
             transition: opacity 0.3s ease;
         }
-
-        .scroll-progress-bar {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, 
-                #3b82f6 0%, 
-                #8b5cf6 33%, 
-                #10b981 66%, 
-                #f59e0b 100%);
-            border-radius: 0 4px 4px 0;
-            transition: width 0.1s ease-out;
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
-        }
-
-        /* FLUID SCROLL ANIMATIONS */
-        .scroll-reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .scroll-reveal.visible {
+        
+        .scroll-progress.visible {
             opacity: 1;
-            transform: translateY(0);
         }
-
-        .scroll-reveal.delay-100 { transition-delay: 0.1s; }
-        .scroll-reveal.delay-200 { transition-delay: 0.2s; }
-        .scroll-reveal.delay-300 { transition-delay: 0.3s; }
-        .scroll-reveal.delay-400 { transition-delay: 0.4s; }
-
-        /* SMOOTH FADE SECTIONS */
-        .section-fade {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
+        
+        /* HOVER SCROLL EFFECTS */
+        .hover-scroll-effect {
+            transition: transform 0.2s ease-out;
         }
-
-        .section-fade.active {
-            opacity: 1;
-            transform: translateY(0);
+        
+        .hover-scroll-effect:hover {
+            transform: translateY(-2px);
         }
-
-        /* VELOCITY-BASED SCROLL EFFECTS */
-        .momentum-scroll {
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
-            overscroll-behavior: contain;
-        }
-
-        /* PARALLAX EFFECT */
-        .parallax-layer {
-            transform: translateZ(0);
-            will-change: transform;
-            backface-visibility: hidden;
-        }
-
-        /* NO-SCROLL CLASS */
-        .no-scroll {
-            overflow: hidden !important;
-            position: fixed;
-            width: 100%;
-            height: 100%;
-        }
-
-        /* BACK TO TOP BUTTON */
-        .back-to-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.3s ease;
-            z-index: 1000;
-            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
-        }
-
-        .back-to-top.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .back-to-top:hover {
-            transform: translateY(-5px) scale(1.1);
-            box-shadow: 0 6px 25px rgba(59, 130, 246, 0.5);
-        }
-
-        /* SCROLL HINT */
-        .scroll-hint {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            animation: scrollHint 2s infinite;
-            opacity: 0.7;
-        }
-
-        @keyframes scrollHint {
-            0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.7; }
-            50% { transform: translateX(-50%) translateY(10px); opacity: 1; }
-        }
-
-        /* PERFECT SNAP POINTS */
-        .snap-container {
-            scroll-snap-type: y mandatory;
-            scroll-behavior: smooth;
-        }
-
-        .snap-section {
-            scroll-snap-align: start;
-            scroll-snap-stop: always;
-        }
-
+        
         /* ==================== ORIGINAL LAYOUT STYLES ==================== */
         html, body {
             width: 100%;
             height: 100%;
             margin: 0;
             padding: 0;
+            overflow-x: hidden;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            font-family: 'Poppins', sans-serif;
         }
-
+        
         body {
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            overflow-x: hidden;
         }
-
+        
         .page-container {
             flex: 1 0 auto;
             display: flex;
             flex-direction: column;
             width: 100%;
+            max-width: 100%;
             position: relative;
         }
-
+        
         .content-wrapper {
             flex: 1 0 auto;
             width: 100%;
+            max-width: 100%;
             position: relative;
         }
-
+        
         .page-footer {
             flex-shrink: 0;
             width: 100%;
             background: #111827;
             margin-top: auto;
         }
-
+        
         .full-width-footer {
             width: 100vw;
             position: relative;
@@ -306,35 +161,36 @@
             margin-right: -50vw;
             background: #111827;
         }
-
+        
+        /* HEADER - NON-STICKY (FREE SCROLLING) */
         .page-header {
             width: 100%;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             z-index: 40;
-            position: relative;
+            position: relative; /* Changed from any fixed/sticky positioning */
         }
-
+        
+        .no-overscroll {
+            overscroll-behavior: none;
+        }
+        
         .content-container {
             max-width: 7xl;
             margin: 0 auto;
             padding: 20px;
         }
-
+        
         @media (max-width: 768px) {
             .content-container {
                 padding: 10px;
             }
-            
-            *::-webkit-scrollbar {
-                width: 6px;
-            }
         }
-
+        
         /* ==================== ORIGINAL STYLES ==================== */
         .logout-glow {
             animation: logout-glow 3s infinite alternate;
         }
-
+        
         @keyframes logout-glow {
             from {
                 box-shadow: 0 0 10px rgba(239, 68, 68, 0.5),
@@ -347,7 +203,7 @@
                           0 0 40px rgba(239, 68, 68, 0.4);
             }
         }
-
+        
         .security-scan {
             position: absolute;
             top: 0;
@@ -357,18 +213,18 @@
             background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
             animation: security-scan 3s linear infinite;
         }
-
+        
         @keyframes security-scan {
             0% { transform: translateX(-100%); }
             100% { transform: translateX(100%); }
         }
-
+        
         .session-timer {
             font-family: 'Courier New', monospace;
             font-weight: bold;
             letter-spacing: 2px;
         }
-
+        
         .confetti {
             position: fixed;
             width: 15px;
@@ -378,7 +234,7 @@
             opacity: 0;
             z-index: 9999;
         }
-
+        
         @keyframes confetti-fall {
             0% {
                 transform: translateY(-100px) rotate(0deg);
@@ -389,22 +245,22 @@
                 opacity: 0;
             }
         }
-
+        
         .enhanced-notification {
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
-
+        
         /* Original styles from Code B */
         .gradient-bg {
             background: linear-gradient(90deg, #1e40af 0%, #3b82f6 100%);
         }
-
+        
         .premium-gradient {
             background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 50%, #10b981 100%);
         }
-
+        
         .id-card {
             background: linear-gradient(145deg, #ffffff, #f0f4f8);
             border-radius: 20px;
@@ -412,12 +268,12 @@
             overflow: hidden;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
+        
         .id-card:hover {
             transform: translateY(-8px) scale(1.01);
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
         }
-
+        
         .id-card::before {
             content: '';
             position: absolute;
@@ -427,28 +283,28 @@
             height: 8px;
             background: linear-gradient(90deg, #1e40af 0%, #3b82f6 100%);
         }
-
+        
         .pattern-bg {
             background-image: 
                 radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.08) 0%, transparent 25%),
                 radial-gradient(circle at 90% 80%, rgba(30, 64, 175, 0.08) 0%, transparent 25%);
         }
-
+        
         .glass-effect {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
-
+        
         .floating-download-btn {
             animation: float 6s ease-in-out infinite, pulse-glow 2s ease-in-out infinite;
             z-index: 1000;
         }
-
+        
         .download-modal {
             animation: slideUp 0.3s ease-out;
         }
-
+        
         @keyframes slideUp {
             from {
                 opacity: 0;
@@ -459,39 +315,39 @@
                 transform: translateY(0);
             }
         }
-
+        
         /* Enhanced scrollbar for main page */
         ::-webkit-scrollbar {
-            width: 12px;
+            width: 10px;
         }
-
+        
         ::-webkit-scrollbar-track {
             background: linear-gradient(180deg, #f8fafc, #e2e8f0);
             border-radius: 10px;
         }
-
+        
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #3b82f6, #1e40af, #8b5cf6);
+            background: linear-gradient(180deg, #3b82f6, #1e40af);
             border-radius: 10px;
             border: 2px solid #f8fafc;
             transition: all 0.3s ease;
         }
-
+        
         ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(180deg, #2563eb, #1e3a8a, #7c3aed);
+            background: linear-gradient(180deg, #2563eb, #1e3a8a);
             transform: scale(1.1);
         }
-
+        
         ::-webkit-scrollbar-thumb:active {
-            background: linear-gradient(180deg, #1d4ed8, #1e3a8a, #6d28d9);
+            background: linear-gradient(180deg, #1d4ed8, #1e3a8a);
         }
-
+        
         /* Selection color */
         ::selection {
             background-color: rgba(59, 130, 246, 0.3);
             color: #1e3a8a;
         }
-
+        
         /* Loading animation */
         .loading-wave {
             display: flex;
@@ -499,7 +355,7 @@
             align-items: center;
             gap: 8px;
         }
-
+        
         .loading-wave div {
             width: 4px;
             height: 20px;
@@ -507,42 +363,48 @@
             animation: wave 1.2s ease-in-out infinite;
             border-radius: 10px;
         }
-
+        
         .loading-wave div:nth-child(2) { animation-delay: 0.1s; }
         .loading-wave div:nth-child(3) { animation-delay: 0.2s; }
         .loading-wave div:nth-child(4) { animation-delay: 0.3s; }
-
+        
         @keyframes wave {
             0%, 100% { transform: scaleY(0.5); }
             50% { transform: scaleY(1.5); }
         }
-
+        
         /* Smooth focus outline */
         *:focus {
             outline: 2px solid #3b82f6;
             outline-offset: 2px;
             border-radius: 4px;
         }
-
+        
         /* Reduce motion for users who prefer it */
         @media (prefers-reduced-motion: reduce) {
-            .scroll-reveal,
-            .section-fade,
-            .back-to-top,
+            .smooth-scroll,
+            .scroll-fade-in,
+            .page-transition,
+            .hover-scroll-effect,
             .id-card,
             .floating-download-btn,
             .download-modal,
             ::-webkit-scrollbar-thumb,
-            .loading-wave div,
-            .scroll-progress-bar {
+            .loading-wave div {
                 transition: none !important;
                 animation: none !important;
-                transform: none !important;
             }
             
             html {
                 scroll-behavior: auto;
             }
+        }
+        
+        /* TABLE HEADER - STILL STICKY FOR SCROLLING WITHIN TABLE ONLY */
+        .table-scroll-container thead th {
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
     </style>
     
@@ -599,16 +461,9 @@
         }
     </script>
 </head>
-<body class="pattern-bg momentum-scroll">
-    <!-- Scroll Progress Bar -->
-    <div class="scroll-progress-container">
-        <div class="scroll-progress-bar"></div>
-    </div>
-    
-    <!-- Back to Top Button -->
-    <div class="back-to-top" onclick="smoothScrollToTop()">
-        <i class="fas fa-chevron-up"></i>
-    </div>
+<body class="pattern-bg no-overscroll smooth-scroll">
+    <!-- Scroll Progress Indicator -->
+    <div id="scrollProgress" class="scroll-progress"></div>
     
     <!-- Main Page Container -->
     <div class="page-container" id="pageContainer">
@@ -802,9 +657,9 @@
         </div>
         
         <!-- ==================== MAIN CONTENT ==================== -->
-        <div class="content-container">
-            <!-- Header - NOT STICKY -->
-            <header class="page-header mb-8 md:mb-12 text-center scroll-reveal">
+        <div class="content-container page-transition">
+            <!-- Header - NOW SCROLLS FREELY WITH PAGE -->
+            <header class="page-header mb-8 md:mb-12 text-center">
                 <div class="flex flex-col md:flex-row items-center justify-between mb-6">
                    <a href="{% url 'dashboard_exam_page' %}" class="flex items-center mb-4 md:mb-0 hover:opacity-80 transition-opacity">
                         <div class="w-16 h-16 rounded-full premium-gradient flex items-center justify-center mr-4 shadow-float animate-bounce-slow">
@@ -819,7 +674,6 @@
                     </a>
                     
                     <div class="flex flex-col items-end">
-                        <!-- REMOVED: User Profile & Logout Button Section -->
                         <div class="flex items-center mb-3">
                             <!-- Simple Logout Button without user profile pop-up -->
                             <button onclick="showEnhancedLogout()" 
@@ -856,7 +710,7 @@
                 <!-- Left Column: Input Form & Stats -->
                 <div class="space-y-8">
                     <!-- Input Form Section -->
-                    <div class="bg-white rounded-2xl shadow-card p-6 md:p-8 id-card scroll-reveal delay-100">
+                    <div class="bg-white rounded-2xl shadow-card p-6 md:p-8 id-card hover-scroll-effect">
                         <h2 class="text-2xl font-bold text-dark mb-6 flex items-center">
                             <i class="fas fa-user-plus text-accent mr-3"></i>
                             Student Information
@@ -878,7 +732,7 @@
                                         <i class="fas fa-calendar-alt text-gray-500 mr-2"></i>Enrollment Year
                                     </label>
                                     <select id="enrollmentYear" 
-                                            class="w-full p-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-300 scroll-container">
+                                            class="w-full p-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-300">
                                         <!-- Years will be dynamically populated from 2020 to 3000 -->
                                     </select>
                                 </div>
@@ -888,7 +742,7 @@
                                         <i class="fas fa-school text-gray-500 mr-2"></i>Class
                                     </label>
                                     <select id="studentClass" 
-                                            class="w-full p-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-300 scroll-container">
+                                            class="w-full p-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-300">
                                         <option value="JSS 1">JSS 1</option>
                                         <option value="JSS 2">JSS 2</option>
                                         <option value="JSS 3">JSS 3</option>
@@ -958,7 +812,7 @@
                     </div>
                     
                     <!-- Bulk Operations -->
-                    <div class="bg-white rounded-2xl shadow-card p-6 id-card scroll-reveal delay-200">
+                    <div class="bg-white rounded-2xl shadow-card p-6 id-card hover-scroll-effect">
                         <h3 class="text-xl font-bold text-dark mb-4 flex items-center">
                             <i class="fas fa-bolt text-accent mr-3"></i>
                             Bulk Operations
@@ -985,7 +839,7 @@
                 <!-- Right Column: Preview & List -->
                 <div class="space-y-8">
                     <!-- ID Card Preview -->
-                    <div class="id-card shadow-card p-8 relative overflow-hidden scroll-reveal delay-100">
+                    <div class="id-card shadow-card p-8 relative overflow-hidden hover-scroll-effect">
                         <!-- Decorative elements -->
                         <div class="absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br from-blue-100 to-transparent rounded-full opacity-50"></div>
                         <div class="absolute -bottom-20 -left-20 w-40 h-40 bg-gradient-to-tr from-purple-100 to-transparent rounded-full opacity-50"></div>
@@ -1047,7 +901,7 @@
                     </div>
                     
                     <!-- Search & Generated IDs -->
-                    <div class="bg-white rounded-2xl shadow-card p-6 id-card scroll-reveal delay-200">
+                    <div class="bg-white rounded-2xl shadow-card p-6 id-card hover-scroll-effect">
                         <div class="flex flex-col md:flex-row justify-between items-center mb-6">
                             <h2 class="text-2xl font-bold text-dark flex items-center mb-4 md:mb-0">
                                 <i class="fas fa-list text-accent mr-3"></i>
@@ -1078,9 +932,9 @@
                             </div>
                         </div>
                         
-                        <div class="table-scroll-container scroll-container rounded-xl border-2 border-gray-200">
+                        <div class="table-scroll-container rounded-xl border-2 border-gray-200">
                             <table class="min-w-full divide-y divide-gray-200">
-                                <thead>
+                                <thead class="bg-gray-50 sticky top-0">
                                     <tr>
                                         <th class="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">No.</th>
                                         <th class="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Student ID</th>
@@ -1106,7 +960,7 @@
         </div>
         
         <!-- FULL WIDTH FOOTER -->
-        <footer class="full-width-footer page-footer mt-16 scroll-reveal delay-300">
+        <footer class="full-width-footer page-footer mt-16">
             <div class="max-w-7xl mx-auto px-4 py-6 sm:py-8">
                 <div class="text-center">
                     <p class="mb-2 text-white"><strong>EMFORHS Student ID Generator System • Ultimate Edition • AI-Powered</strong></p>
@@ -1132,287 +986,7 @@
     
     <script>
         // ====================
-        // ULTIMATE SCROLL SYSTEM
-        // ====================
-        
-        class UltimateScrollSystem {
-            constructor() {
-                this.scrollProgress = document.querySelector('.scroll-progress-bar');
-                this.scrollContainer = document.querySelector('.scroll-progress-container');
-                this.backToTopBtn = document.querySelector('.back-to-top');
-                this.lastScrollTop = 0;
-                this.scrollDirection = 'down';
-                this.isScrolling = false;
-                this.scrollTimeout = null;
-                this.init();
-            }
-            
-            init() {
-                this.setupScrollTracking();
-                this.setupScrollAnimations();
-                this.setupSmoothScroll();
-                this.setupKeyboardNavigation();
-                this.setupTouchOptimization();
-                this.setupPerformanceOptimization();
-            }
-            
-            setupScrollTracking() {
-                // Track scroll progress
-                window.addEventListener('scroll', () => {
-                    this.updateScrollProgress();
-                    this.toggleBackToTop();
-                    this.detectScrollDirection();
-                    this.handleScrollEffects();
-                }, { passive: true });
-                
-                // Initial state
-                this.updateScrollProgress();
-                this.toggleBackToTop();
-            }
-            
-            updateScrollProgress() {
-                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                const scrolled = (winScroll / height) * 100;
-                
-                if (this.scrollProgress) {
-                    this.scrollProgress.style.width = scrolled + "%";
-                    
-                    // Show/hide progress bar
-                    if (scrolled > 0) {
-                        this.scrollContainer.style.opacity = '1';
-                    } else {
-                        this.scrollContainer.style.opacity = '0';
-                    }
-                }
-            }
-            
-            toggleBackToTop() {
-                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                
-                if (this.backToTopBtn) {
-                    if (scrollTop > 300) {
-                        this.backToTopBtn.classList.add('visible');
-                    } else {
-                        this.backToTopBtn.classList.remove('visible');
-                    }
-                }
-            }
-            
-            detectScrollDirection() {
-                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                this.scrollDirection = scrollTop > this.lastScrollTop ? 'down' : 'up';
-                this.lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-            }
-            
-            handleScrollEffects() {
-                // Add momentum effect on scroll end
-                clearTimeout(this.scrollTimeout);
-                this.isScrolling = true;
-                
-                this.scrollTimeout = setTimeout(() => {
-                    this.isScrolling = false;
-                    // Perform any cleanup or final animations
-                }, 150);
-            }
-            
-            setupScrollAnimations() {
-                // Intersection Observer for scroll reveal animations
-                const observerOptions = {
-                    root: null,
-                    rootMargin: '0px',
-                    threshold: 0.1
-                };
-                
-                const revealObserver = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('visible');
-                            if (entry.target.classList.contains('section-fade')) {
-                                entry.target.classList.add('active');
-                            }
-                        }
-                    });
-                }, observerOptions);
-                
-                // Observe all elements with scroll-reveal class
-                document.querySelectorAll('.scroll-reveal').forEach(el => {
-                    revealObserver.observe(el);
-                });
-                
-                document.querySelectorAll('.section-fade').forEach(el => {
-                    revealObserver.observe(el);
-                });
-            }
-            
-            setupSmoothScroll() {
-                // Enhanced smooth scrolling for anchor links
-                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                    anchor.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        const targetId = anchor.getAttribute('href');
-                        if (targetId === '#') return;
-                        
-                        const targetElement = document.querySelector(targetId);
-                        if (targetElement) {
-                            this.scrollToElement(targetElement, 1000, -80);
-                        }
-                    });
-                });
-                
-                // Smooth scroll for internal navigation
-                window.smoothScrollToElement = (element, offset = 0) => {
-                    this.scrollToElement(element, 1000, offset);
-                };
-            }
-            
-            scrollToElement(element, duration = 1000, offset = 0) {
-                const start = window.pageYOffset;
-                const target = element.getBoundingClientRect().top + start - offset;
-                const distance = target - start;
-                let startTime = null;
-                
-                function animation(currentTime) {
-                    if (startTime === null) startTime = currentTime;
-                    const timeElapsed = currentTime - startTime;
-                    const run = this.easeInOutCubic(timeElapsed, start, distance, duration);
-                    window.scrollTo(0, run);
-                    if (timeElapsed < duration) requestAnimationFrame(animation.bind(this));
-                }
-                
-                requestAnimationFrame(animation.bind(this));
-            }
-            
-            easeInOutCubic(t, b, c, d) {
-                t /= d / 2;
-                if (t < 1) return c / 2 * t * t * t + b;
-                t -= 2;
-                return c / 2 * (t * t * t + 2) + b;
-            }
-            
-            setupKeyboardNavigation() {
-                // Keyboard shortcuts for scrolling
-                document.addEventListener('keydown', (e) => {
-                    // Space bar to scroll down (when not in form element)
-                    if (e.code === 'Space' && !this.isFormElement(e.target)) {
-                        e.preventDefault();
-                        window.scrollBy({
-                            top: window.innerHeight * 0.8,
-                            behavior: 'smooth'
-                        });
-                    }
-                    
-                    // Home key to top
-                    if (e.code === 'Home') {
-                        e.preventDefault();
-                        this.scrollToTop(800);
-                    }
-                    
-                    // End key to bottom
-                    if (e.code === 'End') {
-                        e.preventDefault();
-                        this.scrollToBottom(800);
-                    }
-                    
-                    // Page Up/Down
-                    if (e.code === 'PageUp') {
-                        e.preventDefault();
-                        window.scrollBy({
-                            top: -window.innerHeight * 0.9,
-                            behavior: 'smooth'
-                        });
-                    }
-                    
-                    if (e.code === 'PageDown') {
-                        e.preventDefault();
-                        window.scrollBy({
-                            top: window.innerHeight * 0.9,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            }
-            
-            isFormElement(element) {
-                return element.matches('input, textarea, select, button, [contenteditable="true"]');
-            }
-            
-            setupTouchOptimization() {
-                // Prevent rubber-band effect on iOS
-                document.addEventListener('touchmove', (e) => {
-                    if (e.scale !== 1) {
-                        e.preventDefault();
-                    }
-                }, { passive: false });
-                
-                // Better touch scrolling for containers
-                document.querySelectorAll('.scroll-container').forEach(container => {
-                    container.addEventListener('touchstart', () => {
-                        container.classList.add('scrolling');
-                    });
-                    
-                    container.addEventListener('touchend', () => {
-                        setTimeout(() => {
-                            container.classList.remove('scrolling');
-                        }, 150);
-                    });
-                });
-            }
-            
-            setupPerformanceOptimization() {
-                // Use requestAnimationFrame for smooth animations
-                let ticking = false;
-                
-                window.addEventListener('scroll', () => {
-                    if (!ticking) {
-                        window.requestAnimationFrame(() => {
-                            // Update parallax or other scroll-based effects here
-                            ticking = false;
-                        });
-                        ticking = true;
-                    }
-                }, { passive: true });
-                
-                // Optimize scroll performance
-                document.documentElement.style.setProperty('--scroll-behavior', 'smooth');
-            }
-            
-            scrollToTop(duration = 800) {
-                this.scrollToPosition(0, duration);
-            }
-            
-            scrollToBottom(duration = 800) {
-                const target = document.documentElement.scrollHeight - window.innerHeight;
-                this.scrollToPosition(target, duration);
-            }
-            
-            scrollToPosition(targetPosition, duration = 800) {
-                const start = window.pageYOffset;
-                const distance = targetPosition - start;
-                let startTime = null;
-                
-                function animation(currentTime) {
-                    if (startTime === null) startTime = currentTime;
-                    const timeElapsed = currentTime - startTime;
-                    const run = this.easeInOutCubic(timeElapsed, start, distance, duration);
-                    window.scrollTo(0, run);
-                    if (timeElapsed < duration) requestAnimationFrame(animation.bind(this));
-                }
-                
-                requestAnimationFrame(animation.bind(this));
-            }
-            
-            enableNoScroll() {
-                document.body.classList.add('no-scroll');
-            }
-            
-            disableNoScroll() {
-                document.body.classList.remove('no-scroll');
-            }
-        }
-        
-        // ====================
-        // MAIN APPLICATION
+        // ULTIMATE SYSTEM
         // ====================
         
         // Configuration
@@ -1428,17 +1002,378 @@
         let currentSearch = '';
         let sessionTimerInterval;
         let sessionTime = 1800; // 30 minutes in seconds
-        let scrollSystem;
         
         // CHARACTER SETS FOR ID GENERATION
-        const ALPHANUMERIC_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-        const NUMERIC_CHARS = '23456789';
-        const ALPHABET_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+        const ALPHANUMERIC_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // Removed confusing chars: 0, O, 1, I
+        const NUMERIC_CHARS = '23456789'; // Only numbers 2-9 (avoid 0,1)
+        const ALPHABET_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ'; // Removed confusing letters
+        
+        // ==================== PROFESSIONAL SCROLL MANAGEMENT ====================
+        
+        function setupScrollManagement() {
+            // Enable smooth scrolling for the whole page
+            document.documentElement.style.scrollBehavior = 'smooth';
+            
+            // Initialize scroll progress indicator
+            initScrollProgress();
+            
+            // Add scroll fade-in effects for elements
+            initScrollAnimations();
+            
+            // Setup keyboard shortcuts for scrolling
+            setupScrollShortcuts();
+            
+            // Enhanced scroll experience
+            enhanceScrollExperience();
+        }
+        
+        function initScrollProgress() {
+            const scrollProgress = document.getElementById('scrollProgress');
+            
+            window.addEventListener('scroll', function() {
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                
+                if (scrolled > 0) {
+                    scrollProgress.style.transform = `scaleX(${scrolled / 100})`;
+                    scrollProgress.classList.add('visible');
+                } else {
+                    scrollProgress.classList.remove('visible');
+                }
+                
+                // Hide progress bar at bottom
+                if (scrolled >= 99.5) {
+                    scrollProgress.style.opacity = '0';
+                } else {
+                    scrollProgress.style.opacity = '1';
+                }
+            });
+        }
+        
+        function initScrollAnimations() {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe elements with scroll-fade-in class
+            document.querySelectorAll('.scroll-fade-in').forEach(el => {
+                observer.observe(el);
+            });
+        }
+        
+        function setupScrollShortcuts() {
+            // Keyboard shortcuts for scrolling
+            document.addEventListener('keydown', function(e) {
+                // Space bar to scroll down
+                if (e.code === 'Space' && !e.target.matches('input, textarea, select, button')) {
+                    e.preventDefault();
+                    window.scrollBy({
+                        top: window.innerHeight * 0.8,
+                        behavior: 'smooth'
+                    });
+                }
+                
+                // Home key to top
+                if (e.code === 'Home') {
+                    e.preventDefault();
+                    smoothScrollToTop();
+                }
+                
+                // End key to bottom
+                if (e.code === 'End') {
+                    e.preventDefault();
+                    smoothScrollToBottom();
+                }
+            });
+        }
+        
+        function enhanceScrollExperience() {
+            // Prevent scroll jank
+            let ticking = false;
+            
+            window.addEventListener('scroll', function() {
+                if (!ticking) {
+                    window.requestAnimationFrame(function() {
+                        // Update elements on scroll
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+            
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        }
+        
+        function smoothScrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        
+        function smoothScrollToBottom() {
+            window.scrollTo({
+                top: document.documentElement.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+        
+        function smoothScrollToElement(element, offset = 0) {
+            if (!element) return;
+            
+            const elementPosition = element.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - offset;
+            
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+        }
+        
+        // ==================== ENHANCED LOGOUT SYSTEM ====================
+        
+        // Initialize session timer
+        function initSessionTimer() {
+            updateSessionTimerDisplay();
+            sessionTimerInterval = setInterval(() => {
+                if (sessionTime > 0) {
+                    sessionTime--;
+                    updateSessionTimerDisplay();
+                    
+                    // Show warning at 5 minutes
+                    if (sessionTime === 300) {
+                        showNotification('Session expires in 5 minutes. Save your work.', 'warning');
+                    }
+                    
+                    // Auto-logout at 0
+                    if (sessionTime === 0) {
+                        performAutoLogout();
+                    }
+                }
+            }, 1000);
+        }
+        
+        function updateSessionTimerDisplay() {
+            const minutes = Math.floor(sessionTime / 60);
+            const seconds = sessionTime % 60;
+            const timerElement = document.getElementById('sessionTimer');
+            if (timerElement) {
+                timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                // Change color based on time
+                if (sessionTime < 300) { // Less than 5 minutes
+                    timerElement.className = 'session-timer text-red-500 animate-pulse';
+                } else if (sessionTime < 600) { // Less than 10 minutes
+                    timerElement.className = 'session-timer text-yellow-500';
+                } else {
+                    timerElement.className = 'session-timer text-green-400';
+                }
+            }
+        }
+        
+        // Show enhanced logout modal
+        function showEnhancedLogout() {
+            // Pause session timer
+            clearInterval(sessionTimerInterval);
+            
+            // Create confetti effect
+            createConfetti();
+            
+            // Show modal with animation
+            const modal = document.getElementById('logoutModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            // Add entrance animation
+            setTimeout(() => {
+                modal.querySelector('div > div').style.transform = 'scale(1)';
+                modal.querySelector('div > div').style.opacity = '1';
+            }, 10);
+            
+            // Reset focus to cancel button
+            setTimeout(() => {
+                document.getElementById('cancelLogoutBtn').focus();
+            }, 100);
+        }
+        
+        // Hide logout modal
+        function hideLogoutModal() {
+            const modal = document.getElementById('logoutModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            
+            // Resume session timer
+            initSessionTimer();
+        }
+        
+        // Perform logout with Django
+        function performDjangoLogout() {
+            // Show success animation
+            showLogoutSuccessAnimation();
+            
+            // Clear all local data
+            clearAllLocalData();
+            
+            // After 2 seconds, submit Django logout form
+            setTimeout(() => {
+                // Create and submit Django logout form
+                const logoutForm = document.getElementById('djangoLogoutForm');
+                if (logoutForm) {
+                    // Add CSRF token if not present
+                    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                    const csrfInput = document.createElement('input');
+                    csrfInput.type = 'hidden';
+                    csrfInput.name = 'csrfmiddlewaretoken';
+                    csrfInput.value = csrfToken;
+                    logoutForm.appendChild(csrfInput);
+                    
+                    logoutForm.submit();
+                } else {
+                    // Fallback: Redirect to logout URL
+                    window.location.href = '/accounts/logout/';
+                }
+            }, 2000);
+        }
+        
+        // Auto logout when session expires
+        function performAutoLogout() {
+            showNotification('Session expired. Logging out automatically...', 'warning');
+            setTimeout(() => {
+                performDjangoLogout();
+            }, 2000);
+        }
+        
+        // Show logout success animation
+        function showLogoutSuccessAnimation() {
+            // Hide logout modal
+            hideLogoutModal();
+            
+            // Show success modal
+            const successModal = document.getElementById('logoutSuccessModal');
+            successModal.classList.remove('hidden');
+            successModal.classList.add('flex');
+            
+            // Animate progress bar
+            const progressBar = document.getElementById('logoutProgress');
+            setTimeout(() => {
+                progressBar.style.width = '100%';
+            }, 100);
+            
+            // Create more confetti
+            createEnhancedConfetti();
+            
+            // Play success sound (optional)
+            if (typeof Audio !== 'undefined') {
+                const successSound = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3');
+                successSound.volume = 0.3;
+                successSound.play().catch(e => console.log('Audio play failed:', e));
+            }
+        }
+        
+        // Create confetti effect
+        function createConfetti() {
+            const colors = ['#ef4444', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6'];
+            const container = document.body;
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animation = `confetti-fall ${Math.random() * 3 + 2}s linear forwards`;
+                confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                container.appendChild(confetti);
+                
+                // Remove after animation
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+        }
+        
+        // Create enhanced confetti for success
+        function createEnhancedConfetti() {
+            const shapes = ['●', '■', '▲', '◆', '★'];
+            const container = document.body;
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.width = '20px';
+                confetti.style.height = '20px';
+                confetti.style.fontSize = '12px';
+                confetti.style.color = '#10b981';
+                confetti.style.display = 'flex';
+                confetti.style.alignItems = 'center';
+                confetti.style.justifyContent = 'center';
+                confetti.textContent = shapes[Math.floor(Math.random() * shapes.length)];
+                confetti.style.animation = `confetti-fall ${Math.random() * 4 + 2}s linear forwards`;
+                confetti.style.animationDelay = Math.random() * 1 + 's';
+                container.appendChild(confetti);
+                
+                // Remove after animation
+                setTimeout(() => {
+                    confetti.remove();
+                }, 6000);
+            }
+        }
+        
+        // Clear all local data
+        function clearAllLocalData() {
+            try {
+                // Clear localStorage
+                localStorage.removeItem('emfhs_students');
+                localStorage.removeItem('emfhs_backup_' + Date.now());
+                
+                // Clear any session data
+                sessionStorage.clear();
+                
+                // Clear form data
+                document.getElementById('studentForm').reset();
+                
+                // Clear state
+                students = [];
+                yearCounters = {};
+                currentPage = 1;
+                currentSearch = '';
+                
+                console.log('All local data cleared securely');
+            } catch (error) {
+                console.error('Error clearing local data:', error);
+            }
+        }
         
         // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize Ultimate Scroll System FIRST
-            scrollSystem = new UltimateScrollSystem();
+            // Setup professional scroll management FIRST
+            setupScrollManagement();
             
             // Initialize session timer
             initSessionTimer();
@@ -1459,9 +1394,11 @@
             
             // ==================== LOGOUT EVENT LISTENERS ====================
             
+            // Logout modal buttons
             document.getElementById('confirmLogoutBtn').addEventListener('click', performDjangoLogout);
             document.getElementById('cancelLogoutBtn').addEventListener('click', hideLogoutModal);
             
+            // Close modal when clicking outside
             document.getElementById('logoutModal').addEventListener('click', function(e) {
                 if (e.target.id === 'logoutModal') {
                     hideLogoutModal();
@@ -1536,11 +1473,6 @@
                     updateSessionTimerDisplay();
                 });
             });
-            
-            // Global smooth scroll to top function
-            window.smoothScrollToTop = function() {
-                scrollSystem.scrollToTop(800);
-            };
         });
         
         // Populate year options from 2020 to 3000
@@ -1565,187 +1497,14 @@
             }
         }
         
-        // ==================== ENHANCED LOGOUT SYSTEM ====================
-        
-        function initSessionTimer() {
-            updateSessionTimerDisplay();
-            sessionTimerInterval = setInterval(() => {
-                if (sessionTime > 0) {
-                    sessionTime--;
-                    updateSessionTimerDisplay();
-                    
-                    if (sessionTime === 300) {
-                        showNotification('Session expires in 5 minutes. Save your work.', 'warning');
-                    }
-                    
-                    if (sessionTime === 0) {
-                        performAutoLogout();
-                    }
-                }
-            }, 1000);
-        }
-        
-        function updateSessionTimerDisplay() {
-            const minutes = Math.floor(sessionTime / 60);
-            const seconds = sessionTime % 60;
-            const timerElement = document.getElementById('sessionTimer');
-            if (timerElement) {
-                timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                
-                if (sessionTime < 300) {
-                    timerElement.className = 'session-timer text-red-500 animate-pulse';
-                } else if (sessionTime < 600) {
-                    timerElement.className = 'session-timer text-yellow-500';
-                } else {
-                    timerElement.className = 'session-timer text-green-400';
-                }
-            }
-        }
-        
-        function showEnhancedLogout() {
-            clearInterval(sessionTimerInterval);
-            createConfetti();
-            
-            const modal = document.getElementById('logoutModal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            
-            scrollSystem.enableNoScroll();
-            
-            setTimeout(() => {
-                document.getElementById('cancelLogoutBtn').focus();
-            }, 100);
-        }
-        
-        function hideLogoutModal() {
-            const modal = document.getElementById('logoutModal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-            
-            scrollSystem.disableNoScroll();
-            initSessionTimer();
-        }
-        
-        function performDjangoLogout() {
-            showLogoutSuccessAnimation();
-            clearAllLocalData();
-            
-            setTimeout(() => {
-                const logoutForm = document.getElementById('djangoLogoutForm');
-                if (logoutForm) {
-                    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-                    const csrfInput = document.createElement('input');
-                    csrfInput.type = 'hidden';
-                    csrfInput.name = 'csrfmiddlewaretoken';
-                    csrfInput.value = csrfToken;
-                    logoutForm.appendChild(csrfInput);
-                    
-                    logoutForm.submit();
-                } else {
-                    window.location.href = '/accounts/logout/';
-                }
-            }, 2000);
-        }
-        
-        function performAutoLogout() {
-            showNotification('Session expired. Logging out automatically...', 'warning');
-            setTimeout(() => {
-                performDjangoLogout();
-            }, 2000);
-        }
-        
-        function showLogoutSuccessAnimation() {
-            hideLogoutModal();
-            
-            const successModal = document.getElementById('logoutSuccessModal');
-            successModal.classList.remove('hidden');
-            successModal.classList.add('flex');
-            
-            const progressBar = document.getElementById('logoutProgress');
-            setTimeout(() => {
-                progressBar.style.width = '100%';
-            }, 100);
-            
-            createEnhancedConfetti();
-            
-            if (typeof Audio !== 'undefined') {
-                const successSound = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3');
-                successSound.volume = 0.3;
-                successSound.play().catch(e => console.log('Audio play failed:', e));
-            }
-        }
-        
-        function createConfetti() {
-            const colors = ['#ef4444', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6'];
-            const container = document.body;
-            
-            for (let i = 0; i < 50; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.animation = `confetti-fall ${Math.random() * 3 + 2}s linear forwards`;
-                confetti.style.animationDelay = Math.random() * 0.5 + 's';
-                container.appendChild(confetti);
-                
-                setTimeout(() => {
-                    confetti.remove();
-                }, 5000);
-            }
-        }
-        
-        function createEnhancedConfetti() {
-            const shapes = ['●', '■', '▲', '◆', '★'];
-            const container = document.body;
-            
-            for (let i = 0; i < 100; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.width = '20px';
-                confetti.style.height = '20px';
-                confetti.style.fontSize = '12px';
-                confetti.style.color = '#10b981';
-                confetti.style.display = 'flex';
-                confetti.style.alignItems = 'center';
-                confetti.style.justifyContent = 'center';
-                confetti.textContent = shapes[Math.floor(Math.random() * shapes.length)];
-                confetti.style.animation = `confetti-fall ${Math.random() * 4 + 2}s linear forwards`;
-                confetti.style.animationDelay = Math.random() * 1 + 's';
-                container.appendChild(confetti);
-                
-                setTimeout(() => {
-                    confetti.remove();
-                }, 6000);
-            }
-        }
-        
-        function clearAllLocalData() {
-            try {
-                localStorage.removeItem('emfhs_students');
-                localStorage.removeItem('emfhs_backup_' + Date.now());
-                sessionStorage.clear();
-                document.getElementById('studentForm').reset();
-                
-                students = [];
-                yearCounters = {};
-                currentPage = 1;
-                currentSearch = '';
-                
-                console.log('All local data cleared securely');
-            } catch (error) {
-                console.error('Error clearing local data:', error);
-            }
-        }
-        
-        // ==================== ID GENERATION SYSTEM ====================
-        
+        // Load students
         function loadStudents() {
             const saved = localStorage.getItem('emfhs_students');
             if (saved) {
                 try {
                     students = JSON.parse(saved);
                     
+                    // Initialize year counters
                     students.forEach(student => {
                         const year = student.year;
                         if (!yearCounters[year]) {
@@ -1763,11 +1522,13 @@
             }
         }
         
+        // Save with storage check
         function saveStudents() {
             try {
                 const dataStr = JSON.stringify(students);
                 const dataSize = new Blob([dataStr]).size;
                 
+                // Check storage limit
                 if (dataSize > STORAGE_LIMIT) {
                     showNotification('Storage limit reached! Cannot save more data.', 'error');
                     return false;
@@ -1785,7 +1546,11 @@
             }
         }
         
+        // ==================== ENHANCED ID GENERATION ====================
+        
+        // Generate mixed alphanumeric code (3 characters)
         function generateMiddleCode(year) {
+            // Create a unique seed based on year and current count
             if (!yearCounters[year]) {
                 yearCounters[year] = 1;
             } else {
@@ -1793,23 +1558,29 @@
             }
             
             const seed = year * 1000 + yearCounters[year];
+            
+            // Create a scrambled pattern that's not sequential
             const patterns = [
                 'A1B', 'C2D', 'E3F', 'G4H', 'I5J', 'K6L', 'M7N', 'P8Q', 'R9S', 'T2U',
                 'V3W', 'X4Y', 'Z5A', 'B6C', 'D7E', 'F8G', 'H9I', 'J2K', 'L3M', 'N4O',
                 'P5Q', 'R6S', 'T7U', 'V8W', 'X9Y', 'Z2A', 'B3C', 'D4E', 'F5G', 'H6I'
             ];
             
+            // Use the seed to select a pattern, but make it non-sequential
             const patternIndex = (seed * 13) % patterns.length;
             let code = patterns[patternIndex];
             
+            // Add some randomness
             const randomChar = ALPHANUMERIC_CHARS.charAt(Math.floor(Math.random() * ALPHANUMERIC_CHARS.length));
             const position = Math.floor(Math.random() * 3);
             
+            // Replace one character in the code with a random character
             code = code.substring(0, position) + randomChar + code.substring(position + 1);
             
             return code;
         }
         
+        // Generate checksum (2 characters)
         function generateChecksum() {
             let checksum = '';
             for (let i = 0; i < 2; i++) {
@@ -1818,6 +1589,7 @@
             return checksum;
         }
         
+        // Generate unique student ID
         function generateStudentID() {
             const fullName = document.getElementById('fullName').value.trim();
             const year = document.getElementById('enrollmentYear').value;
@@ -1829,6 +1601,7 @@
                 return;
             }
             
+            // Check for duplicates
             const duplicate = students.find(student => 
                 student.name.toLowerCase() === fullName.toLowerCase() && 
                 student.class === studentClass && 
@@ -1841,10 +1614,12 @@
                 return;
             }
             
+            // Generate ID parts
             const middleCode = generateMiddleCode(year);
             const checksum = generateChecksum();
             const studentId = `EMFHS-${year}-${middleCode}-${checksum}`;
             
+            // Create student object
             const student = {
                 id: studentId,
                 name: fullName,
@@ -1868,7 +1643,7 @@
                 document.getElementById('admissionDate').value = new Date().toISOString().split('T')[0];
                 showNotification(`ID ${studentId} generated for ${fullName}!`, 'success');
                 
-                // Smooth scroll to the new entry
+                // Smooth scroll to the new entry in the table
                 setTimeout(() => {
                     const tableContainer = document.querySelector('.table-scroll-container');
                     if (tableContainer) {
@@ -1878,6 +1653,7 @@
             }
         }
         
+        // Bulk generate IDs
         function bulkGenerate() {
             const namesText = document.getElementById('bulkNames').value.trim();
             if (!namesText) {
@@ -1900,6 +1676,7 @@
                 fullName = fullName.trim();
                 if (!fullName) return;
                 
+                // Check duplicate
                 const duplicate = students.find(student => 
                     student.name.toLowerCase() === fullName.toLowerCase() && 
                     student.class === studentClass && 
@@ -1911,6 +1688,7 @@
                     return;
                 }
                 
+                // Generate ID
                 const middleCode = generateMiddleCode(year);
                 const checksum = generateChecksum();
                 const studentId = `EMFHS-${year}-${middleCode}-${checksum}`;
@@ -1940,7 +1718,9 @@
             }
         }
         
-        // ==================== EXPORT FUNCTIONS ====================
+        // ====================
+        // DOWNLOAD/EXPORT FUNCTIONS
+        // ====================
         
         function showDownloadModal() {
             if (students.length === 0) {
@@ -1951,28 +1731,25 @@
             document.getElementById('exportCount').textContent = `${students.length} records`;
             document.getElementById('downloadModal').classList.remove('hidden');
             document.getElementById('downloadModal').classList.add('flex');
-            scrollSystem.enableNoScroll();
         }
         
         function hideDownloadModal() {
             document.getElementById('downloadModal').classList.add('hidden');
             document.getElementById('downloadModal').classList.remove('flex');
-            scrollSystem.disableNoScroll();
         }
         
         function showLoading(message = 'Preparing your document...') {
             document.getElementById('loadingText').textContent = message;
             document.getElementById('loadingOverlay').classList.remove('hidden');
             document.getElementById('loadingOverlay').classList.add('flex');
-            scrollSystem.enableNoScroll();
         }
         
         function hideLoading() {
             document.getElementById('loadingOverlay').classList.add('hidden');
             document.getElementById('loadingOverlay').classList.remove('flex');
-            scrollSystem.disableNoScroll();
         }
         
+        // Export to Word
         function exportToWord() {
             showLoading('Generating Word document...');
             
@@ -2080,6 +1857,7 @@
             }, 1000);
         }
         
+        // Export to PDF
         function exportToPDF() {
             showLoading('Generating PDF document...');
             
@@ -2089,6 +1867,7 @@
                 const includeTimestamp = document.getElementById('includeTimestamp').checked;
                 const includeChecksum = document.getElementById('includeChecksum').checked;
                 
+                // Title
                 doc.setFontSize(20);
                 doc.setTextColor(30, 64, 175);
                 doc.text('EMILIA FOREMOST HIGH SCHOOL', 105, 20, { align: 'center' });
@@ -2097,11 +1876,13 @@
                 doc.setTextColor(55, 65, 81);
                 doc.text('Student ID Registry', 105, 30, { align: 'center' });
                 
+                // Report info
                 doc.setFontSize(10);
                 doc.setTextColor(107, 114, 128);
                 doc.text(`Report Date: ${new Date().toLocaleDateString()}`, 20, 45);
                 doc.text(`Total Students: ${students.length}`, 20, 52);
                 
+                // Table data
                 const headers = [
                     ['No.', 'Student ID', 'Full Name', 'Class', 'Year', 'Admission Date']
                 ];
@@ -2127,6 +1908,7 @@
                     return row;
                 });
                 
+                // Generate table
                 doc.autoTable({
                     head: headers,
                     body: data,
@@ -2141,6 +1923,7 @@
                     alternateRowStyles: { fillColor: [248, 250, 252] }
                 });
                 
+                // Footer
                 const pageCount = doc.internal.getNumberOfPages();
                 for (let i = 1; i <= pageCount; i++) {
                     doc.setPage(i);
@@ -2154,6 +1937,7 @@
                     );
                 }
                 
+                // Save PDF
                 doc.save(`EMFORHS_Students_${new Date().toISOString().split('T')[0]}.pdf`);
                 
                 hideDownloadModal();
@@ -2162,6 +1946,7 @@
             }, 1000);
         }
         
+        // Export to CSV
         function exportToCSV() {
             showLoading('Generating CSV file...');
             
@@ -2209,6 +1994,7 @@
             }, 500);
         }
         
+        // Export JSON data
         function exportJsonData() {
             if (students.length === 0) {
                 showNotification('No data to export', 'warning');
@@ -2230,6 +2016,7 @@
             showNotification(`Exported ${students.length} records as JSON`, 'success');
         }
         
+        // Import data
         function importData(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -2244,15 +2031,18 @@
                 try {
                     const imported = JSON.parse(e.target.result);
                     
+                    // Validate imported data
                     if (!Array.isArray(imported) || imported.length === 0) {
                         throw new Error('Invalid data format');
                     }
                     
+                    // Check first item structure
                     const first = imported[0];
                     if (!first.id || !first.name || !first.year) {
                         throw new Error('Data missing required fields');
                     }
                     
+                    // Check storage capacity
                     const dataSize = new Blob([JSON.stringify(imported)]).size;
                     if (dataSize > STORAGE_LIMIT) {
                         showNotification(`Import too large (${formatBytes(dataSize)}). Max: 5MB`, 'error');
@@ -2261,6 +2051,7 @@
                     
                     students = imported;
                     
+                    // Reset year counters
                     yearCounters = {};
                     students.forEach(student => {
                         const year = student.year;
@@ -2285,18 +2076,23 @@
                     showNotification('Error importing data. Check file format.', 'error');
                 }
                 
+                // Reset file input
                 document.getElementById('fileInput').value = '';
             };
             
             reader.readAsText(file);
         }
         
-        // ==================== UI FUNCTIONS ====================
+        // ====================
+        // UI FUNCTIONS
+        // ====================
         
+        // Render student list with pagination
         function renderStudentList() {
             const tbody = document.getElementById('idList');
             const emptyMessage = document.getElementById('emptyMessage');
             
+            // Filter students based on search
             let filteredStudents = students;
             if (currentSearch) {
                 const searchTerm = currentSearch.toLowerCase();
@@ -2311,6 +2107,7 @@
             const total = filteredStudents.length;
             const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
             
+            // Adjust current page if needed
             if (currentPage > totalPages && totalPages > 0) currentPage = totalPages;
             if (currentPage < 1) currentPage = 1;
             
@@ -2318,6 +2115,7 @@
             const end = start + ITEMS_PER_PAGE;
             const pageStudents = filteredStudents.slice(start, end);
             
+            // Update pagination info
             document.getElementById('pageStart').textContent = total > 0 ? start + 1 : 0;
             document.getElementById('pageEnd').textContent = Math.min(end, total);
             document.getElementById('totalStudents').textContent = total;
@@ -2326,6 +2124,7 @@
             document.getElementById('prevPage').disabled = currentPage === 1;
             document.getElementById('nextPage').disabled = currentPage === totalPages || totalPages === 0;
             
+            // Render table
             if (pageStudents.length === 0) {
                 tbody.innerHTML = '';
                 emptyMessage.style.display = 'block';
@@ -2341,7 +2140,7 @@
             pageStudents.forEach((student, index) => {
                 const actualIndex = start + index;
                 html += `
-                <tr class="hover:bg-gray-50 transition">
+                <tr class="hover:bg-gray-50 transition hover-scroll-effect">
                     <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">${actualIndex + 1}</td>
                     <td class="px-4 py-3 whitespace-nowrap text-sm font-mono font-bold text-primary">
                         <span class="cursor-pointer hover:text-secondary" onclick="copyToClipboard('${student.id}')" title="Click to copy">
@@ -2384,6 +2183,7 @@
                 currentPage = newPage;
                 renderStudentList();
                 
+                // Smooth scroll to top of table
                 const tableContainer = document.querySelector('.table-scroll-container');
                 if (tableContainer) {
                     tableContainer.scrollTo({
@@ -2413,16 +2213,19 @@
             document.getElementById('enrollmentYear').value = student.year;
             document.getElementById('studentClass').value = student.class;
             
+            // Parse admission date
             const date = new Date(student.dateObj || student.admissionDate);
             document.getElementById('admissionDate').value = date.toISOString().split('T')[0];
             
+            // Remove the old entry
             students.splice(index, 1);
             saveStudents();
             renderStudentList();
             
             showNotification(`Editing ${student.name}. Fill form and click Generate to update.`, 'info');
             
-            scrollSystem.scrollToElement(document.getElementById('fullName'), 800, -20);
+            // Smooth scroll to form
+            smoothScrollToElement(document.getElementById('fullName'), 20);
         }
         
         function deleteStudent(index) {
@@ -2478,6 +2281,7 @@
             document.getElementById('storageUsed').textContent = formatBytes(dataSize);
             document.getElementById('storagePercent').textContent = Math.round(percentage) + '%';
             
+            // Show warning if > 70%
             const warning = document.getElementById('storageWarning');
             if (percentage > 70) {
                 warning.classList.remove('hidden');
@@ -2502,6 +2306,7 @@
             navigator.clipboard.writeText(text).then(() => {
                 showNotification(`Copied: ${text}`, 'success');
             }).catch(err => {
+                // Fallback for older browsers
                 const textArea = document.createElement('textarea');
                 textArea.value = text;
                 document.body.appendChild(textArea);
@@ -2523,10 +2328,13 @@
             showNotification('Individual ID card download feature would generate a high-quality image', 'info');
         }
         
+        // Enhanced notification system
         function showNotification(message, type = 'info') {
+            // Remove existing
             const existing = document.querySelector('.notification');
             if (existing) existing.remove();
             
+            // Create new
             const notification = document.createElement('div');
             const icons = {
                 success: 'fa-check-circle',
@@ -2553,6 +2361,7 @@
             
             document.body.appendChild(notification);
             
+            // Auto-remove with animation
             setTimeout(() => {
                 notification.style.opacity = '0';
                 notification.style.transform = 'translateY(20px)';
