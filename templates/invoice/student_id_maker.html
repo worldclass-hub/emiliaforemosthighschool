@@ -17,159 +17,149 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- ==================== ULTIMATE FLUID SCROLLING SYSTEM ==================== -->
+    <!-- ==================== ULTRA SMOOTH SCROLLING SYSTEM ==================== -->
     <style>
-        /* PERFECTLY FLUID SCROLLING BASE */
+        /* HYPER-SMOOTH SCROLLING BASE */
         html {
             scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
-            scroll-padding-top: 0;
+            scroll-padding-top: 20px;
+            overflow-y: scroll;
+            overflow-x: hidden;
         }
         
         body {
-            overflow-y: auto;
+            scroll-behavior: smooth;
+            overflow-y: scroll;
             overflow-x: hidden;
             -webkit-overflow-scrolling: touch;
-            overscroll-behavior-y: none;
-            scroll-behavior: smooth;
+            overscroll-behavior-y: contain;
         }
         
-        /* BUTTERY SMOOTH CONTAINERS */
-        .fluid-scroll {
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
+        /* FLUID SCROLL CONTAINERS */
+        .scroll-container {
             overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #3b82f6 #f1f5f9;
+            scroll-behavior: smooth;
         }
         
-        /* WATER-LIKE SCROLLBAR */
-        ::-webkit-scrollbar {
+        .scroll-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .scroll-container::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+        
+        .scroll-container::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #3b82f6, #1e40af);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .scroll-container::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, #2563eb, #1e3a8a);
             width: 8px;
-            height: 8px;
         }
         
-        ::-webkit-scrollbar-track {
-            background: transparent;
-            border-radius: 4px;
+        /* SILKY SMOOTH SCROLL ANIMATIONS */
+        .smooth-scroll {
+            scroll-behavior: smooth !important;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
         
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #3b82f6 0%, #1e40af 50%, #8b5cf6 100%);
-            border-radius: 4px;
-            transition: all 0.2s ease;
+        /* FLUID SCROLL EFFECTS */
+        .scroll-fade-in {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
         }
         
-        ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(180deg, #60a5fa 0%, #3b82f6 50%, #a78bfa 100%);
-            transform: scale(1.05);
+        .scroll-fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
         
-        ::-webkit-scrollbar-thumb:active {
-            background: linear-gradient(180deg, #1d4ed8 0%, #1e40af 50%, #7c3aed 100%);
+        /* ENHANCED TABLE SCROLLING */
+        .table-scroll-container {
+            max-height: 400px;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
         }
         
-        /* REMOVE ALL SCROLL RESTRICTIONS */
-        .no-scroll-restrictions {
-            overflow: visible !important;
-            max-height: none !important;
+        /* VELVET PAGE TRANSITIONS */
+        .page-transition {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
         
-        /* FLUID ANIMATIONS */
-        .fluid-transition {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        /* WATER-LIKE SCROLL EFFECT */
-        .water-scroll {
+        /* SCROLL PROGRESS INDICATOR */
+        .scroll-progress {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 3px;
-            background: linear-gradient(90deg, 
-                transparent 0%, 
-                rgba(59, 130, 246, 0.8) 25%, 
-                rgba(139, 92, 246, 0.9) 50%, 
-                rgba(59, 130, 246, 0.8) 75%, 
-                transparent 100%
-            );
-            transform: scaleX(0);
+            background: linear-gradient(to right, #3b82f6, #8b5cf6, #10b981);
             transform-origin: 0%;
             z-index: 9999;
-            pointer-events: none;
-            transition: transform 0.1s linear;
-        }
-        
-        /* SMOOTH FADE EFFECTS */
-        .fade-in-up {
             opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.5s ease forwards;
+            transition: opacity 0.3s ease;
         }
         
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .scroll-progress.visible {
+            opacity: 1;
         }
         
-        /* ENHANCED TABLE SCROLLING - NO RESTRICTIONS */
-        .fluid-table-container {
-            overflow-y: auto;
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
-            max-height: none;
+        /* BUTTERY SMOOTH HOVER EFFECTS */
+        .hover-scroll-effect {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
         
-        /* PERFECTLY SMOOTH MODALS */
-        .fluid-modal {
-            animation: fluidSlideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        .hover-scroll-effect:hover {
+            transform: translateY(-4px);
         }
         
-        @keyframes fluidSlideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px) scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+        /* ENHANCED SMOOTH SCROLL FOR MAIN PAGE */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
         }
         
-        /* HOVER EFFECTS LIKE WATER RIPPLES */
-        .ripple-effect {
-            position: relative;
-            overflow: hidden;
+        ::-webkit-scrollbar-track {
+            background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 10px;
         }
         
-        .ripple-effect:after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 5px;
-            height: 5px;
-            background: rgba(255, 255, 255, 0.3);
-            opacity: 0;
-            border-radius: 100%;
-            transform: scale(1, 1) translate(-50%);
-            transform-origin: 50% 50%;
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #3b82f6, #1e40af);
+            border-radius: 10px;
+            border: 2px solid #f8fafc;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
         
-        .ripple-effect:focus:not(:active)::after {
-            animation: ripple 1s ease-out;
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #2563eb, #1e3a8a);
+            transform: scale(1.05);
+            border-radius: 12px;
         }
         
-        @keyframes ripple {
-            0% {
-                transform: scale(0, 0);
-                opacity: 0.5;
-            }
-            100% {
-                transform: scale(20, 20);
-                opacity: 0;
-            }
+        ::-webkit-scrollbar-thumb:active {
+            background: linear-gradient(180deg, #1d4ed8, #1e3a8a);
+            transform: scale(1.08);
+        }
+        
+        /* SMOOTH CORNER SCROLLING */
+        .smooth-corners {
+            scroll-corner-color: transparent;
+        }
+        
+        /* NO JANK SCROLL */
+        .no-scroll-jank {
+            backface-visibility: hidden;
+            perspective: 1000;
+            transform: translateZ(0);
         }
         
         /* ==================== ORIGINAL LAYOUT STYLES ==================== */
@@ -178,6 +168,7 @@
             height: 100%;
             margin: 0;
             padding: 0;
+            overflow-x: hidden;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
         }
         
@@ -225,6 +216,10 @@
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             z-index: 40;
             position: relative;
+        }
+        
+        .no-overscroll {
+            overscroll-behavior: none;
         }
         
         .content-container {
@@ -355,22 +350,17 @@
         }
         
         .download-modal {
-            animation: fluidSlideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: slideUp 0.3s ease-out;
         }
         
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(5deg); }
-        }
-        
-        @keyframes pulse-glow {
-            0%, 100% { 
-                box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
-                transform: scale(1);
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
             }
-            50% { 
-                box-shadow: 0 0 40px rgba(139, 92, 246, 0.8);
-                transform: scale(1.05);
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
         
@@ -414,13 +404,15 @@
         
         /* Reduce motion for users who prefer it */
         @media (prefers-reduced-motion: reduce) {
-            .fluid-transition,
-            .fluid-modal,
+            .smooth-scroll,
+            .scroll-fade-in,
+            .page-transition,
+            .hover-scroll-effect,
+            .id-card,
             .floating-download-btn,
             .download-modal,
-            .loading-wave div,
-            .id-card,
-            ::-webkit-scrollbar-thumb {
+            ::-webkit-scrollbar-thumb,
+            .loading-wave div {
                 transition: none !important;
                 animation: none !important;
             }
@@ -465,8 +457,8 @@
                     },
                     keyframes: {
                         'float': {
-                            '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
-                            '50%': { transform: 'translateY(-20px) rotate(5deg)' }
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' }
                         },
                         'pulse-glow': {
                             '0%, 100%': { 
@@ -484,16 +476,16 @@
         }
     </script>
 </head>
-<body class="pattern-bg fluid-scroll">
-    <!-- Water-like Scroll Indicator -->
-    <div id="waterScroll" class="water-scroll"></div>
+<body class="pattern-bg no-overscroll smooth-scroll no-scroll-jank">
+    <!-- Scroll Progress Indicator -->
+    <div id="scrollProgress" class="scroll-progress"></div>
     
     <!-- Main Page Container -->
     <div class="page-container" id="pageContainer">
         <!-- ================ ULTIMATE LOGOUT SYSTEM ================ -->
         
         <!-- Floating Download Button -->
-        <div id="floatingDownloadBtn" class="floating-download-btn fixed bottom-8 right-8 w-16 h-16 rounded-full premium-gradient flex items-center justify-center shadow-float cursor-pointer z-50 hover:shadow-glow transition-all duration-300 ripple-effect">
+        <div id="floatingDownloadBtn" class="floating-download-btn fixed bottom-8 right-8 w-16 h-16 rounded-full premium-gradient flex items-center justify-center shadow-float cursor-pointer z-50 hover:shadow-glow transition-all duration-300">
             <i class="fas fa-file-export text-white text-2xl"></i>
             <div class="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center text-white text-xs font-bold animate-pulse">
                 <span id="downloadCount">0</span>
@@ -502,7 +494,7 @@
         
         <!-- Enhanced Logout Confirmation Modal -->
         <div id="logoutModal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-[9999] p-4 backdrop-blur-sm">
-            <div class="bg-gradient-to-br from-gray-900 to-black rounded-3xl shadow-2xl max-w-md w-full overflow-hidden border border-gray-800 fluid-modal">
+            <div class="bg-gradient-to-br from-gray-900 to-black rounded-3xl shadow-2xl max-w-md w-full overflow-hidden border border-gray-800">
                 <!-- Security Scan Effect -->
                 <div class="security-scan"></div>
                 
@@ -537,7 +529,7 @@
                     <!-- Action Buttons -->
                     <div class="space-y-4">
                         <button id="confirmLogoutBtn" 
-                                class="w-full bg-gradient-to-r from-red-700 to-red-900 hover:from-red-600 hover:to-red-800 text-white font-bold py-4 rounded-xl transition-all duration-300 flex items-center justify-center transform hover:scale-[1.02] active:scale-95 shadow-lg group ripple-effect">
+                                class="w-full bg-gradient-to-r from-red-700 to-red-900 hover:from-red-600 hover:to-red-800 text-white font-bold py-4 rounded-xl transition-all duration-300 flex items-center justify-center transform hover:scale-[1.02] active:scale-95 shadow-lg group">
                             <div class="flex items-center">
                                 <i class="fas fa-sign-out-alt text-xl mr-3 group-hover:animate-spin"></i>
                                 <span class="text-lg">Confirm Logout</span>
@@ -545,7 +537,7 @@
                         </button>
                         
                         <button id="cancelLogoutBtn" 
-                                class="w-full bg-gray-800 hover:bg-gray-700 text-gray-300 font-bold py-4 rounded-xl transition-all duration-300 flex items-center justify-center transform hover:scale-[1.02] active:scale-95 border border-gray-700 ripple-effect">
+                                class="w-full bg-gray-800 hover:bg-gray-700 text-gray-300 font-bold py-4 rounded-xl transition-all duration-300 flex items-center justify-center transform hover:scale-[1.02] active:scale-95 border border-gray-700">
                             <div class="flex items-center">
                                 <i class="fas fa-times text-xl mr-3"></i>
                                 <span>Cancel & Return</span>
@@ -568,7 +560,7 @@
         
         <!-- Logout Success Modal -->
         <div id="logoutSuccessModal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-[9999] p-4 backdrop-blur-sm">
-            <div class="bg-gradient-to-br from-green-900/20 to-emerald-900/20 rounded-3xl shadow-2xl max-w-md w-full overflow-hidden border border-green-800/30 fluid-modal">
+            <div class="bg-gradient-to-br from-green-900/20 to-emerald-900/20 rounded-3xl shadow-2xl max-w-md w-full overflow-hidden border border-green-800/30">
                 <div class="p-10 text-center">
                     <div class="w-24 h-24 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 mx-auto mb-8 flex items-center justify-center shadow-lg animate-bounce">
                         <i class="fas fa-check text-white text-4xl"></i>
@@ -601,7 +593,7 @@
                             <i class="fas fa-download text-accent mr-2"></i>
                             Export Student Data
                         </h3>
-                        <button id="closeModal" class="text-gray-400 hover:text-gray-600 text-2xl ripple-effect">
+                        <button id="closeModal" class="text-gray-400 hover:text-gray-600 text-2xl">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
@@ -612,7 +604,7 @@
                     </p>
                     
                     <div class="space-y-4">
-                        <button id="exportWordBtn" class="w-full bg-blue-50 hover:bg-blue-100 border-2 border-blue-200 text-blue-800 p-4 rounded-xl flex items-center justify-between transition-all duration-300 group hover:scale-[1.02] ripple-effect">
+                        <button id="exportWordBtn" class="w-full bg-blue-50 hover:bg-blue-100 border-2 border-blue-200 text-blue-800 p-4 rounded-xl flex items-center justify-between transition-all duration-300 group hover:scale-[1.02]">
                             <div class="flex items-center">
                                 <div class="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center mr-4 group-hover:bg-blue-200">
                                     <i class="fab fa-microsoft text-blue-600 text-2xl"></i>
@@ -625,7 +617,7 @@
                             <i class="fas fa-chevron-right text-blue-400 group-hover:text-blue-600"></i>
                         </button>
                         
-                        <button id="exportPDFBtn" class="w-full bg-red-50 hover:bg-red-100 border-2 border-red-200 text-red-800 p-4 rounded-xl flex items-center justify-between transition-all duration-300 group hover:scale-[1.02] ripple-effect">
+                        <button id="exportPDFBtn" class="w-full bg-red-50 hover:bg-red-100 border-2 border-red-200 text-red-800 p-4 rounded-xl flex items-center justify-between transition-all duration-300 group hover:scale-[1.02]">
                             <div class="flex items-center">
                                 <div class="w-12 h-12 rounded-lg bg-red-100 flex items-center justify-center mr-4 group-hover:bg-red-200">
                                     <i class="fas fa-file-pdf text-red-600 text-2xl"></i>
@@ -638,7 +630,7 @@
                             <i class="fas fa-chevron-right text-red-400 group-hover:text-red-600"></i>
                         </button>
                         
-                        <button id="exportCSVBtn" class="w-full bg-green-50 hover:bg-green-100 border-2 border-green-200 text-green-800 p-4 rounded-xl flex items-center justify-between transition-all duration-300 group hover:scale-[1.02] ripple-effect">
+                        <button id="exportCSVBtn" class="w-full bg-green-50 hover:bg-green-100 border-2 border-green-200 text-green-800 p-4 rounded-xl flex items-center justify-between transition-all duration-300 group hover:scale-[1.02]">
                             <div class="flex items-center">
                                 <div class="w-12 h-12 rounded-lg bg-green-100 flex items-center justify-center mr-4 group-hover:bg-green-200">
                                     <i class="fas fa-file-csv text-green-600 text-2xl"></i>
@@ -668,7 +660,7 @@
         
         <!-- Loading Overlay -->
         <div id="loadingOverlay" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-            <div class="bg-white rounded-2xl p-8 shadow-float text-center fluid-modal">
+            <div class="bg-white rounded-2xl p-8 shadow-float text-center">
                 <div class="loading-wave mb-4">
                     <div></div>
                     <div></div>
@@ -680,11 +672,11 @@
         </div>
         
         <!-- ==================== MAIN CONTENT ==================== -->
-        <div class="content-container">
-            <!-- Header -->
+        <div class="content-container page-transition">
+            <!-- Header - NOT STICKY -->
             <header class="page-header mb-8 md:mb-12 text-center">
                 <div class="flex flex-col md:flex-row items-center justify-between mb-6">
-                   <a href="{% url 'dashboard_exam_page' %}" class="flex items-center mb-4 md:mb-0 hover:opacity-80 transition-opacity ripple-effect">
+                   <a href="{% url 'dashboard_exam_page' %}" class="flex items-center mb-4 md:mb-0 hover:opacity-80 transition-opacity">
                         <div class="w-16 h-16 rounded-full premium-gradient flex items-center justify-center mr-4 shadow-float animate-bounce-slow">
                             <i class="fas fa-id-card-alt text-white text-2xl"></i>
                         </div>
@@ -701,7 +693,7 @@
                         <div class="flex items-center mb-3">
                             <!-- Simple Logout Button without user profile pop-up -->
                             <button onclick="showEnhancedLogout()" 
-                                    class="px-4 py-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white rounded-xl font-medium flex items-center shadow-lg hover:shadow-danger-glow transition-all duration-300 ripple-effect">
+                                    class="px-4 py-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white rounded-xl font-medium flex items-center shadow-lg hover:shadow-danger-glow transition-all duration-300">
                                 <i class="fas fa-power-off mr-2"></i>
                                 <span class="hidden md:inline">Logout</span>
                             </button>
@@ -734,7 +726,7 @@
                 <!-- Left Column: Input Form & Stats -->
                 <div class="space-y-8">
                     <!-- Input Form Section -->
-                    <div class="bg-white rounded-2xl shadow-card p-6 md:p-8 id-card fluid-transition">
+                    <div class="bg-white rounded-2xl shadow-card p-6 md:p-8 id-card hover-scroll-effect">
                         <h2 class="text-2xl font-bold text-dark mb-6 flex items-center">
                             <i class="fas fa-user-plus text-accent mr-3"></i>
                             Student Information
@@ -788,7 +780,7 @@
                             
                             <div class="pt-4">
                                 <button type="submit" 
-                                        class="w-full premium-gradient text-white font-bold py-4 rounded-xl hover:opacity-90 transition duration-300 flex items-center justify-center shadow-card hover:shadow-hover transform hover:-translate-y-1 ripple-effect">
+                                        class="w-full premium-gradient text-white font-bold py-4 rounded-xl hover:opacity-90 transition duration-300 flex items-center justify-center shadow-card hover:shadow-hover transform hover:-translate-y-1">
                                     <i class="fas fa-id-card mr-3"></i>
                                     Generate Student ID
                                 </button>
@@ -799,13 +791,13 @@
                         <div class="mt-8 pt-6 border-t border-gray-200">
                             <h3 class="text-lg font-bold text-dark mb-4">Data Management</h3>
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <button id="exportJsonBtn" class="bg-green-100 hover:bg-green-200 text-green-800 px-4 py-3 rounded-xl font-medium transition flex items-center justify-center transform hover:-translate-y-1 ripple-effect">
+                                <button id="exportJsonBtn" class="bg-green-100 hover:bg-green-200 text-green-800 px-4 py-3 rounded-xl font-medium transition flex items-center justify-center transform hover:-translate-y-1">
                                     <i class="fas fa-file-code mr-2"></i> Export JSON
                                 </button>
-                                <button id="importBtn" class="bg-purple-100 hover:bg-purple-200 text-purple-800 px-4 py-3 rounded-xl font-medium transition flex items-center justify-center transform hover:-translate-y-1 ripple-effect">
+                                <button id="importBtn" class="bg-purple-100 hover:bg-purple-200 text-purple-800 px-4 py-3 rounded-xl font-medium transition flex items-center justify-center transform hover:-translate-y-1">
                                     <i class="fas fa-file-import mr-2"></i> Import
                                 </button>
-                                <button id="clearAllBtn" class="bg-red-100 hover:bg-red-200 text-red-800 px-4 py-3 rounded-xl font-medium transition flex items-center justify-center transform hover:-translate-y-1 ripple-effect">
+                                <button id="clearAllBtn" class="bg-red-100 hover:bg-red-200 text-red-800 px-4 py-3 rounded-xl font-medium transition flex items-center justify-center transform hover:-translate-y-1">
                                     <i class="fas fa-trash mr-2"></i> Clear All
                                 </button>
                             </div>
@@ -815,19 +807,19 @@
                         <div class="mt-8 pt-6 border-t border-gray-200">
                             <h3 class="text-lg font-bold text-dark mb-4">System Statistics</h3>
                             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4 text-center transform hover:scale-105 transition ripple-effect">
+                                <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4 text-center transform hover:scale-105 transition">
                                     <div class="text-2xl font-bold text-primary" id="totalIds">0</div>
                                     <div class="text-gray-600 text-sm">Total Students</div>
                                 </div>
-                                <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-4 text-center transform hover:scale-105 transition ripple-effect">
+                                <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-4 text-center transform hover:scale-105 transition">
                                     <div class="text-2xl font-bold text-success" id="currentYearCount">0</div>
                                     <div class="text-gray-600 text-sm" id="currentYearLabel">2025 Enrollees</div>
                                 </div>
-                                <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-4 text-center transform hover:scale-105 transition ripple-effect">
+                                <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-4 text-center transform hover:scale-105 transition">
                                     <div class="text-2xl font-bold text-premium" id="todayIds">0</div>
                                     <div class="text-gray-600 text-sm">Today's Adds</div>
                                 </div>
-                                <div class="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-4 text-center transform hover:scale-105 transition ripple-effect">
+                                <div class="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-4 text-center transform hover:scale-105 transition">
                                     <div class="text-2xl font-bold text-warning" id="storagePercent">0%</div>
                                     <div class="text-gray-600 text-sm">Storage Used</div>
                                 </div>
@@ -836,7 +828,7 @@
                     </div>
                     
                     <!-- Bulk Operations -->
-                    <div class="bg-white rounded-2xl shadow-card p-6 id-card fluid-transition">
+                    <div class="bg-white rounded-2xl shadow-card p-6 id-card hover-scroll-effect">
                         <h3 class="text-xl font-bold text-dark mb-4 flex items-center">
                             <i class="fas fa-bolt text-accent mr-3"></i>
                             Bulk Operations
@@ -847,12 +839,12 @@
                                     <i class="fas fa-users text-gray-500 mr-2"></i>Generate Multiple IDs
                                 </label>
                                 <textarea id="bulkNames" 
-                                          class="w-full p-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-300 h-32 resize-none fluid-scroll"
+                                          class="w-full p-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-300 h-32 resize-none scroll-container"
                                           placeholder="Enter student names (one per line)&#10;Example:&#10;Adekunle Joy&#10;Bello Samuel&#10;Chukwu Emeka"></textarea>
                                 <div class="text-sm text-gray-500 mt-1">Names will be assigned to the selected class and year</div>
                             </div>
                             <button id="bulkGenerateBtn" 
-                                    class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-3 rounded-xl hover:opacity-90 transition flex items-center justify-center shadow-card transform hover:-translate-y-1 ripple-effect">
+                                    class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-3 rounded-xl hover:opacity-90 transition flex items-center justify-center shadow-card transform hover:-translate-y-1">
                                 <i class="fas fa-magic mr-2"></i>
                                 Generate Bulk IDs
                             </button>
@@ -863,7 +855,7 @@
                 <!-- Right Column: Preview & List -->
                 <div class="space-y-8">
                     <!-- ID Card Preview -->
-                    <div class="id-card shadow-card p-8 relative overflow-hidden fluid-transition">
+                    <div class="id-card shadow-card p-8 relative overflow-hidden hover-scroll-effect">
                         <!-- Decorative elements -->
                         <div class="absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br from-blue-100 to-transparent rounded-full opacity-50"></div>
                         <div class="absolute -bottom-20 -left-20 w-40 h-40 bg-gradient-to-tr from-purple-100 to-transparent rounded-full opacity-50"></div>
@@ -909,10 +901,10 @@
                                 </div>
                                 
                                 <div class="flex space-x-3">
-                                    <button onclick="copyCurrentId()" class="flex-1 bg-blue-100 hover:bg-blue-200 text-blue-800 px-4 py-2 rounded-lg font-medium transition flex items-center justify-center transform hover:-translate-y-1 ripple-effect">
+                                    <button onclick="copyCurrentId()" class="flex-1 bg-blue-100 hover:bg-blue-200 text-blue-800 px-4 py-2 rounded-lg font-medium transition flex items-center justify-center transform hover:-translate-y-1">
                                         <i class="fas fa-copy mr-2"></i> Copy ID
                                     </button>
-                                    <button onclick="downloadSingleIdCard()" class="flex-1 bg-green-100 hover:bg-green-200 text-green-800 px-4 py-2 rounded-lg font-medium transition flex items-center justify-center transform hover:-translate-y-1 ripple-effect">
+                                    <button onclick="downloadSingleIdCard()" class="flex-1 bg-green-100 hover:bg-green-200 text-green-800 px-4 py-2 rounded-lg font-medium transition flex items-center justify-center transform hover:-translate-y-1">
                                         <i class="fas fa-id-card mr-2"></i> Save Card
                                     </button>
                                 </div>
@@ -925,7 +917,7 @@
                     </div>
                     
                     <!-- Search & Generated IDs -->
-                    <div class="bg-white rounded-2xl shadow-card p-6 id-card fluid-transition">
+                    <div class="bg-white rounded-2xl shadow-card p-6 id-card hover-scroll-effect">
                         <div class="flex flex-col md:flex-row justify-between items-center mb-6">
                             <h2 class="text-2xl font-bold text-dark flex items-center mb-4 md:mb-0">
                                 <i class="fas fa-list text-accent mr-3"></i>
@@ -946,17 +938,17 @@
                                 Showing <span id="pageStart">1</span>-<span id="pageEnd">10</span> of <span id="totalStudents">0</span>
                             </div>
                             <div class="flex space-x-2">
-                                <button id="prevPage" class="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl disabled:opacity-50 transition transform hover:-translate-y-0.5 ripple-effect">
+                                <button id="prevPage" class="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl disabled:opacity-50 transition transform hover:-translate-y-0.5">
                                     <i class="fas fa-chevron-left"></i>
                                 </button>
                                 <span id="currentPage" class="px-3 py-1 font-medium">1</span>
-                                <button id="nextPage" class="px-3 py-1 bg-gradient-to-r from-primary to-accent text-white rounded-xl disabled:opacity-50 transition transform hover:-translate-y-0.5 ripple-effect">
+                                <button id="nextPage" class="px-3 py-1 bg-gradient-to-r from-primary to-accent text-white rounded-xl disabled:opacity-50 transition transform hover:-translate-y-0.5">
                                     <i class="fas fa-chevron-right"></i>
                                 </button>
                             </div>
                         </div>
                         
-                        <div class="fluid-table-container rounded-xl border-2 border-gray-200 no-scroll-restrictions">
+                        <div class="table-scroll-container rounded-xl border-2 border-gray-200 smooth-corners">
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50 sticky top-0">
                                     <tr>
@@ -1010,7 +1002,7 @@
     
     <script>
         // ====================
-        // ULTIMATE SYSTEM
+        // ULTIMATE SYSTEM WITH SMOOTH SCROLLING
         // ====================
         
         // Configuration
@@ -1028,33 +1020,42 @@
         let sessionTime = 1800; // 30 minutes in seconds
         
         // CHARACTER SETS FOR ID GENERATION
-        const ALPHANUMERIC_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // Removed confusing chars: 0, O, 1, I
-        const NUMERIC_CHARS = '23456789'; // Only numbers 2-9 (avoid 0,1)
-        const ALPHABET_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ'; // Removed confusing letters
+        const ALPHANUMERIC_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+        const NUMERIC_CHARS = '23456789';
+        const ALPHABET_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
         
-        // ==================== ULTIMATE FLUID SCROLLING ====================
+        // ==================== ULTRA SMOOTH SCROLL MANAGEMENT ====================
         
-        function setupFluidScrolling() {
-            // Remove all scroll restrictions
-            document.documentElement.style.overflowY = 'auto';
-            document.body.style.overflowY = 'auto';
-            document.body.style.overflowX = 'hidden';
+        function setupScrollManagement() {
+            // Enable native smooth scrolling
+            document.documentElement.style.scrollBehavior = 'smooth';
             
-            // Setup water-like scroll indicator
-            setupWaterScroll();
+            // Initialize smooth scrolling for all containers
+            initSmoothScrollContainers();
             
-            // Enable fluid scroll for all containers
-            enableFluidScroll();
+            // Initialize scroll progress indicator
+            initScrollProgress();
             
-            // Setup smooth scroll shortcuts
+            // Setup keyboard shortcuts for scrolling
             setupScrollShortcuts();
             
-            // Optimize scroll performance
-            optimizeScrollPerformance();
+            // Enhanced scroll experience
+            enhanceScrollExperience();
+            
+            console.log('Ultra smooth scrolling system initialized');
         }
         
-        function setupWaterScroll() {
-            const waterScroll = document.getElementById('waterScroll');
+        function initSmoothScrollContainers() {
+            // Apply smooth scrolling to all scrollable containers
+            const scrollContainers = document.querySelectorAll('.scroll-container, .table-scroll-container');
+            scrollContainers.forEach(container => {
+                container.style.scrollBehavior = 'smooth';
+                container.classList.add('no-scroll-jank');
+            });
+        }
+        
+        function initScrollProgress() {
+            const scrollProgress = document.getElementById('scrollProgress');
             
             window.addEventListener('scroll', function() {
                 const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
@@ -1062,143 +1063,118 @@
                 const scrolled = (winScroll / height) * 100;
                 
                 if (scrolled > 0) {
-                    waterScroll.style.transform = `scaleX(${scrolled / 100})`;
-                }
-                
-                // Show/hide based on scroll direction
-                if (scrolled > 1 && scrolled < 99) {
-                    waterScroll.style.opacity = '1';
+                    scrollProgress.style.transform = `scaleX(${scrolled / 100})`;
+                    scrollProgress.classList.add('visible');
                 } else {
-                    waterScroll.style.opacity = '0';
+                    scrollProgress.classList.remove('visible');
                 }
-            });
-            
-            // Add scroll velocity effect
-            let lastScrollTop = 0;
-            let scrollTimeout;
-            
-            window.addEventListener('scroll', function() {
-                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
                 
-                // Clear previous timeout
-                clearTimeout(scrollTimeout);
-                
-                // Show water scroll
-                waterScroll.style.opacity = '1';
-                
-                // Hide after scrolling stops
-                scrollTimeout = setTimeout(() => {
-                    waterScroll.style.opacity = '0';
-                }, 300);
-                
-                lastScrollTop = scrollTop;
-            });
-        }
-        
-        function enableFluidScroll() {
-            // Make all containers scroll fluidly
-            document.querySelectorAll('.fluid-scroll, .fluid-table-container').forEach(container => {
-                container.style.scrollBehavior = 'smooth';
-                container.style.WebkitOverflowScrolling = 'touch';
-            });
-            
-            // Remove all height restrictions
-            document.querySelectorAll('.no-scroll-restrictions').forEach(el => {
-                el.style.maxHeight = 'none';
-                el.style.overflowY = 'auto';
+                // Hide progress bar at bottom
+                if (scrolled >= 99.5) {
+                    scrollProgress.style.opacity = '0';
+                } else {
+                    scrollProgress.style.opacity = '1';
+                }
             });
         }
         
         function setupScrollShortcuts() {
-            // Keyboard shortcuts for ultimate scrolling
+            // Keyboard shortcuts for smooth scrolling
             document.addEventListener('keydown', function(e) {
-                // Space bar for natural scroll
+                // Space bar to scroll down (smooth)
                 if (e.code === 'Space' && !e.target.matches('input, textarea, select, button')) {
                     e.preventDefault();
-                    window.scrollBy({
-                        top: window.innerHeight * 0.8,
-                        behavior: 'smooth'
-                    });
+                    smoothScrollBy(window.innerHeight * 0.8);
                 }
                 
-                // Home to top - instant but smooth
+                // Home key to top (smooth)
                 if (e.code === 'Home') {
                     e.preventDefault();
-                    window.scrollTo({
-                        top: 0,
-                        behavior: 'smooth'
-                    });
+                    smoothScrollToTop();
                 }
                 
-                // End to bottom - instant but smooth
+                // End key to bottom (smooth)
                 if (e.code === 'End') {
                     e.preventDefault();
-                    window.scrollTo({
-                        top: document.documentElement.scrollHeight,
-                        behavior: 'smooth'
-                    });
+                    smoothScrollToBottom();
                 }
                 
-                // Page Up/Down
-                if (e.code === 'PageUp') {
-                    e.preventDefault();
-                    window.scrollBy({
-                        top: -window.innerHeight * 0.9,
-                        behavior: 'smooth'
-                    });
-                }
-                
+                // Page Up/Down for smooth scrolling
                 if (e.code === 'PageDown') {
                     e.preventDefault();
-                    window.scrollBy({
-                        top: window.innerHeight * 0.9,
-                        behavior: 'smooth'
-                    });
+                    smoothScrollBy(window.innerHeight * 0.9);
+                }
+                if (e.code === 'PageUp') {
+                    e.preventDefault();
+                    smoothScrollBy(-window.innerHeight * 0.9);
                 }
             });
         }
         
-        function optimizeScrollPerformance() {
-            // Use requestAnimationFrame for smooth updates
+        function enhanceScrollExperience() {
+            // Optimize scroll performance
             let ticking = false;
+            let lastScrollY = window.scrollY;
             
             window.addEventListener('scroll', function() {
+                lastScrollY = window.scrollY;
+                
                 if (!ticking) {
                     window.requestAnimationFrame(function() {
-                        // Update any scroll-dependent elements here
+                        // Any scroll-based updates can go here
                         ticking = false;
                     });
                     ticking = true;
                 }
             });
             
-            // Add smooth scroll for anchor links
+            // Smooth scroll for all anchor links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {
-                    const targetId = this.getAttribute('href');
-                    if (targetId === '#') return;
+                    const href = this.getAttribute('href');
+                    if (href === '#') return;
                     
-                    const targetElement = document.querySelector(targetId);
+                    e.preventDefault();
+                    const targetElement = document.querySelector(href);
                     if (targetElement) {
-                        e.preventDefault();
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
+                        smoothScrollToElement(targetElement, 80);
                     }
                 });
             });
+            
+            // Add smooth scroll to top button functionality
+            document.addEventListener('wheel', function(e) {
+                // Natural momentum scrolling is already handled by CSS
+                if (e.ctrlKey) {
+                    e.preventDefault(); // Prevent zoom on Ctrl+Scroll
+                }
+            }, { passive: false });
         }
         
-        // Ultra-smooth scroll functions
-        function fluidScrollToTop() {
+        // ==================== SMOOTH SCROLLING FUNCTIONS ====================
+        
+        function smoothScrollToTop() {
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth'
             });
         }
         
-        function fluidScrollToElement(element, offset = 0) {
+        function smoothScrollToBottom() {
+            window.scrollTo({
+                top: document.documentElement.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+        
+        function smoothScrollBy(amount) {
+            window.scrollBy({
+                top: amount,
+                behavior: 'smooth'
+            });
+        }
+        
+        function smoothScrollToElement(element, offset = 0) {
             if (!element) return;
             
             const elementPosition = element.getBoundingClientRect().top;
@@ -1208,6 +1184,16 @@
                 top: offsetPosition,
                 behavior: 'smooth'
             });
+        }
+        
+        function smoothScrollToTableTop() {
+            const tableContainer = document.querySelector('.table-scroll-container');
+            if (tableContainer) {
+                tableContainer.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }
         }
         
         // ==================== ENHANCED LOGOUT SYSTEM ====================
@@ -1220,12 +1206,10 @@
                     sessionTime--;
                     updateSessionTimerDisplay();
                     
-                    // Show warning at 5 minutes
                     if (sessionTime === 300) {
                         showNotification('Session expires in 5 minutes. Save your work.', 'warning');
                     }
                     
-                    // Auto-logout at 0
                     if (sessionTime === 0) {
                         performAutoLogout();
                     }
@@ -1240,10 +1224,9 @@
             if (timerElement) {
                 timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
                 
-                // Change color based on time
-                if (sessionTime < 300) { // Less than 5 minutes
+                if (sessionTime < 300) {
                     timerElement.className = 'session-timer text-red-500 animate-pulse';
-                } else if (sessionTime < 600) { // Less than 10 minutes
+                } else if (sessionTime < 600) {
                     timerElement.className = 'session-timer text-yellow-500';
                 } else {
                     timerElement.className = 'session-timer text-green-400';
@@ -1253,18 +1236,18 @@
         
         // Show enhanced logout modal
         function showEnhancedLogout() {
-            // Pause session timer
             clearInterval(sessionTimerInterval);
-            
-            // Create confetti effect
             createConfetti();
             
-            // Show modal with animation
             const modal = document.getElementById('logoutModal');
             modal.classList.remove('hidden');
             modal.classList.add('flex');
             
-            // Reset focus to cancel button
+            setTimeout(() => {
+                modal.querySelector('div > div').style.transform = 'scale(1)';
+                modal.querySelector('div > div').style.opacity = '1';
+            }, 10);
+            
             setTimeout(() => {
                 document.getElementById('cancelLogoutBtn').focus();
             }, 100);
@@ -1275,35 +1258,25 @@
             const modal = document.getElementById('logoutModal');
             modal.classList.add('hidden');
             modal.classList.remove('flex');
-            
-            // Resume session timer
             initSessionTimer();
         }
         
         // Perform logout with Django
         function performDjangoLogout() {
-            // Show success animation
             showLogoutSuccessAnimation();
-            
-            // Clear all local data
             clearAllLocalData();
             
-            // After 2 seconds, submit Django logout form
             setTimeout(() => {
-                // Create and submit Django logout form
                 const logoutForm = document.getElementById('djangoLogoutForm');
                 if (logoutForm) {
-                    // Add CSRF token if not present
                     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
                     const csrfInput = document.createElement('input');
                     csrfInput.type = 'hidden';
                     csrfInput.name = 'csrfmiddlewaretoken';
                     csrfInput.value = csrfToken;
                     logoutForm.appendChild(csrfInput);
-                    
                     logoutForm.submit();
                 } else {
-                    // Fallback: Redirect to logout URL
                     window.location.href = '/accounts/logout/';
                 }
             }, 2000);
@@ -1319,29 +1292,18 @@
         
         // Show logout success animation
         function showLogoutSuccessAnimation() {
-            // Hide logout modal
             hideLogoutModal();
             
-            // Show success modal
             const successModal = document.getElementById('logoutSuccessModal');
             successModal.classList.remove('hidden');
             successModal.classList.add('flex');
             
-            // Animate progress bar
             const progressBar = document.getElementById('logoutProgress');
             setTimeout(() => {
                 progressBar.style.width = '100%';
             }, 100);
             
-            // Create more confetti
             createEnhancedConfetti();
-            
-            // Play success sound (optional)
-            if (typeof Audio !== 'undefined') {
-                const successSound = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3');
-                successSound.volume = 0.3;
-                successSound.play().catch(e => console.log('Audio play failed:', e));
-            }
         }
         
         // Create confetti effect
@@ -1358,7 +1320,6 @@
                 confetti.style.animationDelay = Math.random() * 0.5 + 's';
                 container.appendChild(confetti);
                 
-                // Remove after animation
                 setTimeout(() => {
                     confetti.remove();
                 }, 5000);
@@ -1386,7 +1347,6 @@
                 confetti.style.animationDelay = Math.random() * 1 + 's';
                 container.appendChild(confetti);
                 
-                // Remove after animation
                 setTimeout(() => {
                     confetti.remove();
                 }, 6000);
@@ -1396,22 +1356,14 @@
         // Clear all local data
         function clearAllLocalData() {
             try {
-                // Clear localStorage
                 localStorage.removeItem('emfhs_students');
                 localStorage.removeItem('emfhs_backup_' + Date.now());
-                
-                // Clear any session data
                 sessionStorage.clear();
-                
-                // Clear form data
                 document.getElementById('studentForm').reset();
-                
-                // Clear state
                 students = [];
                 yearCounters = {};
                 currentPage = 1;
                 currentSearch = '';
-                
                 console.log('All local data cleared securely');
             } catch (error) {
                 console.error('Error clearing local data:', error);
@@ -1420,8 +1372,8 @@
         
         // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
-            // Setup ultimate fluid scrolling FIRST
-            setupFluidScrolling();
+            // Setup ultra smooth scrolling FIRST
+            setupScrollManagement();
             
             // Initialize session timer
             initSessionTimer();
@@ -1442,11 +1394,9 @@
             
             // ==================== LOGOUT EVENT LISTENERS ====================
             
-            // Logout modal buttons
             document.getElementById('confirmLogoutBtn').addEventListener('click', performDjangoLogout);
             document.getElementById('cancelLogoutBtn').addEventListener('click', hideLogoutModal);
             
-            // Close modal when clicking outside
             document.getElementById('logoutModal').addEventListener('click', function(e) {
                 if (e.target.id === 'logoutModal') {
                     hideLogoutModal();
@@ -1455,13 +1405,11 @@
             
             // Keyboard shortcuts for logout
             document.addEventListener('keydown', function(e) {
-                // Ctrl+Shift+L for logout
                 if (e.ctrlKey && e.shiftKey && e.key === 'L') {
                     e.preventDefault();
                     showEnhancedLogout();
                 }
                 
-                // Escape to cancel logout modal
                 if (e.key === 'Escape') {
                     const logoutModal = document.getElementById('logoutModal');
                     if (!logoutModal.classList.contains('hidden')) {
@@ -1517,7 +1465,7 @@
             // Reset session timer on user activity
             ['click', 'keypress', 'mousemove', 'scroll'].forEach(event => {
                 document.addEventListener(event, () => {
-                    sessionTime = 1800; // Reset to 30 minutes
+                    sessionTime = 1800;
                     updateSessionTimerDisplay();
                 });
             });
@@ -1552,7 +1500,6 @@
                 try {
                     students = JSON.parse(saved);
                     
-                    // Initialize year counters
                     students.forEach(student => {
                         const year = student.year;
                         if (!yearCounters[year]) {
@@ -1576,7 +1523,6 @@
                 const dataStr = JSON.stringify(students);
                 const dataSize = new Blob([dataStr]).size;
                 
-                // Check storage limit
                 if (dataSize > STORAGE_LIMIT) {
                     showNotification('Storage limit reached! Cannot save more data.', 'error');
                     return false;
@@ -1598,7 +1544,6 @@
         
         // Generate mixed alphanumeric code (3 characters)
         function generateMiddleCode(year) {
-            // Create a unique seed based on year and current count
             if (!yearCounters[year]) {
                 yearCounters[year] = 1;
             } else {
@@ -1606,25 +1551,19 @@
             }
             
             const seed = year * 1000 + yearCounters[year];
-            
-            // Create a scrambled pattern that's not sequential
             const patterns = [
                 'A1B', 'C2D', 'E3F', 'G4H', 'I5J', 'K6L', 'M7N', 'P8Q', 'R9S', 'T2U',
                 'V3W', 'X4Y', 'Z5A', 'B6C', 'D7E', 'F8G', 'H9I', 'J2K', 'L3M', 'N4O',
                 'P5Q', 'R6S', 'T7U', 'V8W', 'X9Y', 'Z2A', 'B3C', 'D4E', 'F5G', 'H6I'
             ];
             
-            // Use the seed to select a pattern, but make it non-sequential
             const patternIndex = (seed * 13) % patterns.length;
             let code = patterns[patternIndex];
             
-            // Add some randomness
             const randomChar = ALPHANUMERIC_CHARS.charAt(Math.floor(Math.random() * ALPHANUMERIC_CHARS.length));
             const position = Math.floor(Math.random() * 3);
             
-            // Replace one character in the code with a random character
             code = code.substring(0, position) + randomChar + code.substring(position + 1);
-            
             return code;
         }
         
@@ -1637,7 +1576,7 @@
             return checksum;
         }
         
-        // Generate unique student ID
+        // Generate unique student ID with smooth UX
         function generateStudentID() {
             const fullName = document.getElementById('fullName').value.trim();
             const year = document.getElementById('enrollmentYear').value;
@@ -1646,6 +1585,7 @@
             
             if (!fullName) {
                 showNotification('Please enter a student name', 'warning');
+                smoothScrollToElement(document.getElementById('fullName'), 20);
                 return;
             }
             
@@ -1690,10 +1630,23 @@
                 document.getElementById('fullName').value = '';
                 document.getElementById('admissionDate').value = new Date().toISOString().split('T')[0];
                 showNotification(`ID ${studentId} generated for ${fullName}!`, 'success');
+                
+                // Smooth scroll to the new entry in the table
+                setTimeout(() => {
+                    smoothScrollToTableTop();
+                }, 150);
+                
+                // Smooth scroll to preview card
+                setTimeout(() => {
+                    const previewCard = document.querySelector('.id-card:nth-of-type(2)');
+                    if (previewCard) {
+                        smoothScrollToElement(previewCard, 100);
+                    }
+                }, 300);
             }
         }
         
-        // Bulk generate IDs
+        // Bulk generate IDs with smooth scrolling
         function bulkGenerate() {
             const namesText = document.getElementById('bulkNames').value.trim();
             if (!namesText) {
@@ -1755,12 +1708,15 @@
                 renderStudentList();
                 document.getElementById('bulkNames').value = '';
                 showNotification(`Generated ${generated} IDs, skipped ${skipped} duplicates`, 'success');
+                
+                // Smooth scroll to table
+                setTimeout(() => {
+                    smoothScrollToTableTop();
+                }, 200);
             }
         }
         
-        // ====================
-        // DOWNLOAD/EXPORT FUNCTIONS
-        // ====================
+        // ==================== DOWNLOAD/EXPORT FUNCTIONS ====================
         
         function showDownloadModal() {
             if (students.length === 0) {
@@ -2071,18 +2027,15 @@
                 try {
                     const imported = JSON.parse(e.target.result);
                     
-                    // Validate imported data
                     if (!Array.isArray(imported) || imported.length === 0) {
                         throw new Error('Invalid data format');
                     }
                     
-                    // Check first item structure
                     const first = imported[0];
                     if (!first.id || !first.name || !first.year) {
                         throw new Error('Data missing required fields');
                     }
                     
-                    // Check storage capacity
                     const dataSize = new Blob([JSON.stringify(imported)]).size;
                     if (dataSize > STORAGE_LIMIT) {
                         showNotification(`Import too large (${formatBytes(dataSize)}). Max: 5MB`, 'error');
@@ -2091,7 +2044,6 @@
                     
                     students = imported;
                     
-                    // Reset year counters
                     yearCounters = {};
                     students.forEach(student => {
                         const year = student.year;
@@ -2111,21 +2063,23 @@
                     }
                     
                     showNotification(`Imported ${students.length} records successfully`, 'success');
+                    
+                    // Smooth scroll to table
+                    setTimeout(() => {
+                        smoothScrollToTableTop();
+                    }, 200);
                 } catch (error) {
                     console.error('Import error:', error);
                     showNotification('Error importing data. Check file format.', 'error');
                 }
                 
-                // Reset file input
                 document.getElementById('fileInput').value = '';
             };
             
             reader.readAsText(file);
         }
         
-        // ====================
-        // UI FUNCTIONS
-        // ====================
+        // ==================== UI FUNCTIONS ====================
         
         // Render student list with pagination
         function renderStudentList() {
@@ -2180,7 +2134,7 @@
             pageStudents.forEach((student, index) => {
                 const actualIndex = start + index;
                 html += `
-                <tr class="hover:bg-gray-50 transition fade-in-up">
+                <tr class="hover:bg-gray-50 transition hover-scroll-effect">
                     <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">${actualIndex + 1}</td>
                     <td class="px-4 py-3 whitespace-nowrap text-sm font-mono font-bold text-primary">
                         <span class="cursor-pointer hover:text-secondary" onclick="copyToClipboard('${student.id}')" title="Click to copy">
@@ -2222,6 +2176,9 @@
             if (newPage >= 1 && newPage <= totalPages) {
                 currentPage = newPage;
                 renderStudentList();
+                
+                // Smooth scroll to top of table
+                smoothScrollToTableTop();
             }
         }
         
@@ -2236,6 +2193,14 @@
         function viewStudent(index) {
             updatePreview(students[index]);
             showNotification(`Viewing ${students[index].name}'s ID`, 'info');
+            
+            // Smooth scroll to preview card
+            setTimeout(() => {
+                const previewCard = document.querySelector('.id-card:nth-of-type(2)');
+                if (previewCard) {
+                    smoothScrollToElement(previewCard, 100);
+                }
+            }, 100);
         }
         
         function editStudent(index) {
@@ -2244,16 +2209,17 @@
             document.getElementById('enrollmentYear').value = student.year;
             document.getElementById('studentClass').value = student.class;
             
-            // Parse admission date
             const date = new Date(student.dateObj || student.admissionDate);
             document.getElementById('admissionDate').value = date.toISOString().split('T')[0];
             
-            // Remove the old entry
             students.splice(index, 1);
             saveStudents();
             renderStudentList();
             
             showNotification(`Editing ${student.name}. Fill form and click Generate to update.`, 'info');
+            
+            // Smooth scroll to form
+            smoothScrollToElement(document.getElementById('fullName'), 20);
         }
         
         function deleteStudent(index) {
@@ -2309,7 +2275,6 @@
             document.getElementById('storageUsed').textContent = formatBytes(dataSize);
             document.getElementById('storagePercent').textContent = Math.round(percentage) + '%';
             
-            // Show warning if > 70%
             const warning = document.getElementById('storageWarning');
             if (percentage > 70) {
                 warning.classList.remove('hidden');
@@ -2334,7 +2299,6 @@
             navigator.clipboard.writeText(text).then(() => {
                 showNotification(`Copied: ${text}`, 'success');
             }).catch(err => {
-                // Fallback for older browsers
                 const textArea = document.createElement('textarea');
                 textArea.value = text;
                 document.body.appendChild(textArea);
@@ -2358,11 +2322,9 @@
         
         // Enhanced notification system
         function showNotification(message, type = 'info') {
-            // Remove existing
             const existing = document.querySelector('.notification');
             if (existing) existing.remove();
             
-            // Create new
             const notification = document.createElement('div');
             const icons = {
                 success: 'fa-check-circle',
@@ -2377,7 +2339,7 @@
                 info: 'bg-gradient-to-r from-blue-600 to-indigo-700'
             };
             
-            notification.className = `notification enhanced-notification fixed bottom-4 right-4 ${colors[type]} text-white px-6 py-4 rounded-xl z-50 transform transition-all duration-300 fluid-modal`;
+            notification.className = `notification enhanced-notification fixed bottom-4 right-4 ${colors[type]} text-white px-6 py-4 rounded-xl z-50 transform transition-all duration-300`;
             notification.innerHTML = `
                 <div class="flex items-center">
                     <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center mr-3">
@@ -2389,7 +2351,6 @@
             
             document.body.appendChild(notification);
             
-            // Auto-remove with animation
             setTimeout(() => {
                 notification.style.opacity = '0';
                 notification.style.transform = 'translateY(20px)';
