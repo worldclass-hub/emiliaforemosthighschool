@@ -17,9 +17,103 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- ==================== PROPER SCROLL MANAGEMENT SYSTEM ==================== -->
+    <!-- ==================== PROFESSIONAL SCROLLING SYSTEM ==================== -->
     <style>
-        /* SIMPLIFIED SCROLL MANAGEMENT - No fixed positioning */
+        /* SMOOTH SCROLLING BASE */
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 20px;
+        }
+        
+        body {
+            scroll-behavior: smooth;
+            overflow-y: scroll;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        /* OPTIMIZED SCROLL CONTAINERS */
+        .scroll-container {
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #3b82f6 #f1f5f9;
+        }
+        
+        .scroll-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .scroll-container::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        
+        .scroll-container::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #3b82f6, #1e40af);
+            border-radius: 4px;
+        }
+        
+        .scroll-container::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, #2563eb, #1e3a8a);
+        }
+        
+        /* SMOOTH SCROLL ANIMATIONS */
+        .smooth-scroll {
+            scroll-behavior: smooth;
+            transition: scroll-behavior 0.3s ease;
+        }
+        
+        /* FLUID SCROLL EFFECTS */
+        .scroll-fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        
+        .scroll-fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* ENHANCED TABLE SCROLLING */
+        .table-scroll-container {
+            max-height: 400px;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+        
+        /* SMOOTH PAGE TRANSITIONS */
+        .page-transition {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* SCROLL PROGRESS INDICATOR */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, #3b82f6, #8b5cf6, #10b981);
+            transform-origin: 0%;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .scroll-progress.visible {
+            opacity: 1;
+        }
+        
+        /* HOVER SCROLL EFFECTS */
+        .hover-scroll-effect {
+            transition: transform 0.2s ease-out;
+        }
+        
+        .hover-scroll-effect:hover {
+            transform: translateY(-2px);
+        }
+        
+        /* ==================== ORIGINAL LAYOUT STYLES ==================== */
         html, body {
             width: 100%;
             height: 100%;
@@ -35,7 +129,6 @@
             min-height: 100vh;
         }
         
-        /* Main container */
         .page-container {
             flex: 1 0 auto;
             display: flex;
@@ -45,7 +138,6 @@
             position: relative;
         }
         
-        /* Content wrapper */
         .content-wrapper {
             flex: 1 0 auto;
             width: 100%;
@@ -53,7 +145,6 @@
             position: relative;
         }
         
-        /* Footer - fixed at bottom */
         .page-footer {
             flex-shrink: 0;
             width: 100%;
@@ -61,7 +152,6 @@
             margin-top: auto;
         }
         
-        /* Full width footer - FIXED */
         .full-width-footer {
             width: 100vw;
             position: relative;
@@ -72,20 +162,17 @@
             background: #111827;
         }
         
-        /* Header - NOT STICKY (removed sticky positioning) */
         .page-header {
             width: 100%;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             z-index: 40;
-            position: relative; /* Changed from sticky to relative */
+            position: relative;
         }
         
-        /* Prevent overscroll */
         .no-overscroll {
             overscroll-behavior: none;
         }
         
-        /* Content container */
         .content-container {
             max-width: 7xl;
             margin: 0 auto;
@@ -96,24 +183,6 @@
             .content-container {
                 padding: 10px;
             }
-        }
-        
-        /* Scroll Boundary Indicator */
-        .scroll-boundary {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, #1e40af, #3b82f6);
-            z-index: 9999;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .scroll-boundary.visible {
-            opacity: 1;
         }
         
         /* ==================== ORIGINAL STYLES ==================== */
@@ -246,24 +315,30 @@
             }
         }
         
-        /* Custom scrollbar */
+        /* Enhanced scrollbar for main page */
         ::-webkit-scrollbar {
-            width: 12px;
+            width: 10px;
         }
         
         ::-webkit-scrollbar-track {
-            background: linear-gradient(to bottom, #f1f5f9, #e2e8f0);
+            background: linear-gradient(180deg, #f8fafc, #e2e8f0);
             border-radius: 10px;
         }
         
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(to bottom, #3b82f6, #1e40af);
+            background: linear-gradient(180deg, #3b82f6, #1e40af);
             border-radius: 10px;
-            border: 3px solid #f1f5f9;
+            border: 2px solid #f8fafc;
+            transition: all 0.3s ease;
         }
         
         ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(to bottom, #2563eb, #1e3a8a);
+            background: linear-gradient(180deg, #2563eb, #1e3a8a);
+            transform: scale(1.1);
+        }
+        
+        ::-webkit-scrollbar-thumb:active {
+            background: linear-gradient(180deg, #1d4ed8, #1e3a8a);
         }
         
         /* Selection color */
@@ -295,6 +370,33 @@
         @keyframes wave {
             0%, 100% { transform: scaleY(0.5); }
             50% { transform: scaleY(1.5); }
+        }
+        
+        /* Smooth focus outline */
+        *:focus {
+            outline: 2px solid #3b82f6;
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+        
+        /* Reduce motion for users who prefer it */
+        @media (prefers-reduced-motion: reduce) {
+            .smooth-scroll,
+            .scroll-fade-in,
+            .page-transition,
+            .hover-scroll-effect,
+            .id-card,
+            .floating-download-btn,
+            .download-modal,
+            ::-webkit-scrollbar-thumb,
+            .loading-wave div {
+                transition: none !important;
+                animation: none !important;
+            }
+            
+            html {
+                scroll-behavior: auto;
+            }
         }
     </style>
     
@@ -351,9 +453,9 @@
         }
     </script>
 </head>
-<body class="pattern-bg no-overscroll">
-    <!-- Scroll Boundary Indicator -->
-    <div id="scrollBoundary" class="scroll-boundary"></div>
+<body class="pattern-bg no-overscroll smooth-scroll">
+    <!-- Scroll Progress Indicator -->
+    <div id="scrollProgress" class="scroll-progress"></div>
     
     <!-- Main Page Container -->
     <div class="page-container" id="pageContainer">
@@ -547,7 +649,7 @@
         </div>
         
         <!-- ==================== MAIN CONTENT ==================== -->
-        <div class="content-container">
+        <div class="content-container page-transition">
             <!-- Header - NOT STICKY -->
             <header class="page-header mb-8 md:mb-12 text-center">
                 <div class="flex flex-col md:flex-row items-center justify-between mb-6">
@@ -601,7 +703,7 @@
                 <!-- Left Column: Input Form & Stats -->
                 <div class="space-y-8">
                     <!-- Input Form Section -->
-                    <div class="bg-white rounded-2xl shadow-card p-6 md:p-8 id-card">
+                    <div class="bg-white rounded-2xl shadow-card p-6 md:p-8 id-card hover-scroll-effect">
                         <h2 class="text-2xl font-bold text-dark mb-6 flex items-center">
                             <i class="fas fa-user-plus text-accent mr-3"></i>
                             Student Information
@@ -703,7 +805,7 @@
                     </div>
                     
                     <!-- Bulk Operations -->
-                    <div class="bg-white rounded-2xl shadow-card p-6 id-card">
+                    <div class="bg-white rounded-2xl shadow-card p-6 id-card hover-scroll-effect">
                         <h3 class="text-xl font-bold text-dark mb-4 flex items-center">
                             <i class="fas fa-bolt text-accent mr-3"></i>
                             Bulk Operations
@@ -714,7 +816,7 @@
                                     <i class="fas fa-users text-gray-500 mr-2"></i>Generate Multiple IDs
                                 </label>
                                 <textarea id="bulkNames" 
-                                          class="w-full p-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-300 h-32 resize-none"
+                                          class="w-full p-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-300 h-32 resize-none scroll-container"
                                           placeholder="Enter student names (one per line)&#10;Example:&#10;Adekunle Joy&#10;Bello Samuel&#10;Chukwu Emeka"></textarea>
                                 <div class="text-sm text-gray-500 mt-1">Names will be assigned to the selected class and year</div>
                             </div>
@@ -730,7 +832,7 @@
                 <!-- Right Column: Preview & List -->
                 <div class="space-y-8">
                     <!-- ID Card Preview -->
-                    <div class="id-card shadow-card p-8 relative overflow-hidden">
+                    <div class="id-card shadow-card p-8 relative overflow-hidden hover-scroll-effect">
                         <!-- Decorative elements -->
                         <div class="absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br from-blue-100 to-transparent rounded-full opacity-50"></div>
                         <div class="absolute -bottom-20 -left-20 w-40 h-40 bg-gradient-to-tr from-purple-100 to-transparent rounded-full opacity-50"></div>
@@ -792,7 +894,7 @@
                     </div>
                     
                     <!-- Search & Generated IDs -->
-                    <div class="bg-white rounded-2xl shadow-card p-6 id-card">
+                    <div class="bg-white rounded-2xl shadow-card p-6 id-card hover-scroll-effect">
                         <div class="flex flex-col md:flex-row justify-between items-center mb-6">
                             <h2 class="text-2xl font-bold text-dark flex items-center mb-4 md:mb-0">
                                 <i class="fas fa-list text-accent mr-3"></i>
@@ -823,7 +925,7 @@
                             </div>
                         </div>
                         
-                        <div class="overflow-x-auto rounded-xl border-2 border-gray-200 max-h-96 overflow-y-auto">
+                        <div class="table-scroll-container rounded-xl border-2 border-gray-200">
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50 sticky top-0">
                                     <tr>
@@ -899,28 +1001,151 @@
         const NUMERIC_CHARS = '23456789'; // Only numbers 2-9 (avoid 0,1)
         const ALPHABET_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ'; // Removed confusing letters
         
-        // ==================== PROPER SCROLL MANAGEMENT ====================
+        // ==================== PROFESSIONAL SCROLL MANAGEMENT ====================
         
         function setupScrollManagement() {
-            // Simple scroll management - body handles scrolling naturally
-            document.body.style.overflowY = 'auto';
-            document.body.style.overflowX = 'hidden';
+            // Enable smooth scrolling for the whole page
+            document.documentElement.style.scrollBehavior = 'smooth';
             
-            // SCROLL EDGE DETECTION
+            // Initialize scroll progress indicator
+            initScrollProgress();
+            
+            // Add scroll fade-in effects for elements
+            initScrollAnimations();
+            
+            // Setup keyboard shortcuts for scrolling
+            setupScrollShortcuts();
+            
+            // Enhanced scroll experience
+            enhanceScrollExperience();
+        }
+        
+        function initScrollProgress() {
+            const scrollProgress = document.getElementById('scrollProgress');
+            
             window.addEventListener('scroll', function() {
-                // Show boundary indicator when near bottom
-                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                const scrollHeight = document.documentElement.scrollHeight;
-                const clientHeight = document.documentElement.clientHeight;
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
                 
-                const distanceFromBottom = scrollHeight - (scrollTop + clientHeight);
-                const boundary = document.getElementById('scrollBoundary');
-                
-                if (distanceFromBottom <= 50 && distanceFromBottom > 0) {
-                    boundary.classList.add('visible');
+                if (scrolled > 0) {
+                    scrollProgress.style.transform = `scaleX(${scrolled / 100})`;
+                    scrollProgress.classList.add('visible');
                 } else {
-                    boundary.classList.remove('visible');
+                    scrollProgress.classList.remove('visible');
                 }
+                
+                // Hide progress bar at bottom
+                if (scrolled >= 99.5) {
+                    scrollProgress.style.opacity = '0';
+                } else {
+                    scrollProgress.style.opacity = '1';
+                }
+            });
+        }
+        
+        function initScrollAnimations() {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe elements with scroll-fade-in class
+            document.querySelectorAll('.scroll-fade-in').forEach(el => {
+                observer.observe(el);
+            });
+        }
+        
+        function setupScrollShortcuts() {
+            // Keyboard shortcuts for scrolling
+            document.addEventListener('keydown', function(e) {
+                // Space bar to scroll down
+                if (e.code === 'Space' && !e.target.matches('input, textarea, select, button')) {
+                    e.preventDefault();
+                    window.scrollBy({
+                        top: window.innerHeight * 0.8,
+                        behavior: 'smooth'
+                    });
+                }
+                
+                // Home key to top
+                if (e.code === 'Home') {
+                    e.preventDefault();
+                    smoothScrollToTop();
+                }
+                
+                // End key to bottom
+                if (e.code === 'End') {
+                    e.preventDefault();
+                    smoothScrollToBottom();
+                }
+            });
+        }
+        
+        function enhanceScrollExperience() {
+            // Prevent scroll jank
+            let ticking = false;
+            
+            window.addEventListener('scroll', function() {
+                if (!ticking) {
+                    window.requestAnimationFrame(function() {
+                        // Update elements on scroll
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+            
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        }
+        
+        function smoothScrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        
+        function smoothScrollToBottom() {
+            window.scrollTo({
+                top: document.documentElement.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+        
+        function smoothScrollToElement(element, offset = 0) {
+            if (!element) return;
+            
+            const elementPosition = element.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - offset;
+            
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
             });
         }
         
@@ -1140,7 +1365,7 @@
         
         // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
-            // Setup scroll management FIRST
+            // Setup professional scroll management FIRST
             setupScrollManagement();
             
             // Initialize session timer
@@ -1410,6 +1635,14 @@
                 document.getElementById('fullName').value = '';
                 document.getElementById('admissionDate').value = new Date().toISOString().split('T')[0];
                 showNotification(`ID ${studentId} generated for ${fullName}!`, 'success');
+                
+                // Smooth scroll to the new entry in the table
+                setTimeout(() => {
+                    const tableContainer = document.querySelector('.table-scroll-container');
+                    if (tableContainer) {
+                        tableContainer.scrollTop = 0;
+                    }
+                }, 100);
             }
         }
         
@@ -1900,7 +2133,7 @@
             pageStudents.forEach((student, index) => {
                 const actualIndex = start + index;
                 html += `
-                <tr class="hover:bg-gray-50 transition">
+                <tr class="hover:bg-gray-50 transition hover-scroll-effect">
                     <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">${actualIndex + 1}</td>
                     <td class="px-4 py-3 whitespace-nowrap text-sm font-mono font-bold text-primary">
                         <span class="cursor-pointer hover:text-secondary" onclick="copyToClipboard('${student.id}')" title="Click to copy">
@@ -1942,6 +2175,15 @@
             if (newPage >= 1 && newPage <= totalPages) {
                 currentPage = newPage;
                 renderStudentList();
+                
+                // Smooth scroll to top of table
+                const tableContainer = document.querySelector('.table-scroll-container');
+                if (tableContainer) {
+                    tableContainer.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                }
             }
         }
         
@@ -1974,6 +2216,9 @@
             renderStudentList();
             
             showNotification(`Editing ${student.name}. Fill form and click Generate to update.`, 'info');
+            
+            // Smooth scroll to form
+            smoothScrollToElement(document.getElementById('fullName'), 20);
         }
         
         function deleteStudent(index) {
@@ -2139,4 +2384,3 @@
     </script>
 </body>
 </html>
-
