@@ -17,100 +17,159 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- ==================== PROFESSIONAL SCROLLING SYSTEM ==================== -->
+    <!-- ==================== ULTIMATE FLUID SCROLLING SYSTEM ==================== -->
     <style>
-        /* SMOOTH SCROLLING BASE */
+        /* PERFECTLY FLUID SCROLLING BASE */
         html {
             scroll-behavior: smooth;
-            scroll-padding-top: 20px;
+            -webkit-overflow-scrolling: touch;
+            scroll-padding-top: 0;
         }
         
         body {
-            scroll-behavior: smooth;
-            overflow-y: scroll;
+            overflow-y: auto;
+            overflow-x: hidden;
             -webkit-overflow-scrolling: touch;
+            overscroll-behavior-y: none;
+            scroll-behavior: smooth;
         }
         
-        /* OPTIMIZED SCROLL CONTAINERS */
-        .scroll-container {
+        /* BUTTERY SMOOTH CONTAINERS */
+        .fluid-scroll {
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
             overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: #3b82f6 #f1f5f9;
         }
         
-        .scroll-container::-webkit-scrollbar {
+        /* WATER-LIKE SCROLLBAR */
+        ::-webkit-scrollbar {
             width: 8px;
+            height: 8px;
         }
         
-        .scroll-container::-webkit-scrollbar-track {
-            background: #f1f5f9;
+        ::-webkit-scrollbar-track {
+            background: transparent;
             border-radius: 4px;
         }
         
-        .scroll-container::-webkit-scrollbar-thumb {
-            background: linear-gradient(to bottom, #3b82f6, #1e40af);
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #3b82f6 0%, #1e40af 50%, #8b5cf6 100%);
             border-radius: 4px;
+            transition: all 0.2s ease;
         }
         
-        .scroll-container::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(to bottom, #2563eb, #1e3a8a);
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #60a5fa 0%, #3b82f6 50%, #a78bfa 100%);
+            transform: scale(1.05);
         }
         
-        /* SMOOTH SCROLL ANIMATIONS */
-        .smooth-scroll {
-            scroll-behavior: smooth;
-            transition: scroll-behavior 0.3s ease;
+        ::-webkit-scrollbar-thumb:active {
+            background: linear-gradient(180deg, #1d4ed8 0%, #1e40af 50%, #7c3aed 100%);
         }
         
-        /* FLUID SCROLL EFFECTS */
-        .scroll-fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
+        /* REMOVE ALL SCROLL RESTRICTIONS */
+        .no-scroll-restrictions {
+            overflow: visible !important;
+            max-height: none !important;
         }
         
-        .scroll-fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        /* ENHANCED TABLE SCROLLING */
-        .table-scroll-container {
-            max-height: 400px;
-            overflow-y: auto;
-            scroll-behavior: smooth;
-        }
-        
-        /* SMOOTH PAGE TRANSITIONS */
-        .page-transition {
+        /* FLUID ANIMATIONS */
+        .fluid-transition {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
-        /* SCROLL PROGRESS INDICATOR */
-        .scroll-progress {
+        /* WATER-LIKE SCROLL EFFECT */
+        .water-scroll {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 3px;
-            background: linear-gradient(to right, #3b82f6, #8b5cf6, #10b981);
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(59, 130, 246, 0.8) 25%, 
+                rgba(139, 92, 246, 0.9) 50%, 
+                rgba(59, 130, 246, 0.8) 75%, 
+                transparent 100%
+            );
+            transform: scaleX(0);
             transform-origin: 0%;
             z-index: 9999;
+            pointer-events: none;
+            transition: transform 0.1s linear;
+        }
+        
+        /* SMOOTH FADE EFFECTS */
+        .fade-in-up {
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s ease forwards;
         }
         
-        .scroll-progress.visible {
-            opacity: 1;
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
-        /* HOVER SCROLL EFFECTS */
-        .hover-scroll-effect {
-            transition: transform 0.2s ease-out;
+        /* ENHANCED TABLE SCROLLING - NO RESTRICTIONS */
+        .fluid-table-container {
+            overflow-y: auto;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            max-height: none;
         }
         
-        .hover-scroll-effect:hover {
-            transform: translateY(-2px);
+        /* PERFECTLY SMOOTH MODALS */
+        .fluid-modal {
+            animation: fluidSlideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        @keyframes fluidSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        /* HOVER EFFECTS LIKE WATER RIPPLES */
+        .ripple-effect {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ripple-effect:after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.3);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+        
+        .ripple-effect:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+        
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(20, 20);
+                opacity: 0;
+            }
         }
         
         /* ==================== ORIGINAL LAYOUT STYLES ==================== */
@@ -119,7 +178,6 @@
             height: 100%;
             margin: 0;
             padding: 0;
-            overflow-x: hidden;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
         }
         
@@ -167,10 +225,6 @@
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             z-index: 40;
             position: relative;
-        }
-        
-        .no-overscroll {
-            overscroll-behavior: none;
         }
         
         .content-container {
@@ -301,44 +355,23 @@
         }
         
         .download-modal {
-            animation: slideUp 0.3s ease-out;
+            animation: fluidSlideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+                transform: scale(1);
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+            50% { 
+                box-shadow: 0 0 40px rgba(139, 92, 246, 0.8);
+                transform: scale(1.05);
             }
-        }
-        
-        /* Enhanced scrollbar for main page */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: linear-gradient(180deg, #f8fafc, #e2e8f0);
-            border-radius: 10px;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #3b82f6, #1e40af);
-            border-radius: 10px;
-            border: 2px solid #f8fafc;
-            transition: all 0.3s ease;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(180deg, #2563eb, #1e3a8a);
-            transform: scale(1.1);
-        }
-        
-        ::-webkit-scrollbar-thumb:active {
-            background: linear-gradient(180deg, #1d4ed8, #1e3a8a);
         }
         
         /* Selection color */
@@ -381,15 +414,13 @@
         
         /* Reduce motion for users who prefer it */
         @media (prefers-reduced-motion: reduce) {
-            .smooth-scroll,
-            .scroll-fade-in,
-            .page-transition,
-            .hover-scroll-effect,
-            .id-card,
+            .fluid-transition,
+            .fluid-modal,
             .floating-download-btn,
             .download-modal,
-            ::-webkit-scrollbar-thumb,
-            .loading-wave div {
+            .loading-wave div,
+            .id-card,
+            ::-webkit-scrollbar-thumb {
                 transition: none !important;
                 animation: none !important;
             }
@@ -434,8 +465,8 @@
                     },
                     keyframes: {
                         'float': {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-20px)' }
+                            '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-20px) rotate(5deg)' }
                         },
                         'pulse-glow': {
                             '0%, 100%': { 
@@ -453,16 +484,16 @@
         }
     </script>
 </head>
-<body class="pattern-bg no-overscroll smooth-scroll">
-    <!-- Scroll Progress Indicator -->
-    <div id="scrollProgress" class="scroll-progress"></div>
+<body class="pattern-bg fluid-scroll">
+    <!-- Water-like Scroll Indicator -->
+    <div id="waterScroll" class="water-scroll"></div>
     
     <!-- Main Page Container -->
     <div class="page-container" id="pageContainer">
         <!-- ================ ULTIMATE LOGOUT SYSTEM ================ -->
         
         <!-- Floating Download Button -->
-        <div id="floatingDownloadBtn" class="floating-download-btn fixed bottom-8 right-8 w-16 h-16 rounded-full premium-gradient flex items-center justify-center shadow-float cursor-pointer z-50 hover:shadow-glow transition-all duration-300">
+        <div id="floatingDownloadBtn" class="floating-download-btn fixed bottom-8 right-8 w-16 h-16 rounded-full premium-gradient flex items-center justify-center shadow-float cursor-pointer z-50 hover:shadow-glow transition-all duration-300 ripple-effect">
             <i class="fas fa-file-export text-white text-2xl"></i>
             <div class="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center text-white text-xs font-bold animate-pulse">
                 <span id="downloadCount">0</span>
@@ -471,7 +502,7 @@
         
         <!-- Enhanced Logout Confirmation Modal -->
         <div id="logoutModal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-[9999] p-4 backdrop-blur-sm">
-            <div class="bg-gradient-to-br from-gray-900 to-black rounded-3xl shadow-2xl max-w-md w-full overflow-hidden border border-gray-800">
+            <div class="bg-gradient-to-br from-gray-900 to-black rounded-3xl shadow-2xl max-w-md w-full overflow-hidden border border-gray-800 fluid-modal">
                 <!-- Security Scan Effect -->
                 <div class="security-scan"></div>
                 
@@ -506,7 +537,7 @@
                     <!-- Action Buttons -->
                     <div class="space-y-4">
                         <button id="confirmLogoutBtn" 
-                                class="w-full bg-gradient-to-r from-red-700 to-red-900 hover:from-red-600 hover:to-red-800 text-white font-bold py-4 rounded-xl transition-all duration-300 flex items-center justify-center transform hover:scale-[1.02] active:scale-95 shadow-lg group">
+                                class="w-full bg-gradient-to-r from-red-700 to-red-900 hover:from-red-600 hover:to-red-800 text-white font-bold py-4 rounded-xl transition-all duration-300 flex items-center justify-center transform hover:scale-[1.02] active:scale-95 shadow-lg group ripple-effect">
                             <div class="flex items-center">
                                 <i class="fas fa-sign-out-alt text-xl mr-3 group-hover:animate-spin"></i>
                                 <span class="text-lg">Confirm Logout</span>
@@ -514,7 +545,7 @@
                         </button>
                         
                         <button id="cancelLogoutBtn" 
-                                class="w-full bg-gray-800 hover:bg-gray-700 text-gray-300 font-bold py-4 rounded-xl transition-all duration-300 flex items-center justify-center transform hover:scale-[1.02] active:scale-95 border border-gray-700">
+                                class="w-full bg-gray-800 hover:bg-gray-700 text-gray-300 font-bold py-4 rounded-xl transition-all duration-300 flex items-center justify-center transform hover:scale-[1.02] active:scale-95 border border-gray-700 ripple-effect">
                             <div class="flex items-center">
                                 <i class="fas fa-times text-xl mr-3"></i>
                                 <span>Cancel & Return</span>
@@ -537,7 +568,7 @@
         
         <!-- Logout Success Modal -->
         <div id="logoutSuccessModal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-[9999] p-4 backdrop-blur-sm">
-            <div class="bg-gradient-to-br from-green-900/20 to-emerald-900/20 rounded-3xl shadow-2xl max-w-md w-full overflow-hidden border border-green-800/30">
+            <div class="bg-gradient-to-br from-green-900/20 to-emerald-900/20 rounded-3xl shadow-2xl max-w-md w-full overflow-hidden border border-green-800/30 fluid-modal">
                 <div class="p-10 text-center">
                     <div class="w-24 h-24 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 mx-auto mb-8 flex items-center justify-center shadow-lg animate-bounce">
                         <i class="fas fa-check text-white text-4xl"></i>
@@ -570,7 +601,7 @@
                             <i class="fas fa-download text-accent mr-2"></i>
                             Export Student Data
                         </h3>
-                        <button id="closeModal" class="text-gray-400 hover:text-gray-600 text-2xl">
+                        <button id="closeModal" class="text-gray-400 hover:text-gray-600 text-2xl ripple-effect">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
@@ -581,7 +612,7 @@
                     </p>
                     
                     <div class="space-y-4">
-                        <button id="exportWordBtn" class="w-full bg-blue-50 hover:bg-blue-100 border-2 border-blue-200 text-blue-800 p-4 rounded-xl flex items-center justify-between transition-all duration-300 group hover:scale-[1.02]">
+                        <button id="exportWordBtn" class="w-full bg-blue-50 hover:bg-blue-100 border-2 border-blue-200 text-blue-800 p-4 rounded-xl flex items-center justify-between transition-all duration-300 group hover:scale-[1.02] ripple-effect">
                             <div class="flex items-center">
                                 <div class="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center mr-4 group-hover:bg-blue-200">
                                     <i class="fab fa-microsoft text-blue-600 text-2xl"></i>
@@ -594,7 +625,7 @@
                             <i class="fas fa-chevron-right text-blue-400 group-hover:text-blue-600"></i>
                         </button>
                         
-                        <button id="exportPDFBtn" class="w-full bg-red-50 hover:bg-red-100 border-2 border-red-200 text-red-800 p-4 rounded-xl flex items-center justify-between transition-all duration-300 group hover:scale-[1.02]">
+                        <button id="exportPDFBtn" class="w-full bg-red-50 hover:bg-red-100 border-2 border-red-200 text-red-800 p-4 rounded-xl flex items-center justify-between transition-all duration-300 group hover:scale-[1.02] ripple-effect">
                             <div class="flex items-center">
                                 <div class="w-12 h-12 rounded-lg bg-red-100 flex items-center justify-center mr-4 group-hover:bg-red-200">
                                     <i class="fas fa-file-pdf text-red-600 text-2xl"></i>
@@ -607,7 +638,7 @@
                             <i class="fas fa-chevron-right text-red-400 group-hover:text-red-600"></i>
                         </button>
                         
-                        <button id="exportCSVBtn" class="w-full bg-green-50 hover:bg-green-100 border-2 border-green-200 text-green-800 p-4 rounded-xl flex items-center justify-between transition-all duration-300 group hover:scale-[1.02]">
+                        <button id="exportCSVBtn" class="w-full bg-green-50 hover:bg-green-100 border-2 border-green-200 text-green-800 p-4 rounded-xl flex items-center justify-between transition-all duration-300 group hover:scale-[1.02] ripple-effect">
                             <div class="flex items-center">
                                 <div class="w-12 h-12 rounded-lg bg-green-100 flex items-center justify-center mr-4 group-hover:bg-green-200">
                                     <i class="fas fa-file-csv text-green-600 text-2xl"></i>
@@ -637,7 +668,7 @@
         
         <!-- Loading Overlay -->
         <div id="loadingOverlay" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-            <div class="bg-white rounded-2xl p-8 shadow-float text-center">
+            <div class="bg-white rounded-2xl p-8 shadow-float text-center fluid-modal">
                 <div class="loading-wave mb-4">
                     <div></div>
                     <div></div>
@@ -649,11 +680,11 @@
         </div>
         
         <!-- ==================== MAIN CONTENT ==================== -->
-        <div class="content-container page-transition">
-            <!-- Header - NOT STICKY -->
+        <div class="content-container">
+            <!-- Header -->
             <header class="page-header mb-8 md:mb-12 text-center">
                 <div class="flex flex-col md:flex-row items-center justify-between mb-6">
-                   <a href="{% url 'dashboard_exam_page' %}" class="flex items-center mb-4 md:mb-0 hover:opacity-80 transition-opacity">
+                   <a href="{% url 'dashboard_exam_page' %}" class="flex items-center mb-4 md:mb-0 hover:opacity-80 transition-opacity ripple-effect">
                         <div class="w-16 h-16 rounded-full premium-gradient flex items-center justify-center mr-4 shadow-float animate-bounce-slow">
                             <i class="fas fa-id-card-alt text-white text-2xl"></i>
                         </div>
@@ -670,7 +701,7 @@
                         <div class="flex items-center mb-3">
                             <!-- Simple Logout Button without user profile pop-up -->
                             <button onclick="showEnhancedLogout()" 
-                                    class="px-4 py-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white rounded-xl font-medium flex items-center shadow-lg hover:shadow-danger-glow transition-all duration-300">
+                                    class="px-4 py-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white rounded-xl font-medium flex items-center shadow-lg hover:shadow-danger-glow transition-all duration-300 ripple-effect">
                                 <i class="fas fa-power-off mr-2"></i>
                                 <span class="hidden md:inline">Logout</span>
                             </button>
@@ -703,7 +734,7 @@
                 <!-- Left Column: Input Form & Stats -->
                 <div class="space-y-8">
                     <!-- Input Form Section -->
-                    <div class="bg-white rounded-2xl shadow-card p-6 md:p-8 id-card hover-scroll-effect">
+                    <div class="bg-white rounded-2xl shadow-card p-6 md:p-8 id-card fluid-transition">
                         <h2 class="text-2xl font-bold text-dark mb-6 flex items-center">
                             <i class="fas fa-user-plus text-accent mr-3"></i>
                             Student Information
@@ -757,7 +788,7 @@
                             
                             <div class="pt-4">
                                 <button type="submit" 
-                                        class="w-full premium-gradient text-white font-bold py-4 rounded-xl hover:opacity-90 transition duration-300 flex items-center justify-center shadow-card hover:shadow-hover transform hover:-translate-y-1">
+                                        class="w-full premium-gradient text-white font-bold py-4 rounded-xl hover:opacity-90 transition duration-300 flex items-center justify-center shadow-card hover:shadow-hover transform hover:-translate-y-1 ripple-effect">
                                     <i class="fas fa-id-card mr-3"></i>
                                     Generate Student ID
                                 </button>
@@ -768,13 +799,13 @@
                         <div class="mt-8 pt-6 border-t border-gray-200">
                             <h3 class="text-lg font-bold text-dark mb-4">Data Management</h3>
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <button id="exportJsonBtn" class="bg-green-100 hover:bg-green-200 text-green-800 px-4 py-3 rounded-xl font-medium transition flex items-center justify-center transform hover:-translate-y-1">
+                                <button id="exportJsonBtn" class="bg-green-100 hover:bg-green-200 text-green-800 px-4 py-3 rounded-xl font-medium transition flex items-center justify-center transform hover:-translate-y-1 ripple-effect">
                                     <i class="fas fa-file-code mr-2"></i> Export JSON
                                 </button>
-                                <button id="importBtn" class="bg-purple-100 hover:bg-purple-200 text-purple-800 px-4 py-3 rounded-xl font-medium transition flex items-center justify-center transform hover:-translate-y-1">
+                                <button id="importBtn" class="bg-purple-100 hover:bg-purple-200 text-purple-800 px-4 py-3 rounded-xl font-medium transition flex items-center justify-center transform hover:-translate-y-1 ripple-effect">
                                     <i class="fas fa-file-import mr-2"></i> Import
                                 </button>
-                                <button id="clearAllBtn" class="bg-red-100 hover:bg-red-200 text-red-800 px-4 py-3 rounded-xl font-medium transition flex items-center justify-center transform hover:-translate-y-1">
+                                <button id="clearAllBtn" class="bg-red-100 hover:bg-red-200 text-red-800 px-4 py-3 rounded-xl font-medium transition flex items-center justify-center transform hover:-translate-y-1 ripple-effect">
                                     <i class="fas fa-trash mr-2"></i> Clear All
                                 </button>
                             </div>
@@ -784,19 +815,19 @@
                         <div class="mt-8 pt-6 border-t border-gray-200">
                             <h3 class="text-lg font-bold text-dark mb-4">System Statistics</h3>
                             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4 text-center transform hover:scale-105 transition">
+                                <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4 text-center transform hover:scale-105 transition ripple-effect">
                                     <div class="text-2xl font-bold text-primary" id="totalIds">0</div>
                                     <div class="text-gray-600 text-sm">Total Students</div>
                                 </div>
-                                <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-4 text-center transform hover:scale-105 transition">
+                                <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-4 text-center transform hover:scale-105 transition ripple-effect">
                                     <div class="text-2xl font-bold text-success" id="currentYearCount">0</div>
                                     <div class="text-gray-600 text-sm" id="currentYearLabel">2025 Enrollees</div>
                                 </div>
-                                <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-4 text-center transform hover:scale-105 transition">
+                                <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-4 text-center transform hover:scale-105 transition ripple-effect">
                                     <div class="text-2xl font-bold text-premium" id="todayIds">0</div>
                                     <div class="text-gray-600 text-sm">Today's Adds</div>
                                 </div>
-                                <div class="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-4 text-center transform hover:scale-105 transition">
+                                <div class="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-4 text-center transform hover:scale-105 transition ripple-effect">
                                     <div class="text-2xl font-bold text-warning" id="storagePercent">0%</div>
                                     <div class="text-gray-600 text-sm">Storage Used</div>
                                 </div>
@@ -805,7 +836,7 @@
                     </div>
                     
                     <!-- Bulk Operations -->
-                    <div class="bg-white rounded-2xl shadow-card p-6 id-card hover-scroll-effect">
+                    <div class="bg-white rounded-2xl shadow-card p-6 id-card fluid-transition">
                         <h3 class="text-xl font-bold text-dark mb-4 flex items-center">
                             <i class="fas fa-bolt text-accent mr-3"></i>
                             Bulk Operations
@@ -816,12 +847,12 @@
                                     <i class="fas fa-users text-gray-500 mr-2"></i>Generate Multiple IDs
                                 </label>
                                 <textarea id="bulkNames" 
-                                          class="w-full p-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-300 h-32 resize-none scroll-container"
+                                          class="w-full p-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-300 h-32 resize-none fluid-scroll"
                                           placeholder="Enter student names (one per line)&#10;Example:&#10;Adekunle Joy&#10;Bello Samuel&#10;Chukwu Emeka"></textarea>
                                 <div class="text-sm text-gray-500 mt-1">Names will be assigned to the selected class and year</div>
                             </div>
                             <button id="bulkGenerateBtn" 
-                                    class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-3 rounded-xl hover:opacity-90 transition flex items-center justify-center shadow-card transform hover:-translate-y-1">
+                                    class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-3 rounded-xl hover:opacity-90 transition flex items-center justify-center shadow-card transform hover:-translate-y-1 ripple-effect">
                                 <i class="fas fa-magic mr-2"></i>
                                 Generate Bulk IDs
                             </button>
@@ -832,7 +863,7 @@
                 <!-- Right Column: Preview & List -->
                 <div class="space-y-8">
                     <!-- ID Card Preview -->
-                    <div class="id-card shadow-card p-8 relative overflow-hidden hover-scroll-effect">
+                    <div class="id-card shadow-card p-8 relative overflow-hidden fluid-transition">
                         <!-- Decorative elements -->
                         <div class="absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br from-blue-100 to-transparent rounded-full opacity-50"></div>
                         <div class="absolute -bottom-20 -left-20 w-40 h-40 bg-gradient-to-tr from-purple-100 to-transparent rounded-full opacity-50"></div>
@@ -878,10 +909,10 @@
                                 </div>
                                 
                                 <div class="flex space-x-3">
-                                    <button onclick="copyCurrentId()" class="flex-1 bg-blue-100 hover:bg-blue-200 text-blue-800 px-4 py-2 rounded-lg font-medium transition flex items-center justify-center transform hover:-translate-y-1">
+                                    <button onclick="copyCurrentId()" class="flex-1 bg-blue-100 hover:bg-blue-200 text-blue-800 px-4 py-2 rounded-lg font-medium transition flex items-center justify-center transform hover:-translate-y-1 ripple-effect">
                                         <i class="fas fa-copy mr-2"></i> Copy ID
                                     </button>
-                                    <button onclick="downloadSingleIdCard()" class="flex-1 bg-green-100 hover:bg-green-200 text-green-800 px-4 py-2 rounded-lg font-medium transition flex items-center justify-center transform hover:-translate-y-1">
+                                    <button onclick="downloadSingleIdCard()" class="flex-1 bg-green-100 hover:bg-green-200 text-green-800 px-4 py-2 rounded-lg font-medium transition flex items-center justify-center transform hover:-translate-y-1 ripple-effect">
                                         <i class="fas fa-id-card mr-2"></i> Save Card
                                     </button>
                                 </div>
@@ -894,7 +925,7 @@
                     </div>
                     
                     <!-- Search & Generated IDs -->
-                    <div class="bg-white rounded-2xl shadow-card p-6 id-card hover-scroll-effect">
+                    <div class="bg-white rounded-2xl shadow-card p-6 id-card fluid-transition">
                         <div class="flex flex-col md:flex-row justify-between items-center mb-6">
                             <h2 class="text-2xl font-bold text-dark flex items-center mb-4 md:mb-0">
                                 <i class="fas fa-list text-accent mr-3"></i>
@@ -915,17 +946,17 @@
                                 Showing <span id="pageStart">1</span>-<span id="pageEnd">10</span> of <span id="totalStudents">0</span>
                             </div>
                             <div class="flex space-x-2">
-                                <button id="prevPage" class="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl disabled:opacity-50 transition transform hover:-translate-y-0.5">
+                                <button id="prevPage" class="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl disabled:opacity-50 transition transform hover:-translate-y-0.5 ripple-effect">
                                     <i class="fas fa-chevron-left"></i>
                                 </button>
                                 <span id="currentPage" class="px-3 py-1 font-medium">1</span>
-                                <button id="nextPage" class="px-3 py-1 bg-gradient-to-r from-primary to-accent text-white rounded-xl disabled:opacity-50 transition transform hover:-translate-y-0.5">
+                                <button id="nextPage" class="px-3 py-1 bg-gradient-to-r from-primary to-accent text-white rounded-xl disabled:opacity-50 transition transform hover:-translate-y-0.5 ripple-effect">
                                     <i class="fas fa-chevron-right"></i>
                                 </button>
                             </div>
                         </div>
                         
-                        <div class="table-scroll-container rounded-xl border-2 border-gray-200">
+                        <div class="fluid-table-container rounded-xl border-2 border-gray-200 no-scroll-restrictions">
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50 sticky top-0">
                                     <tr>
@@ -1001,27 +1032,29 @@
         const NUMERIC_CHARS = '23456789'; // Only numbers 2-9 (avoid 0,1)
         const ALPHABET_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ'; // Removed confusing letters
         
-        // ==================== PROFESSIONAL SCROLL MANAGEMENT ====================
+        // ==================== ULTIMATE FLUID SCROLLING ====================
         
-        function setupScrollManagement() {
-            // Enable smooth scrolling for the whole page
-            document.documentElement.style.scrollBehavior = 'smooth';
+        function setupFluidScrolling() {
+            // Remove all scroll restrictions
+            document.documentElement.style.overflowY = 'auto';
+            document.body.style.overflowY = 'auto';
+            document.body.style.overflowX = 'hidden';
             
-            // Initialize scroll progress indicator
-            initScrollProgress();
+            // Setup water-like scroll indicator
+            setupWaterScroll();
             
-            // Add scroll fade-in effects for elements
-            initScrollAnimations();
+            // Enable fluid scroll for all containers
+            enableFluidScroll();
             
-            // Setup keyboard shortcuts for scrolling
+            // Setup smooth scroll shortcuts
             setupScrollShortcuts();
             
-            // Enhanced scroll experience
-            enhanceScrollExperience();
+            // Optimize scroll performance
+            optimizeScrollPerformance();
         }
         
-        function initScrollProgress() {
-            const scrollProgress = document.getElementById('scrollProgress');
+        function setupWaterScroll() {
+            const waterScroll = document.getElementById('waterScroll');
             
             window.addEventListener('scroll', function() {
                 const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
@@ -1029,46 +1062,57 @@
                 const scrolled = (winScroll / height) * 100;
                 
                 if (scrolled > 0) {
-                    scrollProgress.style.transform = `scaleX(${scrolled / 100})`;
-                    scrollProgress.classList.add('visible');
-                } else {
-                    scrollProgress.classList.remove('visible');
+                    waterScroll.style.transform = `scaleX(${scrolled / 100})`;
                 }
                 
-                // Hide progress bar at bottom
-                if (scrolled >= 99.5) {
-                    scrollProgress.style.opacity = '0';
+                // Show/hide based on scroll direction
+                if (scrolled > 1 && scrolled < 99) {
+                    waterScroll.style.opacity = '1';
                 } else {
-                    scrollProgress.style.opacity = '1';
+                    waterScroll.style.opacity = '0';
                 }
+            });
+            
+            // Add scroll velocity effect
+            let lastScrollTop = 0;
+            let scrollTimeout;
+            
+            window.addEventListener('scroll', function() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                // Clear previous timeout
+                clearTimeout(scrollTimeout);
+                
+                // Show water scroll
+                waterScroll.style.opacity = '1';
+                
+                // Hide after scrolling stops
+                scrollTimeout = setTimeout(() => {
+                    waterScroll.style.opacity = '0';
+                }, 300);
+                
+                lastScrollTop = scrollTop;
             });
         }
         
-        function initScrollAnimations() {
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.1
-            };
+        function enableFluidScroll() {
+            // Make all containers scroll fluidly
+            document.querySelectorAll('.fluid-scroll, .fluid-table-container').forEach(container => {
+                container.style.scrollBehavior = 'smooth';
+                container.style.WebkitOverflowScrolling = 'touch';
+            });
             
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, observerOptions);
-            
-            // Observe elements with scroll-fade-in class
-            document.querySelectorAll('.scroll-fade-in').forEach(el => {
-                observer.observe(el);
+            // Remove all height restrictions
+            document.querySelectorAll('.no-scroll-restrictions').forEach(el => {
+                el.style.maxHeight = 'none';
+                el.style.overflowY = 'auto';
             });
         }
         
         function setupScrollShortcuts() {
-            // Keyboard shortcuts for scrolling
+            // Keyboard shortcuts for ultimate scrolling
             document.addEventListener('keydown', function(e) {
-                // Space bar to scroll down
+                // Space bar for natural scroll
                 if (e.code === 'Space' && !e.target.matches('input, textarea, select, button')) {
                     e.preventDefault();
                     window.scrollBy({
@@ -1077,43 +1121,66 @@
                     });
                 }
                 
-                // Home key to top
+                // Home to top - instant but smooth
                 if (e.code === 'Home') {
                     e.preventDefault();
-                    smoothScrollToTop();
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
                 }
                 
-                // End key to bottom
+                // End to bottom - instant but smooth
                 if (e.code === 'End') {
                     e.preventDefault();
-                    smoothScrollToBottom();
+                    window.scrollTo({
+                        top: document.documentElement.scrollHeight,
+                        behavior: 'smooth'
+                    });
+                }
+                
+                // Page Up/Down
+                if (e.code === 'PageUp') {
+                    e.preventDefault();
+                    window.scrollBy({
+                        top: -window.innerHeight * 0.9,
+                        behavior: 'smooth'
+                    });
+                }
+                
+                if (e.code === 'PageDown') {
+                    e.preventDefault();
+                    window.scrollBy({
+                        top: window.innerHeight * 0.9,
+                        behavior: 'smooth'
+                    });
                 }
             });
         }
         
-        function enhanceScrollExperience() {
-            // Prevent scroll jank
+        function optimizeScrollPerformance() {
+            // Use requestAnimationFrame for smooth updates
             let ticking = false;
             
             window.addEventListener('scroll', function() {
                 if (!ticking) {
                     window.requestAnimationFrame(function() {
-                        // Update elements on scroll
+                        // Update any scroll-dependent elements here
                         ticking = false;
                     });
                     ticking = true;
                 }
             });
             
-            // Smooth scroll for anchor links
+            // Add smooth scroll for anchor links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
                     const targetId = this.getAttribute('href');
                     if (targetId === '#') return;
                     
                     const targetElement = document.querySelector(targetId);
                     if (targetElement) {
+                        e.preventDefault();
                         targetElement.scrollIntoView({
                             behavior: 'smooth',
                             block: 'start'
@@ -1123,21 +1190,15 @@
             });
         }
         
-        function smoothScrollToTop() {
+        // Ultra-smooth scroll functions
+        function fluidScrollToTop() {
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth'
             });
         }
         
-        function smoothScrollToBottom() {
-            window.scrollTo({
-                top: document.documentElement.scrollHeight,
-                behavior: 'smooth'
-            });
-        }
-        
-        function smoothScrollToElement(element, offset = 0) {
+        function fluidScrollToElement(element, offset = 0) {
             if (!element) return;
             
             const elementPosition = element.getBoundingClientRect().top;
@@ -1202,12 +1263,6 @@
             const modal = document.getElementById('logoutModal');
             modal.classList.remove('hidden');
             modal.classList.add('flex');
-            
-            // Add entrance animation
-            setTimeout(() => {
-                modal.querySelector('div > div').style.transform = 'scale(1)';
-                modal.querySelector('div > div').style.opacity = '1';
-            }, 10);
             
             // Reset focus to cancel button
             setTimeout(() => {
@@ -1365,8 +1420,8 @@
         
         // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
-            // Setup professional scroll management FIRST
-            setupScrollManagement();
+            // Setup ultimate fluid scrolling FIRST
+            setupFluidScrolling();
             
             // Initialize session timer
             initSessionTimer();
@@ -1635,14 +1690,6 @@
                 document.getElementById('fullName').value = '';
                 document.getElementById('admissionDate').value = new Date().toISOString().split('T')[0];
                 showNotification(`ID ${studentId} generated for ${fullName}!`, 'success');
-                
-                // Smooth scroll to the new entry in the table
-                setTimeout(() => {
-                    const tableContainer = document.querySelector('.table-scroll-container');
-                    if (tableContainer) {
-                        tableContainer.scrollTop = 0;
-                    }
-                }, 100);
             }
         }
         
@@ -2133,7 +2180,7 @@
             pageStudents.forEach((student, index) => {
                 const actualIndex = start + index;
                 html += `
-                <tr class="hover:bg-gray-50 transition hover-scroll-effect">
+                <tr class="hover:bg-gray-50 transition fade-in-up">
                     <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">${actualIndex + 1}</td>
                     <td class="px-4 py-3 whitespace-nowrap text-sm font-mono font-bold text-primary">
                         <span class="cursor-pointer hover:text-secondary" onclick="copyToClipboard('${student.id}')" title="Click to copy">
@@ -2175,15 +2222,6 @@
             if (newPage >= 1 && newPage <= totalPages) {
                 currentPage = newPage;
                 renderStudentList();
-                
-                // Smooth scroll to top of table
-                const tableContainer = document.querySelector('.table-scroll-container');
-                if (tableContainer) {
-                    tableContainer.scrollTo({
-                        top: 0,
-                        behavior: 'smooth'
-                    });
-                }
             }
         }
         
@@ -2216,9 +2254,6 @@
             renderStudentList();
             
             showNotification(`Editing ${student.name}. Fill form and click Generate to update.`, 'info');
-            
-            // Smooth scroll to form
-            smoothScrollToElement(document.getElementById('fullName'), 20);
         }
         
         function deleteStudent(index) {
@@ -2342,7 +2377,7 @@
                 info: 'bg-gradient-to-r from-blue-600 to-indigo-700'
             };
             
-            notification.className = `notification enhanced-notification fixed bottom-4 right-4 ${colors[type]} text-white px-6 py-4 rounded-xl z-50 transform transition-all duration-300`;
+            notification.className = `notification enhanced-notification fixed bottom-4 right-4 ${colors[type]} text-white px-6 py-4 rounded-xl z-50 transform transition-all duration-300 fluid-modal`;
             notification.innerHTML = `
                 <div class="flex items-center">
                     <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center mr-3">
