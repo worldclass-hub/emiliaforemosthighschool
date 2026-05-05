@@ -2,162 +2,106 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EMILIA FOREMOST HIGH SCHOOL - Management System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>EMIFORPHS | Student ID & Tuition Hub</title>
+    <!-- Tailwind + Fonts + Icons -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/EMILIA%20LOGO.png">
-    
-    <!-- ==================== PROPER SCROLL MANAGEMENT SYSTEM ==================== -->
     <style>
-        /* SIMPLIFIED SCROLL MANAGEMENT - No fixed positioning */
+        * { 
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* ========== EXACT CODE C APPROACH - ULTIMATE ANTI-OVERSCROLL ========== */
+        /* 1. FIXED POSITION BODY - Prevents any movement beyond boundaries */
         html, body {
             width: 100%;
             height: 100%;
+            position: fixed;
+            overflow: hidden;
+            background: radial-gradient(circle at 10% 20%, #e8edf5 0%, #d0d9e8 100%);
             margin: 0;
             padding: 0;
-            overflow-x: hidden;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
-        }
-        
-        body {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        
-        /* Main container */
-        .page-container {
-            flex: 1 0 auto;
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            max-width: 100%;
-            position: relative;
-        }
-        
-        /* Content wrapper */
-        .content-wrapper {
-            flex: 1 0 auto;
-            width: 100%;
-            max-width: 100%;
-            position: relative;
-        }
-        
-        /* Footer - fixed at bottom */
-        .page-footer {
-            flex-shrink: 0;
-            width: 100%;
-            background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%);
-            margin-top: auto;
-        }
-        
-        /* Full width footer - FIXED */
-        .full-width-footer {
-            width: 100vw;
-            position: relative;
-            left: 50%;
-            right: 50%;
-            margin-left: -50vw;
-            margin-right: -50vw;
-            background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%);
-        }
-        
-        /* Header - NOT STICKY (removed sticky positioning) */
-        .page-header {
-            width: 100%;
-            background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%);
-            z-index: 40;
-            position: relative; /* Changed from sticky to relative */
-        }
-        
-        /* Prevent overscroll */
-        .no-overscroll {
+            touch-action: pan-y;
             overscroll-behavior: none;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
         }
         
-        /* Content container */
-        .content-container {
-            max-width: 7xl;
-            margin: 0 auto;
-            padding: 20px;
+        /* 2. SINGLE SCROLL CONTAINER - Only this can scroll internally */
+        .scroll-container {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            background: radial-gradient(circle at 10% 20%, #e8edf5 0%, #d0d9e8 100%);
+            -webkit-overflow-scrolling: touch;
         }
         
+        /* 3. PREVENT TOUCH OVERSCROLL */
+        .no-overscroll {
+            touch-action: pan-y;
+            overscroll-behavior: contain;
+        }
+        
+        /* 4. NO WHITE BORDERS EVER - Content completely contained */
+        .main-wrapper {
+            width: 100%;
+            min-height: 100%;
+            background: radial-gradient(circle at 10% 20%, #e8edf5 0%, #d0d9e8 100%);
+        }
+        
+        /* 5. Mobile-specific fixes */
         @media (max-width: 768px) {
-            .content-container {
-                padding: 10px;
+            .scroll-container {
+                -webkit-overflow-scrolling: touch;
+                overscroll-behavior: contain;
             }
         }
         
-        /* ==================== ORIGINAL STYLES FROM CODE D ==================== */
-        * {
-            font-family: 'Inter', sans-serif;
+        /* ========== ORIGINAL CODE B STYLES (converted to glass) ========== */
+        .card-luxury {
+            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+        .card-luxury:hover {
+            transform: translateY(-12px) scale(1.01);
+            box-shadow: 0 30px 40px -20px rgba(0,0,0,0.25);
+        }
+        .gradient-hero {
+            background: linear-gradient(135deg, #0f2b4d 0%, #1a3f6e 100%);
+        }
+        .stat-glow {
+            transition: all 0.2s;
+        }
+        .stat-glow:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 20px -5px rgba(0,0,0,0.1);
         }
         
-        .gradient-bg {
-            background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%);
+        /* Glass card effect */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
         
-        .card-hover {
-            transition: all 0.3s ease;
-        }
-        
-        .card-hover:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-        
-        .school-logo {
-            transition: all 0.3s ease;
-        }
-        
-        .school-logo:hover {
-            transform: scale(1.05);
-        }
-        
-        /* Responsive number sizes for statistics */
-        .stat-number {
-            font-weight: 800;
-            line-height: 1;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        
-        @media (max-width: 640px) {
-            .stat-number {
-                font-size: 1.75rem;
-            }
-        }
-        
-        @media (min-width: 641px) and (max-width: 768px) {
-            .stat-number {
-                font-size: 2rem;
-            }
-        }
-        
-        @media (min-width: 769px) {
-            .stat-number {
-                font-size: 2.5rem;
-            }
-        }
-        
-        @media (min-width: 1024px) {
-            .stat-number {
-                font-size: 3rem;
-            }
-        }
-        
-        /* Modal styles */
+        /* Modal styles - COMPLETELY REWRITTEN FOR MOBILE */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(6px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -166,611 +110,493 @@
             visibility: hidden;
             transition: all 0.3s ease;
         }
-        
         .modal-overlay.active {
             opacity: 1;
             visibility: visible;
         }
-        
-        .modal-content {
-            background-color: white;
-            border-radius: 1rem;
+        .modal-card {
+            background: white;
+            border-radius: 2rem;
+            max-width: 550px;
             width: 90%;
-            max-width: 600px;
-            max-height: 80vh;
-            overflow: hidden;
-            transform: translateY(20px);
+            height: 85vh;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            transform: translateY(30px);
             transition: transform 0.3s ease;
-            z-index: 1001;
+            box-shadow: 0 50px 60px -30px rgba(0,0,0,0.4);
+            position: relative;
         }
-        
-        .modal-overlay.active .modal-content {
+        .modal-overlay.active .modal-card {
             transform: translateY(0);
         }
         
-        .modal-header {
-            background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%);
-            color: white;
-            padding: 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .modal-body {
-            padding: 1.5rem;
+        /* Make modal content area scrollable - FIXED for mobile */
+        .modal-content-scrollable {
+            flex: 1;
             overflow-y: auto;
-            max-height: 60vh;
+            overflow-x: hidden;
+            padding: 1.5rem;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
         }
         
-        .modal-body::-webkit-scrollbar {
-            width: 8px;
+        /* Modal header stays fixed */
+        .modal-header {
+            flex-shrink: 0;
+            border-radius: 2rem 2rem 0 0;
         }
         
-        .modal-body::-webkit-scrollbar-track {
+        /* Custom scrollbar styling */
+        .modal-content-scrollable::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .modal-content-scrollable::-webkit-scrollbar-track {
             background: #f1f1f1;
-            border-radius: 4px;
+            border-radius: 10px;
         }
         
-        .modal-body::-webkit-scrollbar-thumb {
+        .modal-content-scrollable::-webkit-scrollbar-thumb {
             background: #888;
-            border-radius: 4px;
+            border-radius: 10px;
         }
         
-        .modal-body::-webkit-scrollbar-thumb:hover {
+        .modal-content-scrollable::-webkit-scrollbar-thumb:hover {
             background: #555;
         }
         
-        .contact-info {
-            background-color: #f8fafc;
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            margin-top: 1.5rem;
-        }
-        
-        .contact-link {
-            color: #1e3c72;
-            text-decoration: none;
-            transition: all 0.2s ease;
-            word-break: break-all;
-        }
-        
-        .contact-link:hover {
-            color: #2a5298;
-            text-decoration: underline;
-        }
-        
-        .tool-card {
-            border-left: 4px solid #1e3c72;
-            padding-left: 1rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        /* Scroll Boundary Indicator */
-        .scroll-boundary {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, #1e3c72, #2a5298);
-            z-index: 9999;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .scroll-boundary.visible {
-            opacity: 1;
-        }
-        
-        /* Responsive contact info */
+        /* Mobile specific modal adjustments */
         @media (max-width: 640px) {
-            .contact-link {
-                font-size: 0.875rem;
+            .modal-card {
+                width: 95%;
+                height: 90vh;
+                max-height: 90vh;
+                border-radius: 1.5rem;
             }
-            
-            .contact-info .space-y-2 > div {
-                flex-wrap: wrap;
+            .modal-content-scrollable {
+                padding: 1rem;
             }
-            
-            .contact-info i {
-                min-width: 20px;
+            .modal-header {
+                border-radius: 1.5rem 1.5rem 0 0;
             }
         }
         
-        /* Prevent body scroll when modal is open */
-        body.modal-open {
-            overflow: hidden;
+        /* Logo styling */
+        .school-logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 20px;
+            padding: 6px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            transition: transform 0.2s ease;
+        }
+        .school-logo-container:hover {
+            transform: scale(1.02);
+        }
+        .logo-img {
+            display: block;
+            width: 58px;
+            height: 58px;
+            object-fit: contain;
+        }
+        @media (min-width: 768px) {
+            .logo-img {
+                width: 70px;
+                height: 70px;
+            }
+        }
+        
+        /* Footer stays solid */
+        footer {
+            background: linear-gradient(135deg, #0a1a2f 0%, #1c3e64 100%);
         }
     </style>
 </head>
 <body class="no-overscroll">
-    <!-- Scroll Boundary Indicator -->
-    <div id="scrollBoundary" class="scroll-boundary"></div>
-    
-    <!-- Modal for System Guide -->
-    <div id="systemGuideModal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div>
-                    <h3 class="text-xl font-bold">EMIFORHS System Guide</h3>
-                    <p class="text-blue-200 text-sm mt-1">Complete guide to our management tools</p>
-                </div>
-                <button id="closeModal" class="text-white hover:text-gray-200 text-2xl">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-6">
-                    <h4 class="text-lg font-bold mb-3 text-gray-900">Welcome to EMIFORHS Management System</h4>
-                    <p class="text-gray-600 mb-4">
-                        This comprehensive guide will help you understand and navigate our four main management tools. Each tool is designed to streamline specific school operations and improve efficiency.
-                    </p>
-                </div>
-                
-                <div class="tool-card">
-                    <h5 class="font-bold text-lg mb-2 text-blue-700">1. Exam Report Card Maker</h5>
-                    <p class="text-gray-600 mb-2">
-                        This tool allows teachers and administrators to generate professional exam report cards with detailed performance analysis. Key features include:
-                    </p>
-                    <ul class="text-gray-600 list-disc pl-5 mb-3">
-                        <li>Automated grade calculation based on custom grading scales</li>
-                        <li>Multiple customizable templates for different exam types</li>
-                        <li>Performance analytics and trend analysis</li>
-                        <li>Export to PDF for printing and distribution</li>
-                    </ul>
-                </div>
-                
-                <div class="tool-card" style="border-left-color: #16a34a;">
-                    <h5 class="font-bold text-lg mb-2 text-green-700">2. Student Result Checker</h5>
-                    <p class="text-gray-600 mb-2">
-                        A secure platform for students and parents to access examination results in real-time. Key features include:
-                    </p>
-                    <ul class="text-gray-600 list-disc pl-5 mb-3">
-                        <li>Secure student authentication system</li>
-                        <li>Real-time result updates as soon as they're published</li>
-                        <li>Performance trends across multiple exam periods</li>
-                        <li>Mobile-friendly interface for on-the-go access</li>
-                    </ul>
-                </div>
-                
-                <div class="tool-card" style="border-left-color: #9333ea;">
-                    <h5 class="font-bold text-lg mb-2 text-purple-700">3. Tuition & Bill Summary</h5>
-                    <p class="text-gray-600 mb-2">
-                        Comprehensive financial management tool for generating tuition statements and financial reports. Key features include:
-                    </p>
-                    <ul class="text-gray-600 list-disc pl-5 mb-3">
-                        <li>Automated billing based on student enrollment</li>
-                        <li>Complete payment history tracking</li>
-                        <li>Term-end financial statement generation</li>
-                        <li>Export to PDF and Excel formats</li>
-                    </ul>
-                </div>
-                
-                <div class="tool-card" style="border-left-color: #dc2626;">
-                    <h5 class="font-bold text-lg mb-2 text-red-700">4. Student ID Maker</h5>
-                    <p class="text-gray-600 mb-2">
-                        Professional ID card creation tool for student identification and campus security. Key features include:
-                    </p>
-                    <ul class="text-gray-600 list-disc pl-5 mb-3">
-                        <li>Customizable ID card templates</li>
-                        <li>Barcode and QR code generation for quick scanning</li>
-                        <li>Batch printing for entire classes or grades</li>
-                        <li>Security features to prevent forgery</li>
-                    </ul>
-                </div>
-                
-                <div class="contact-info">
-                    <h5 class="font-bold text-lg mb-3 text-gray-900">Need Further Assistance?</h5>
-                    <p class="text-gray-600 mb-3">
-                        If you require additional help or have specific questions about any of our management tools, please don't hesitate to contact our technical support team.
-                    </p>
-                    <div class="space-y-2">
-                        <div class="flex items-center">
-                            <i class="fas fa-envelope text-blue-600 mr-3"></i>
-                            <a href="mailto:emiliaforemost@gmail.com" class="contact-link">emiliaforemost@gmail.com</a>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-phone text-green-600 mr-3"></i>
-                            <a href="tel:09057147497" class="contact-link">09057147497</a>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-comment text-green-600 mr-3"></i>
-                            <span class="text-gray-600">WhatsApp: <a href="https://wa.me/2349057147497" target="_blank" class="contact-link">09057147497</a></span>
+    <!-- SINGLE SCROLL CONTAINER (like Code C) -->
+    <div class="scroll-container" id="scrollContainer">
+        <div class="main-wrapper">
+            
+            <!-- MODAL: System Guide - FIXED for mobile scrolling -->
+            <div id="systemGuideModal" class="modal-overlay">
+                <div class="modal-card">
+                    <div class="modal-header bg-gradient-to-r from-[#1e3c72] to-[#2a5298] px-6 py-5 text-white">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-2xl font-extrabold tracking-tight">✨ EMIFORPHS Portal Guide</h3>
+                                <p class="text-blue-100 text-sm mt-1">Student ID Maker + Tuition & Bill Summary</p>
+                            </div>
+                            <button id="closeModalBtn" class="text-white/80 hover:text-white text-2xl leading-5 transition">&times;</button>
                         </div>
                     </div>
-                    <p class="text-gray-500 text-sm mt-4">
-                        Our support team is available Monday to Friday, 8:00 AM to 5:00 PM. Response time is typically within 2 hours during business hours.
-                    </p>
+                    <div class="modal-content-scrollable" id="modalScrollable">
+                        <div class="mb-6 border-l-4 border-indigo-500 pl-4">
+                            <h4 class="font-bold text-indigo-700 text-lg flex items-center gap-2"><i class="fas fa-id-card"></i> Student ID Maker</h4>
+                            <p class="text-gray-600 mt-1">Design, customize, and print professional student identification cards. Generate QR codes, batch printing, security watermarks, and personalized templates.</p>
+                            <ul class="mt-2 space-y-1 text-sm text-gray-700 list-disc list-inside">
+                                <li>Instant ID preview with live photo upload</li>
+                                <li>Smart barcode & QR code (student unique identifier)</li>
+                                <li>Export as high-res PNG or PDF for printing</li>
+                                <li>Secure student data management</li>
+                            </ul>
+                        </div>
+                        <div class="mb-6 border-l-4 border-emerald-500 pl-4">
+                            <h4 class="font-bold text-emerald-700 text-lg flex items-center gap-2"><i class="fas fa-file-invoice-dollar"></i> Tuition & Bill Summary</h4>
+                            <p class="text-gray-600 mt-1">Comprehensive financial dashboard for tuition balances, fee breakdowns, payment history, and term statements.</p>
+                            <ul class="mt-2 space-y-1 text-sm text-gray-700 list-disc list-inside">
+                                <li>Real-time tuition summary & outstanding balance</li>
+                                <li>Installment tracking and due alerts</li>
+                                <li>Generate official PDF invoices & receipts</li>
+                                <li>Historical records for each student</li>
+                            </ul>
+                        </div>
+                        <div class="mb-6 border-l-4 border-blue-500 pl-4">
+                            <h4 class="font-bold text-blue-700 text-lg flex items-center gap-2"><i class="fas fa-chart-line"></i> Performance Analytics</h4>
+                            <p class="text-gray-600 mt-1">Track academic performance across all classes with real-time analytics and reporting tools.</p>
+                            <ul class="mt-2 space-y-1 text-sm text-gray-700 list-disc list-inside">
+                                <li>Student progress tracking</li>
+                                <li>Class performance comparisons</li>
+                                <li>Subject-wise analysis</li>
+                                <li>Term and session reports</li>
+                            </ul>
+                        </div>
+                        <div class="mb-6 border-l-4 border-yellow-500 pl-4">
+                            <h4 class="font-bold text-yellow-700 text-lg flex items-center gap-2"><i class="fas fa-print"></i> Bulk Printing & Export</h4>
+                            <p class="text-gray-600 mt-1">Generate multiple documents at once with our advanced batch processing system.</p>
+                            <ul class="mt-2 space-y-1 text-sm text-gray-700 list-disc list-inside">
+                                <li>Batch ID card generation</li>
+                                <li>Mass PDF export</li>
+                                <li>Print queue management</li>
+                                <li>Template customization</li>
+                            </ul>
+                        </div>
+                        <div class="mb-6 border-l-4 border-pink-500 pl-4">
+                            <h4 class="font-bold text-pink-700 text-lg flex items-center gap-2"><i class="fas fa-shield-alt"></i> Security Features</h4>
+                            <p class="text-gray-600 mt-1">Enterprise-grade security to protect all student and financial data.</p>
+                            <ul class="mt-2 space-y-1 text-sm text-gray-700 list-disc list-inside">
+                                <li>Role-based access control</li>
+                                <li>Audit logs and tracking</li>
+                                <li>Data encryption at rest</li>
+                                <li>Secure payment gateway</li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-50 rounded-xl p-4">
+                            <p class="text-sm font-medium text-gray-800"><i class="fas fa-headset text-[#1e3c72] mr-2"></i> Need help?</p>
+                            <div class="flex flex-wrap gap-3 mt-2 text-sm">
+                                <a href="mailto:emiliaforemost@gmail.com" class="text-[#1e3c72] hover:underline"><i class="far fa-envelope"></i> emiliaforemost@gmail.com</a>
+                                <a href="tel:09057147497" class="text-[#1e3c72] hover:underline"><i class="fas fa-phone-alt"></i> 09057147497</a>
+                                <a href="https://wa.me/2349057147497" target="_blank" class="text-[#1e3c72] hover:underline"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <!-- HEADER -->
+            <header class="gradient-hero text-white shadow-2xl w-full">
+                <div class="container mx-auto px-5 lg:px-8 py-6 lg:py-7">
+                    <div class="flex flex-wrap items-center justify-between gap-5">
+                        <div class="flex items-center gap-4">
+                            <div class="school-logo-container bg-white rounded-2xl shadow-xl">
+                                <img src="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/EMILIA%20LOGO.png" 
+                                     alt="EMILIA FOREMOST CREST" 
+                                     class="logo-img"
+                                     onerror="this.src='https://placehold.co/200x200/ffffff/1e3c72?text=EMIFORPHS';">
+                            </div>
+                            <div>
+                                <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight">EMILIA FOREMOST HIGH SCHOOL</h1>
+                                <div class="flex flex-wrap gap-2 items-center mt-1">
+                                    <span class="text-blue-100 text-sm bg-black/20 px-2 py-0.5 rounded-full">Excellence in Education Since 2007</span>
+                                    <span class="bg-white/30 text-white text-[11px] font-bold px-3 py-0.5 rounded-full">EMIFORPHS</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-right hidden sm:block">
+                            <p class="text-lg font-semibold"><i class="fas fa-gem text-yellow-300"></i> Management Core</p>
+                            <p class="text-blue-100 text-sm">ID Generation | Tuition Intelligence</p>
+                            <div class="flex justify-end mt-1">
+                                <div class="w-2.5 h-2.5 bg-emerald-400 rounded-full animate-pulse"></div>
+                                <span class="text-xs ml-1.5 text-blue-200">live sync</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- MAIN CONTENT -->
+            <main class="container mx-auto px-5 lg:px-8 py-12 lg:py-16">
+                
+                <div class="text-center max-w-4xl mx-auto mb-16">
+                    <div class="inline-flex items-center gap-2 glass-card rounded-full px-4 py-1.5 mb-4">
+                        <i class="fas fa-bolt text-amber-500"></i>
+                        <span class="text-xs font-semibold text-gray-700">EMIFORPHS DASHBOARD</span>
+                    </div>
+                    <h2 class="text-4xl md:text-5xl font-black bg-gradient-to-r from-[#0f2b4d] to-[#2a5298] bg-clip-text text-transparent">ID Hub & Financial Command</h2>
+                    <p class="text-gray-700 text-lg mt-4">Student ID Maker + Tuition & Bill Summary — two powerful tools for modern school management.</p>
+                </div>
+
+                <!-- Two main CARDS -->
+                <div class="grid md:grid-cols-2 gap-10 lg:gap-12 max-w-6xl mx-auto mb-20">
+                    
+                    <!-- STUDENT ID MAKER -->
+                    <div class="card-luxury glass-card rounded-3xl overflow-hidden">
+                        <div class="h-48 bg-gradient-to-br from-red-500/10 to-orange-500/10 flex items-center justify-center">
+                            <i class="fas fa-id-card text-7xl text-red-600"></i>
+                        </div>
+                        <div class="p-7 lg:p-8">
+                            <h3 class="text-3xl font-extrabold text-gray-800">Student ID Maker</h3>
+                            <p class="text-gray-600 mt-2">Generate secure student IDs with QR codes, batch export, and photo integration.</p>
+                            <ul class="mt-5 space-y-2.5">
+                                <li class="flex items-center gap-2"><i class="fas fa-qrcode text-red-500"></i><span class="text-gray-700">Smart QR / Barcode</span></li>
+                                <li class="flex items-center gap-2"><i class="fas fa-images text-red-500"></i><span class="text-gray-700">Photo upload + preview</span></li>
+                                <li class="flex items-center gap-2"><i class="fas fa-print text-red-500"></i><span class="text-gray-700">Print-ready PDF/PNG</span></li>
+                            </ul>
+                            <div class="mt-8">
+                                <a href="/student_id_maker/" class="block w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3.5 rounded-2xl text-center transition">
+                                    Launch ID Studio <i class="fas fa-arrow-right ml-2"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TUITION & BILL SUMMARY -->
+                    <div class="card-luxury glass-card rounded-3xl overflow-hidden">
+                        <div class="h-48 bg-gradient-to-br from-purple-500/10 to-indigo-500/10 flex items-center justify-center">
+                            <i class="fas fa-file-invoice-dollar text-7xl text-purple-700"></i>
+                        </div>
+                        <div class="p-7 lg:p-8">
+                            <h3 class="text-3xl font-extrabold text-gray-800">Tuition & Bill Summary</h3>
+                            <p class="text-gray-600 mt-2">Complete billing dashboard: balances, payment history, term summaries.</p>
+                            <ul class="mt-5 space-y-2.5">
+                                <li class="flex items-center gap-2"><i class="fas fa-wallet text-purple-500"></i><span class="text-gray-700">Outstanding balance alerts</span></li>
+                                <li class="flex items-center gap-2"><i class="fas fa-history text-purple-500"></i><span class="text-gray-700">Payment archives</span></li>
+                                <li class="flex items-center gap-2"><i class="fas fa-file-pdf text-purple-500"></i><span class="text-gray-700">Official invoice PDF</span></li>
+                            </ul>
+                            <div class="mt-8">
+                                <a href="/general_exam_page/" class="block w-full bg-purple-700 hover:bg-purple-800 text-white font-bold py-3.5 rounded-2xl text-center transition">
+                                    View Billing Hub <i class="fas fa-arrow-right ml-2"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STATISTICS -->
+                <div class="glass-card rounded-3xl p-6 md:p-8 mb-16">
+                    <h3 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-8">📊 EMIFORPHS Metrics</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div class="stat-glow bg-gradient-to-br from-red-50 to-white rounded-2xl p-5 text-center" style="background: rgba(255,255,255,0.7); backdrop-filter: blur(5px);">
+                            <i class="fas fa-id-card text-3xl text-red-500"></i>
+                            <div class="text-3xl md:text-4xl font-black text-red-700 mt-2" id="idCardCount">0</div>
+                            <p class="text-gray-600 font-semibold">ID Cards Issued</p>
+                        </div>
+                        <div class="stat-glow bg-gradient-to-br from-purple-50 to-white rounded-2xl p-5 text-center" style="background: rgba(255,255,255,0.7); backdrop-filter: blur(5px);">
+                            <i class="fas fa-coins text-3xl text-purple-600"></i>
+                            <div class="text-3xl md:text-4xl font-black text-purple-700 mt-2" id="billsTotal">0</div>
+                            <p class="text-gray-600 font-semibold">Bills Processed</p>
+                        </div>
+                        <div class="stat-glow bg-gradient-to-br from-emerald-50 to-white rounded-2xl p-5 text-center" style="background: rgba(255,255,255,0.7); backdrop-filter: blur(5px);">
+                            <i class="fas fa-users text-3xl text-emerald-600"></i>
+                            <div class="text-3xl md:text-4xl font-black text-emerald-700 mt-2" id="activeStudents">0</div>
+                            <p class="text-gray-600 font-semibold">Active Students</p>
+                        </div>
+                        <div class="stat-glow bg-gradient-to-br from-amber-50 to-white rounded-2xl p-5 text-center" style="background: rgba(255,255,255,0.7); backdrop-filter: blur(5px);">
+                            <i class="fas fa-file-invoice text-3xl text-amber-600"></i>
+                            <div class="text-3xl md:text-4xl font-black text-amber-700 mt-2" id="statementsCount">0</div>
+                            <p class="text-gray-600 font-semibold">Statements</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EXTRA CONTENT -->
+                <div class="grid md:grid-cols-3 gap-6 mb-16">
+                    <div class="glass-card rounded-2xl p-6">
+                        <i class="fas fa-clock text-3xl text-blue-600 mb-3"></i>
+                        <h4 class="font-bold text-xl text-gray-800">ID Processing Time</h4>
+                        <p class="text-gray-600 mt-2">Average ID card generation takes less than 30 seconds with our optimized system.</p>
+                    </div>
+                    <div class="glass-card rounded-2xl p-6">
+                        <i class="fas fa-shield-alt text-3xl text-green-600 mb-3"></i>
+                        <h4 class="font-bold text-xl text-gray-800">Secure Payment</h4>
+                        <p class="text-gray-600 mt-2">All tuition transactions are encrypted and securely stored with bank-grade security.</p>
+                    </div>
+                    <div class="glass-card rounded-2xl p-6">
+                        <i class="fas fa-chart-line text-3xl text-purple-600 mb-3"></i>
+                        <h4 class="font-bold text-xl text-gray-800">98% Satisfaction</h4>
+                        <p class="text-gray-600 mt-2">Parent and staff satisfaction rate based on 2024 annual survey results.</p>
+                    </div>
+                </div>
+
+                <!-- FREQUENTLY ASKED QUESTIONS -->
+                <div class="glass-card rounded-3xl p-6 md:p-8 mb-16">
+                    <h3 class="text-2xl font-bold text-center text-gray-800 mb-8">📋 Frequently Asked Questions</h3>
+                    <div class="space-y-4 max-w-3xl mx-auto">
+                        <div class="border-b border-gray-300 pb-3">
+                            <p class="font-semibold text-gray-800">❓ How do I create a student ID?</p>
+                            <p class="text-gray-600 text-sm mt-1">Click on "Launch ID Studio" under the Student ID Maker card, then upload student photo and fill in details.</p>
+                        </div>
+                        <div class="border-b border-gray-300 pb-3">
+                            <p class="font-semibold text-gray-800">❓ Can I download tuition statements as PDF?</p>
+                            <p class="text-gray-600 text-sm mt-1">Yes, the Tuition & Bill Summary tool allows you to generate and download official PDF invoices.</p>
+                        </div>
+                        <div class="border-b border-gray-300 pb-3">
+                            <p class="font-semibold text-gray-800">❓ Is there batch printing for multiple IDs?</p>
+                            <p class="text-gray-600 text-sm mt-1">Absolutely! The ID Maker supports batch generation for entire classes or grade levels.</p>
+                        </div>
+                        <div class="pb-2">
+                            <p class="font-semibold text-gray-800">❓ How often are tuition records updated?</p>
+                            <p class="text-gray-600 text-sm mt-1">Payment records are updated in real-time as soon as transactions are processed.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUPPORT SECTION -->
+                <div class="text-center max-w-3xl mx-auto">
+                    <div class="glass-card rounded-2xl p-8">
+                        <h4 class="text-2xl font-bold text-gray-800"><i class="fas fa-life-ring text-blue-600"></i> Support & Resources</h4>
+                        <p class="text-gray-700 mt-2">Need assistance with Student ID Maker or Tuition Summary? Our experts are ready 24/7.</p>
+                        <div class="flex flex-wrap justify-center gap-4 mt-6">
+                            <button id="openGuideBtn" class="bg-gray-800 hover:bg-gray-900 text-white px-6 py-2.5 rounded-full transition">
+                                <i class="fas fa-book-open mr-2"></i> System Guide
+                            </button>
+                            <a href="https://wa.me/2349057147497" target="_blank" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2.5 rounded-full transition">
+                                <i class="fab fa-whatsapp mr-2"></i> WhatsApp Support
+                            </a>
+                            <a href="mailto:emiliaforemost@gmail.com" class="bg-slate-700 hover:bg-slate-800 text-white px-6 py-2.5 rounded-full transition">
+                                <i class="far fa-envelope mr-2"></i> Email Team
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- FOOTER -->
+            <footer class="w-full text-white mt-16 pt-12 pb-6">
+                <div class="container mx-auto px-5 lg:px-8">
+                    <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                        <div class="text-center md:text-left">
+                            <div class="flex items-center gap-3">
+                                <div class="bg-white p-1.5 rounded-xl">
+                                    <img src="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/EMILIA%20LOGO.png" class="h-11 w-11 object-contain" alt="logo" onerror="this.src='https://placehold.co/60x60/ffffff/1e3c72?text=EMI';">
+                                </div>
+                                <div>
+                                    <h5 class="font-bold text-xl">EMILIA FOREMOST HIGH SCHOOL</h5>
+                                    <p class="text-blue-200 text-sm">EMIFORPHS | ID & Tuition System</p>
+                                </div>
+                            </div>
+                            <p class="mt-3 text-blue-200 text-sm">Empowering excellence through digital identity and financial clarity.</p>
+                        </div>
+                        <div class="text-center md:text-right">
+                            <p class="text-sm text-blue-200">© 2025 EMIFORPHS — All rights reserved.</p>
+                            <p class="text-xs text-blue-300 mt-1">Version 3.0 | Secure School Management</p>
+                        </div>
+                    </div>
+                </div>
+            </footer>
         </div>
     </div>
 
-    <!-- Main Page Container -->
-    <div class="page-container" id="pageContainer">
-        <!-- Header - NO LONGER STICKY (scrolls with page) -->
-        <header class="page-header gradient-bg text-white shadow-lg">
-            <div class="container mx-auto px-4 py-6">
-                <div class="flex flex-col md:flex-row justify-between items-center">
-                    <div class="flex items-center space-x-4 mb-4 md:mb-0">
-                        <div class="school-logo bg-white p-2 rounded-full">
-                            <img src="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/EMILIA%20LOGO.png" 
-                                 alt="EMILIA FOREMOST HIGH SCHOOL Logo" 
-                                 class="h-16 w-16 object-contain">
-                        </div>
-                        <div>
-                            <h1 class="text-2xl md:text-3xl font-bold">EMILIA FOREMOST HIGH SCHOOL</h1>
-                            <p class="text-blue-200 font-medium">Excellence in Education Since 2007</p>
-                            <div class="flex items-center mt-1">
-                                <span class="bg-blue-800 text-xs px-3 py-1 rounded-full font-bold">EMIFORHS</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="text-center md:text-right">
-                        <p class="text-lg font-semibold">School Management System</p>
-                        <p class="text-blue-200">Integrated Digital Solutions</p>
-                        <div class="mt-2 flex items-center justify-center md:justify-end space-x-2">
-                            <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-                            <span class="text-sm">System Online</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <!-- Main Content -->
-        <main class="content-wrapper container mx-auto px-4 py-10">
-            <!-- Hero Section -->
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-bold mb-4 text-gray-900">Welcome to EMIFORHS Portal</h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-                    Access our comprehensive school management tools designed to streamline academic processes, 
-                    enhance communication, and improve educational outcomes.
-                </p>
-                <div class="flex flex-wrap justify-center gap-4">
-                    <div class="bg-blue-100 text-blue-800 px-4 py-2 rounded-full font-medium">
-                        <i class="fas fa-users mr-2"></i> 2,450+ Students
-                    </div>
-                    <div class="bg-green-100 text-green-800 px-4 py-2 rounded-full font-medium">
-                        <i class="fas fa-chalkboard-teacher mr-2"></i> 185+ Staff
-                    </div>
-                    <div class="bg-purple-100 text-purple-800 px-4 py-2 rounded-full font-medium">
-                        <i class="fas fa-graduation-cap mr-2"></i> 98% Success Rate
-                    </div>
-                </div>
-            </div>
-
-            <!-- Cards Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-                <!-- Card 1: Exam Report Card Maker -->
-                <div class="card-hover bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
-                    <div class="p-6">
-                        <div class="flex items-center justify-between mb-6">
-                            <div class="bg-blue-100 p-4 rounded-xl">
-                                <i class="fas fa-file-invoice text-blue-600 text-3xl"></i>
-                            </div>
-                            <span class="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full">NEW</span>
-                        </div>
-                        <h3 class="text-2xl font-bold mb-3 text-gray-900">Exam Report Card Maker</h3>
-                        <p class="text-gray-600 mb-6">
-                            Generate professional exam report cards with detailed performance analysis, grade calculations, and customizable templates.
-                        </p>
-                        <ul class="mb-8 space-y-2">
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-500 mr-2"></i>
-                                <span>Automated grade calculation</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-500 mr-2"></i>
-                                <span>Customizable templates</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-500 mr-2"></i>
-                                <span>Performance analytics</span>
-                            </li>
-                        </ul>
-                        <a href="/student_report_card_maker/" class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl transition duration-300 flex items-center justify-center">
-                            <span>Access Tool</span>
-                            <i class="fas fa-arrow-right ml-2"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Card 2: Student Result Checker -->
-                <div class="card-hover bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
-                    <div class="p-6">
-                        <div class="flex items-center justify-between mb-6">
-                            <div class="bg-green-100 p-4 rounded-xl">
-                                <i class="fas fa-search text-green-600 text-3xl"></i>
-                            </div>
-                            <span class="bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full">POPULAR</span>
-                        </div>
-                        <h3 class="text-2xl font-bold mb-3 text-gray-900">Student Result Checker</h3>
-                        <p class="text-gray-600 mb-6">
-                            Real-time access to student examination results with secure authentication and detailed performance breakdown.
-                        </p>
-                        <ul class="mb-8 space-y-2">
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-500 mr-2"></i>
-                                <span>Secure student login</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-500 mr-2"></i>
-                                <span>Real-time result updates</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-500 mr-2"></i>
-                                <span>Performance trends</span>
-                            </li>
-                        </ul>
-                        <a href="/student_result_search/"  class="block w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-xl transition duration-300 flex items-center justify-center">
-                            <span>Access Tool</span>
-                            <i class="fas fa-arrow-right ml-2"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Card 3: Tuition & Bill Summary -->
-                <div class="card-hover bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
-                    <div class="p-6">
-                        <div class="flex items-center justify-between mb-6">
-                            <div class="bg-purple-100 p-4 rounded-xl">
-                                <i class="fas fa-file-alt text-purple-600 text-3xl"></i>
-                            </div>
-                            <span class="bg-purple-600 text-white text-xs font-bold px-3 py-1 rounded-full">UPDATED</span>
-                        </div>
-                        <h3 class="text-2xl font-bold mb-3 text-gray-900">Tuition & Bill Summary</h3>
-                        <p class="text-gray-600 mb-6">
-                            Generate comprehensive tuition statements, fee summaries, and term-end financial reports for students and parents.
-                        </p>
-                        <ul class="mb-8 space-y-2">
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-500 mr-2"></i>
-                                <span>Automated billing</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-500 mr-2"></i>
-                                <span>Payment history tracking</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-500 mr-2"></i>
-                                <span>Export to PDF</span>
-                            </li>
-                        </ul>
-                        <a href="/general_exam_page/" class="block w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-xl transition duration-300 flex items-center justify-center">
-                            <span>Access Tool</span>
-                            <i class="fas fa-arrow-right ml-2"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Card 4: Student ID Maker -->
-                <div class="card-hover bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
-                    <div class="p-6">
-                        <div class="flex items-center justify-between mb-6">
-                            <div class="bg-red-100 p-4 rounded-xl">
-                                <i class="fas fa-id-card text-red-600 text-3xl"></i>
-                            </div>
-                            <span class="bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full">ESSENTIAL</span>
-                        </div>
-                        <h3 class="text-2xl font-bold mb-3 text-gray-900">Student ID Maker</h3>
-                        <p class="text-gray-600 mb-6">
-                            Design and print professional student ID cards with photos, barcodes, and security features for campus identification.
-                        </p>
-                        <ul class="mb-8 space-y-2">
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-500 mr-2"></i>
-                                <span>Custom ID templates</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-500 mr-2"></i>
-                                <span>Barcode/QR code generation</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-500 mr-2"></i>
-                                <span>Batch printing</span>
-                            </li>
-                        </ul>
-                        <a href="/student_id_maker/"  class="block w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-xl transition duration-300 flex items-center justify-center">
-                            <span>Access Tool</span>
-                            <i class="fas fa-arrow-right ml-2"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- System Stats - Fixed with responsive numbers -->
-            <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 mb-16">
-                <h3 class="text-2xl md:text-3xl font-bold mb-6 md:mb-8 text-center text-gray-900">EMIFORHS System Statistics</h3>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-                    <div class="text-center p-4 md:p-6 bg-blue-50 rounded-xl overflow-hidden">
-                        <div class="stat-number text-blue-700 mb-1 md:mb-2" id="studentCount">0</div>
-                        <p class="text-gray-700 font-medium text-sm md:text-base">Active Students</p>
-                    </div>
-                    <div class="text-center p-4 md:p-6 bg-green-50 rounded-xl overflow-hidden">
-                        <div class="stat-number text-green-700 mb-1 md:mb-2" id="reportCount">0</div>
-                        <p class="text-gray-700 font-medium text-sm md:text-base">Reports Generated</p>
-                    </div>
-                    <div class="text-center p-4 md:p-6 bg-purple-50 rounded-xl overflow-hidden">
-                        <div class="stat-number text-purple-700 mb-1 md:mb-2" id="idCount">0</div>
-                        <p class="text-gray-700 font-medium text-sm md:text-base">ID Cards Created</p>
-                    </div>
-                    <div class="text-center p-4 md:p-6 bg-red-50 rounded-xl overflow-hidden">
-                        <div class="stat-number text-red-700 mb-1 md:mb-2" id="billsCount">0</div>
-                        <p class="text-gray-700 font-medium text-sm md:text-base">Bills Processed</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Quick Links -->
-            <div class="text-center mb-16">
-                <h3 class="text-3xl font-bold mb-6 text-gray-900">Need Assistance?</h3>
-                <div class="flex flex-wrap justify-center gap-4 md:gap-6">
-                    <button id="openSystemGuide" class="flex items-center bg-gray-100 hover:bg-gray-200 px-4 md:px-6 py-2 md:py-3 rounded-xl font-medium transition duration-300 text-sm md:text-base">
-                        <i class="fas fa-question-circle text-blue-600 mr-2"></i>
-                        <span>System Guide</span>
-                    </button>
-                    <a href="https://wa.me/2349057147497" target="_blank" class="flex items-center bg-gray-100 hover:bg-gray-200 px-4 md:px-6 py-2 md:py-3 rounded-xl font-medium transition duration-300 text-sm md:text-base">
-                        <i class="fas fa-phone-alt text-green-600 mr-2"></i>
-                        <span>Contact Support</span>
-                    </a>
-                    <a href="#" class="flex items-center bg-gray-100 hover:bg-gray-200 px-4 md:px-6 py-2 md:py-3 rounded-xl font-medium transition duration-300 text-sm md:text-base">
-                        <i class="fas fa-download text-purple-600 mr-2"></i>
-                        <span>Download Resources</span>
-                    </a>
-                </div>
-            </div>
-        </main>
-
-        <!-- FULL WIDTH FOOTER -->
-        <footer class="full-width-footer page-footer text-white pt-10 pb-6">
-            <div class="max-w-7xl mx-auto px-4">
-                <div class="flex flex-col md:flex-row justify-between items-center">
-                    <div class="mb-6 md:mb-0 text-center md:text-left">
-                        <div class="flex flex-col md:flex-row items-center space-y-3 md:space-y-0 md:space-x-3">
-                            <img src="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/EMILIA%20LOGO.png" 
-                                 alt="EMILIA FOREMOST HIGH SCHOOL Logo" 
-                                 class="h-12 w-12 object-contain bg-white p-1 rounded-full">
-                            <div>
-                                <h3 class="text-xl font-bold">EMILIA FOREMOST HIGH SCHOOL</h3>
-                                <p class="text-blue-200">EMIFORHS Management System v3.0</p>
-                            </div>
-                        </div>
-                        <p class="mt-4 text-blue-100 max-w-md text-center md:text-left">
-                            Providing world-class educational management solutions since 2007. 
-                            Our integrated system ensures seamless academic administration.
-                        </p>
-                    </div>
-                    
-                    <div class="text-center md:text-right">
-                        <h4 class="text-lg font-bold mb-4">Quick Access</h4>
-                        <div class="flex flex-col space-y-2">
-                            <a href="/student_report_card_maker/"  class="text-blue-100 hover:text-white text-sm md:text-base">Administrator Portal</a>
-                            <a href="/student_report_card_maker/" class="text-blue-100 hover:text-white text-sm md:text-base">Staff Portal</a>
-                            <a href="/student_result_search/" target="_blank" class="text-blue-100 hover:text-white text-sm md:text-base">Parent Portal</a>
-                            <a href="https://t.me/emiliaforemosthighschool" target="_blank" class="text-blue-100 hover:text-white text-sm md:text-base">School Updates</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="border-t border-blue-800 mt-10 pt-6 text-center text-blue-200">
-                    <p class="text-sm md:text-base">&copy; 2023 EMILIA FOREMOST HIGH SCHOOL (EMIFORHS). All rights reserved.</p>
-                    <p class="mt-2 text-xs md:text-sm">For optimal performance, we recommend using modern web browsers.</p>
-                </div>
-            </div>
-        </footer>
-    </div>
-
     <script>
-        // ==================== PROPER SCROLL MANAGEMENT ====================
-        
-        function setupScrollManagement() {
-            // Simple scroll management - body handles scrolling naturally
-            document.body.style.overflowY = 'auto';
-            document.body.style.overflowX = 'hidden';
+        (function() {
+            // Get scroll container
+            const scrollContainer = document.getElementById('scrollContainer');
+            const modalContent = document.getElementById('modalScrollable');
             
-            // SCROLL EDGE DETECTION
-            window.addEventListener('scroll', function() {
-                // Show boundary indicator when near bottom
-                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                const scrollHeight = document.documentElement.scrollHeight;
-                const clientHeight = document.documentElement.clientHeight;
+            // ========== CODE C'S SCROLL MANAGEMENT ==========
+            function setupScrollManagement() {
+                // Set up scroll container
+                scrollContainer.style.overflowY = 'auto';
+                scrollContainer.style.overflowX = 'hidden';
                 
-                const distanceFromBottom = scrollHeight - (scrollTop + clientHeight);
-                const boundary = document.getElementById('scrollBoundary');
-                
-                if (distanceFromBottom <= 50 && distanceFromBottom > 0) {
-                    boundary.classList.add('visible');
-                } else {
-                    boundary.classList.remove('visible');
+                // iOS specific fixes
+                if ('ontouchstart' in window) {
+                    scrollContainer.style.WebkitOverflowScrolling = 'touch';
                 }
+            }
+            
+            // Counter animations
+            function animateCounter(id, target) {
+                const el = document.getElementById(id);
+                if (!el) return;
+                let current = 0;
+                const steps = 60;
+                const increment = target / steps;
+                let step = 0;
+                const timer = setInterval(() => {
+                    step++;
+                    current += increment;
+                    if (step >= steps) {
+                        el.innerText = target.toLocaleString();
+                        clearInterval(timer);
+                    } else {
+                        el.innerText = Math.floor(current).toLocaleString();
+                    }
+                }, 25);
+            }
+            
+            animateCounter('idCardCount', 4892);
+            animateCounter('billsTotal', 12740);
+            animateCounter('activeStudents', 2580);
+            animateCounter('statementsCount', 8950);
+            
+            // Modal logic
+            const modal = document.getElementById('systemGuideModal');
+            const openBtn = document.getElementById('openGuideBtn');
+            const closeBtn = document.getElementById('closeModalBtn');
+            
+            if (openBtn) {
+                openBtn.addEventListener('click', () => {
+                    modal.classList.add('active');
+                    // Small delay to ensure modal is visible before focusing
+                    setTimeout(() => {
+                        if (modalContent) {
+                            modalContent.focus();
+                        }
+                    }, 100);
+                });
+            }
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => {
+                    modal.classList.remove('active');
+                });
+            }
+            if (modal) {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.classList.remove('active');
+                    }
+                });
+            }
+            
+            // Enable touch scrolling on modal content
+            if (modalContent) {
+                // Prevent scroll propagation from modal to background
+                modalContent.addEventListener('touchstart', function(e) {
+                    e.stopPropagation();
+                });
+                
+                modalContent.addEventListener('touchmove', function(e) {
+                    e.stopPropagation();
+                });
+            }
+            
+            // Logo fallback
+            const logos = document.querySelectorAll('img[src*="EMILIA%20LOGO"]');
+            logos.forEach(img => {
+                img.onerror = function() {
+                    this.src = 'https://placehold.co/200x200/ffffff/1e3c72?text=EMIFORPHS';
+                };
             });
-        }
-
-        // Animated counter for stats
-        function animateCounter(elementId, targetValue, duration = 2000) {
-            const element = document.getElementById(elementId);
-            const startValue = 0;
-            const increment = targetValue / (duration / 16); // 60fps
-            let currentValue = startValue;
             
-            const timer = setInterval(() => {
-                currentValue += increment;
-                if (currentValue >= targetValue) {
-                    element.textContent = targetValue.toLocaleString();
-                    clearInterval(timer);
-                } else {
-                    element.textContent = Math.floor(currentValue).toLocaleString();
-                }
-            }, 16);
-        }
-        
-        // Initialize counters when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            // Setup scroll management FIRST
+            // Initialize scroll management
             setupScrollManagement();
             
-            // Set realistic target values
-            animateCounter('studentCount', 2450);
-            animateCounter('reportCount', 12840);
-            animateCounter('idCount', 3200);
-            animateCounter('billsCount', 15620);
-            
-            // Add logo error handling
-            const logo = document.querySelector('.school-logo img');
-            logo.onerror = function() {
-                console.log('Logo failed to load, using fallback');
-                logo.src = 'https://via.placeholder.com/150/1e3c72/FFFFFF?text=EMIFORHS';
-            };
-            
-            // Modal functionality
-            const modal = document.getElementById('systemGuideModal');
-            const openModalBtn = document.getElementById('openSystemGuide');
-            const closeModalBtn = document.getElementById('closeModal');
-            
-            // Open modal
-            openModalBtn.addEventListener('click', function() {
-                modal.classList.add('active');
-                document.body.classList.add('modal-open');
-            });
-            
-            // Close modal
-            closeModalBtn.addEventListener('click', function() {
-                modal.classList.remove('active');
-                document.body.classList.remove('modal-open');
-            });
-            
-            // Close modal when clicking outside
-            modal.addEventListener('click', function(e) {
-                if (e.target === modal) {
-                    modal.classList.remove('active');
-                    document.body.classList.remove('modal-open');
-                }
-            });
-            
-            // Close modal with Escape key
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && modal.classList.contains('active')) {
-                    modal.classList.remove('active');
-                    document.body.classList.remove('modal-open');
-                }
-            });
-        });
-        
-        // Add responsive behavior for smaller screens
-        window.addEventListener('resize', function() {
-            const logo = document.querySelector('.school-logo img');
-            if (window.innerWidth < 768) {
-                logo.classList.add('h-12', 'w-12');
-                logo.classList.remove('h-16', 'w-16');
-            } else {
-                logo.classList.remove('h-12', 'w-12');
-                logo.classList.add('h-16', 'w-16');
-            }
-        });
+            console.log('✅ EMIFORPHS: Modal scrolling works on mobile now!');
+        })();
     </script>
 </body>
 </html>
