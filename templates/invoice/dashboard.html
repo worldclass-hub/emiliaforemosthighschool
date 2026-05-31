@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
     <title>EMIFORPHS | Student ID & Tuition Hub</title>
     <!-- Tailwind + Fonts + Icons -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="icon" type="image/x-icon" href="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/emilia_logo_circle.png">
+    <link rel="icon" type="image/x-icon" href="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/emilia_logo_circle.png">
     <style>
         * { 
             margin: 0;
@@ -16,8 +16,8 @@
             box-sizing: border-box;
         }
         
-        /* ========== EXACT CODE C APPROACH - ULTIMATE ANTI-OVERSCROLL ========== */
-        /* 1. FIXED POSITION BODY - Prevents any movement beyond boundaries */
+        /* ========== ROCK SOLID SCROLL SYSTEM - NO RUBBER BAND EVER ========== */
+        /* 1. FIXED POSITION BODY - Completely prevents any body movement */
         html, body {
             width: 100%;
             height: 100%;
@@ -26,12 +26,13 @@
             background: radial-gradient(circle at 10% 20%, #e8edf5 0%, #d0d9e8 100%);
             margin: 0;
             padding: 0;
-            touch-action: pan-y;
-            overscroll-behavior: none;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
+            /* CRITICAL: Prevents rubber band */
+            overscroll-behavior: none;
+            touch-action: pan-y pinch-zoom;
         }
         
         /* 2. SINGLE SCROLL CONTAINER - Only this can scroll internally */
@@ -42,31 +43,52 @@
             overflow-x: hidden;
             position: relative;
             background: radial-gradient(circle at 10% 20%, #e8edf5 0%, #d0d9e8 100%);
+            /* Smooth scrolling for iOS but NO rubber band */
             -webkit-overflow-scrolling: touch;
-        }
-        
-        /* 3. PREVENT TOUCH OVERSCROLL */
-        .no-overscroll {
+            overscroll-behavior: none;
+            /* Prevent scroll chaining */
             touch-action: pan-y;
-            overscroll-behavior: contain;
+            scroll-behavior: smooth;
         }
         
-        /* 4. NO WHITE BORDERS EVER - Content completely contained */
+        /* 3. Custom scrollbar styling */
+        .scroll-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .scroll-container::-webkit-scrollbar-track {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        
+        .scroll-container::-webkit-scrollbar-thumb {
+            background: #1e3c72;
+            border-radius: 3px;
+        }
+        
+        /* 4. MAIN WRAPPER */
         .main-wrapper {
             width: 100%;
             min-height: 100%;
             background: radial-gradient(circle at 10% 20%, #e8edf5 0%, #d0d9e8 100%);
+            display: flex;
+            flex-direction: column;
         }
         
-        /* 5. Mobile-specific fixes */
-        @media (max-width: 768px) {
-            .scroll-container {
-                -webkit-overflow-scrolling: touch;
-                overscroll-behavior: contain;
-            }
+        /* 5. Content wrapper - pushes footer down */
+        .content-wrapper {
+            flex: 1 0 auto;
+            width: 100%;
+            position: relative;
         }
         
-        /* ========== ORIGINAL CODE B STYLES (converted to glass) ========== */
+        /* 6. Footer stays solid at bottom */
+        footer {
+            background: linear-gradient(135deg, #0a1a2f 0%, #1c3e64 100%);
+            flex-shrink: 0;
+        }
+        
+        /* ========== ORIGINAL CODE B STYLES ========== */
         .card-luxury {
             transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
         }
@@ -93,7 +115,7 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
         
-        /* Modal styles - COMPLETELY REWRITTEN FOR MOBILE */
+        /* Modal styles */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -132,14 +154,13 @@
             transform: translateY(0);
         }
         
-        /* Make modal content area scrollable - FIXED for mobile */
+        /* Make modal content area scrollable */
         .modal-content-scrollable {
             flex: 1;
             overflow-y: auto;
             overflow-x: hidden;
             padding: 1.5rem;
             -webkit-overflow-scrolling: touch;
-            touch-action: pan-y;
         }
         
         /* Modal header stays fixed */
@@ -148,7 +169,7 @@
             border-radius: 2rem 2rem 0 0;
         }
         
-        /* Custom scrollbar styling */
+        /* Custom scrollbar styling for modal */
         .modal-content-scrollable::-webkit-scrollbar {
             width: 4px;
         }
@@ -209,19 +230,14 @@
                 height: 70px;
             }
         }
-        
-        /* Footer stays solid */
-        footer {
-            background: linear-gradient(135deg, #0a1a2f 0%, #1c3e64 100%);
-        }
     </style>
 </head>
-<body class="no-overscroll">
-    <!-- SINGLE SCROLL CONTAINER (like Code C) -->
+<body>
+    <!-- SINGLE SCROLL CONTAINER - Rock solid, no rubber band -->
     <div class="scroll-container" id="scrollContainer">
         <div class="main-wrapper">
             
-            <!-- MODAL: System Guide - FIXED for mobile scrolling -->
+            <!-- MODAL: System Guide -->
             <div id="systemGuideModal" class="modal-overlay">
                 <div class="modal-card">
                     <div class="modal-header bg-gradient-to-r from-[#1e3c72] to-[#2a5298] px-6 py-5 text-white">
@@ -502,15 +518,75 @@
 
     <script>
         (function() {
-            // Get scroll container
+            // ========== ROCK SOLID SCROLL - NO RUBBER BAND EVER ==========
             const scrollContainer = document.getElementById('scrollContainer');
             const modalContent = document.getElementById('modalScrollable');
             
-            // ========== CODE C'S SCROLL MANAGEMENT ==========
-            function setupScrollManagement() {
-                // Set up scroll container
-                scrollContainer.style.overflowY = 'auto';
-                scrollContainer.style.overflowX = 'hidden';
+            if (scrollContainer) {
+                // Store scroll positions
+                let scrollTop = 0;
+                let scrollHeight = 0;
+                let clientHeight = 0;
+                
+                // Function to enforce scroll boundaries - NO RUBBER BAND
+                function enforceBoundaries() {
+                    if (!scrollContainer) return;
+                    
+                    scrollTop = scrollContainer.scrollTop;
+                    scrollHeight = scrollContainer.scrollHeight;
+                    clientHeight = scrollContainer.clientHeight;
+                    
+                    // Hard stop at top
+                    if (scrollTop < 0) {
+                        scrollContainer.scrollTop = 0;
+                        return;
+                    }
+                    
+                    // Hard stop at bottom
+                    if (scrollTop + clientHeight > scrollHeight) {
+                        scrollContainer.scrollTop = scrollHeight - clientHeight;
+                        return;
+                    }
+                }
+                
+                // Prevent any rubber band effect on touch move
+                let touchStartY = 0;
+                
+                scrollContainer.addEventListener('touchstart', function(e) {
+                    touchStartY = e.touches[0].clientY;
+                }, { passive: false });
+                
+                scrollContainer.addEventListener('touchmove', function(e) {
+                    const currentY = e.touches[0].clientY;
+                    const deltaY = currentY - touchStartY;
+                    const currentScrollTop = scrollContainer.scrollTop;
+                    const maxScrollTop = scrollContainer.scrollHeight - scrollContainer.clientHeight;
+                    
+                    // If at top and trying to pull down - PREVENT
+                    if (currentScrollTop <= 0 && deltaY > 0) {
+                        e.preventDefault();
+                        return false;
+                    }
+                    
+                    // If at bottom and trying to pull up - PREVENT
+                    if (currentScrollTop >= maxScrollTop - 1 && deltaY < 0) {
+                        e.preventDefault();
+                        return false;
+                    }
+                }, { passive: false });
+                
+                // Enforce boundaries on scroll
+                scrollContainer.addEventListener('scroll', function() {
+                    enforceBoundaries();
+                });
+                
+                // Enforce boundaries on resize
+                window.addEventListener('resize', function() {
+                    enforceBoundaries();
+                });
+                
+                // Initial enforcement
+                enforceBoundaries();
                 
                 // iOS specific fixes
                 if ('ontouchstart' in window) {
@@ -551,7 +627,6 @@
             if (openBtn) {
                 openBtn.addEventListener('click', () => {
                     modal.classList.add('active');
-                    // Small delay to ensure modal is visible before focusing
                     setTimeout(() => {
                         if (modalContent) {
                             modalContent.focus();
@@ -572,18 +647,6 @@
                 });
             }
             
-            // Enable touch scrolling on modal content
-            if (modalContent) {
-                // Prevent scroll propagation from modal to background
-                modalContent.addEventListener('touchstart', function(e) {
-                    e.stopPropagation();
-                });
-                
-                modalContent.addEventListener('touchmove', function(e) {
-                    e.stopPropagation();
-                });
-            }
-            
             // Logo fallback
             const logos = document.querySelectorAll('img[src*="EMILIA%20LOGO"]');
             logos.forEach(img => {
@@ -592,10 +655,7 @@
                 };
             });
             
-            // Initialize scroll management
-            setupScrollManagement();
-            
-            console.log('✅ EMIFORPHS: Modal scrolling works on mobile now!');
+            console.log('✅ EMIFORPHS: Rock solid scroll with NO rubber band effect!');
         })();
     </script>
 </body>
