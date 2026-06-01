@@ -2,13 +2,81 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
     <title>School Outstanding Balance</title>
     <link rel="icon" type="image/x-icon" href="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/emilia_logo_circle.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- ========== ROCK SOLID SCROLL SYSTEM - NO RUBBER BAND EVER ========== -->
     <style>
+        /* 1. FIXED POSITION BODY - Completely prevents any body movement */
+        html, body {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            overflow: hidden;
+            background-color: #f9fafb;
+            margin: 0;
+            padding: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overscroll-behavior: none;
+            touch-action: pan-y pinch-zoom;
+        }
+        
+        /* 2. SINGLE SCROLL CONTAINER - Only this can scroll internally */
+        .scroll-container {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            background-color: #f9fafb;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: none;
+            touch-action: pan-y;
+            scroll-behavior: smooth;
+        }
+        
+        /* 3. Custom scrollbar styling */
+        .scroll-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .scroll-container::-webkit-scrollbar-track {
+            background: #e5e7eb;
+            border-radius: 3px;
+        }
+        
+        .scroll-container::-webkit-scrollbar-thumb {
+            background: #3b82f6;
+            border-radius: 3px;
+        }
+        
+        /* 4. MAIN WRAPPER */
+        .main-wrapper {
+            width: 100%;
+            min-height: 100%;
+            background-color: #f9fafb;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* 5. Content wrapper with padding for spacing from top and bottom */
+        .content-wrapper {
+            flex: 1 0 auto;
+            width: 100%;
+            position: relative;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+        
+        /* ========== ALL YOUR EXISTING STYLES BELOW (unchanged) ========== */
+        
         /* FLOATING HOME BUTTON STYLES */
         .floating-home-btn {
             position: fixed;
@@ -93,6 +161,88 @@
             visibility: visible;
         }
         
+        /* ========== SUPER POWERFUL FLOATING PRINT BUTTON - TOP LEFT ========== */
+        .floating-print-btn {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
+            z-index: 10000;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 3px solid rgba(255, 255, 255, 0.9);
+            overflow: hidden;
+            animation: printPulse 2s infinite;
+        }
+        
+        @keyframes printPulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(16, 185, 129, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+            }
+        }
+        
+        .floating-print-btn:hover {
+            transform: scale(1.15) rotate(5deg);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.8);
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            animation: none;
+        }
+        
+        .floating-print-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .print-btn-tooltip {
+            position: absolute;
+            top: 50%;
+            left: 110%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            pointer-events: none;
+            z-index: 10001;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .print-btn-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: -5px;
+            transform: translateY(-50%);
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent rgba(0, 0, 0, 0.85) transparent transparent;
+        }
+        
+        .floating-print-btn:hover .print-btn-tooltip {
+            opacity: 1;
+            visibility: visible;
+            left: 105%;
+        }
+        
         @media (max-width: 768px) {
             .floating-home-btn {
                 width: 60px;
@@ -100,6 +250,17 @@
                 bottom: 20px;
                 right: 20px;
                 font-size: 20px;
+            }
+            .floating-print-btn {
+                width: 60px;
+                height: 60px;
+                top: 20px;
+                left: 20px;
+                font-size: 20px;
+            }
+            .content-wrapper {
+                padding-top: 15px;
+                padding-bottom: 15px;
             }
         }
         
@@ -111,12 +272,43 @@
                 right: 15px;
                 font-size: 18px;
             }
+            .floating-print-btn {
+                width: 55px;
+                height: 55px;
+                top: 15px;
+                left: 15px;
+                font-size: 18px;
+            }
+            .content-wrapper {
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
         }
         
         @media print {
+            /* HIDE FLOATING BUTTONS DURING PRINT */
             .floating-home-btn,
-            .home-btn-tooltip {
+            .floating-print-btn,
+            .home-btn-tooltip,
+            .print-btn-tooltip {
                 display: none !important;
+            }
+            
+            /* Remove padding from content wrapper for print */
+            .content-wrapper {
+                padding-top: 0 !important;
+                padding-bottom: 0 !important;
+            }
+            
+            .scroll-container {
+                position: relative !important;
+                overflow: visible !important;
+                height: auto !important;
+            }
+            html, body {
+                position: relative !important;
+                overflow: auto !important;
+                height: auto !important;
             }
         }
         
@@ -299,6 +491,9 @@
                 color: black !important;
                 background: white !important;
                 font-family: 'Times New Roman', serif !important;
+                position: relative !important;
+                overflow: auto !important;
+                height: auto !important;
             }
             
             .no-print {
@@ -1062,459 +1257,573 @@
         .clickable-cell:hover {
             background-color: #f0f7ff !important;
         }
+        
+        /* ========== MOBILE FIT FIXES - PRESERVES ALL CODE, ONLY ADDS MARGINS ========== */
+        @media (max-width: 768px) {
+            /* Add proper margins to the main container */
+            .main-content {
+                margin-left: 12px !important;
+                margin-right: 12px !important;
+                width: calc(100% - 24px) !important;
+                max-width: calc(100% - 24px) !important;
+            }
+            
+            /* Footer adjustments */
+            .mt-8.text-center {
+                margin-left: 12px !important;
+                margin-right: 12px !important;
+            }
+        }
+        
+        /* Extra small devices - even more margin */
+        @media (max-width: 480px) {
+            .main-content {
+                margin-left: 8px !important;
+                margin-right: 8px !important;
+                width: calc(100% - 16px) !important;
+                max-width: calc(100% - 16px) !important;
+            }
+        }
     </style>
 </head>
-<body class="bg-gray-50 p-4 md:p-8 font-sans">
-    <!-- SUPER INTELLIGENT FLOATING HOME BUTTON -->
-    <div class="floating-home-btn pulse" id="floatingHomeBtn" onclick="goToHomePage()">
-        <i class="fas fa-home"></i>
-        <div class="home-btn-tooltip">
-            Go to Home Page
-        </div>
-    </div>
-    
-    <!-- Print Button -->
-    <div class="no-print mb-6 flex justify-end">
-        <button onclick="showFilenameInstructions()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded flex items-center">
-            <i class="fas fa-eye mr-2"></i> Print Preview
-        </button>
-    </div>
-    
-    <!-- Main Invoice Container -->
-    <div class="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden main-content print-page">
-        <!-- UPDATED HEADER DESIGN -->
-        <div class="school-header avoid-break">
-            <div class="header-container print-header-container">
-                <div class="logo-container print-logo-container">
-                    <div class="logo-wrapper">
-                        <img src="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/EMILIA%20LOGO.png" 
-                             alt="School Logo" 
-                             class="w-full h-auto">
+<body>
+    <!-- SINGLE SCROLL CONTAINER - Rock solid, no rubber band -->
+    <div class="scroll-container" id="scrollContainer">
+        <div class="main-wrapper">
+            <div class="content-wrapper">
+                <!-- SUPER POWERFUL FLOATING PRINT BUTTON - TOP LEFT -->
+                <div class="floating-print-btn" id="floatingPrintBtn" onclick="showFilenameInstructions()">
+                    <i class="fas fa-print"></i>
+                    <div class="print-btn-tooltip">
+                        Print / Save as PDF
                     </div>
                 </div>
                 
-                <div class="school-info print-school-info">
-                    <h1 class="school-name">EMILIA FOREMOST HIGH SCHOOL</h1>
-                    <p class="school-address">2, Olasupo Avenue, Off Adeyemi Street, Oke-Agbo, Ojo, Lagos</p>
-                    <p class="school-phone school-phone-editable" onclick="editSchoolPhone()" ondblclick="editSchoolPhone()">
-                        Tel: <span id="schoolPhoneDisplay">09053336429, 08112734458</span>
-                        <input type="text" id="schoolPhoneInput" value="09053336429, 08112734458" 
-                               class="hidden school-phone-input" onblur="saveSchoolPhone()" 
-                               onkeypress="if(event.key === 'Enter') saveSchoolPhone()">
-                    </p>
-                    <div class="edit-instruction-white no-print mt-1">
-                        <i class="fas fa-info-circle"></i>
-                        Click or double-click on phone number to edit
+                <!-- SUPER INTELLIGENT FLOATING HOME BUTTON - BOTTOM RIGHT -->
+                <div class="floating-home-btn pulse" id="floatingHomeBtn" onclick="goToHomePage()">
+                    <i class="fas fa-home"></i>
+                    <div class="home-btn-tooltip">
+                        Go to Home Page
                     </div>
                 </div>
-            </div>
-        </div>
-        
-        <!-- Page 1 Content -->
-        <div class="p-6 md:p-8 print-page">
-            <!-- Invoice Title -->
-            <div class="invoice-header text-center avoid-break">
-                <h1 class="text-2xl md:text-3xl lg:text-4xl font-bold uppercase tracking-wider" style="font-family: 'Times New Roman', serif;">BREAKDOWN OF OUTSTANDING BALANCE</h1>
-            </div>
-            
-            <!-- Student Information Table - WITH MODAL POPUPS -->
-            <div class="mb-10 avoid-break">
-                <div class="student-info-controls no-print">
-                    <button class="student-edit-btn" onclick="editStudentInfo()">
-                        <i class="fas fa-edit mr-1"></i> Edit Student Info
-                    </button>
-                    <button class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-1 px-3 rounded text-sm" onclick="resetStudentInfo()">
-                        <i class="fas fa-redo mr-1"></i> Reset
-                    </button>
-                </div>
                 
-                <div class="edit-instruction no-print mb-2">
-                    <i class="fas fa-info-circle"></i>
-                    Click on any field below to select from options
-                </div>
-                
-                <div class="table-responsive">
-                    <table class="invoice-table mb-4" id="studentInfoTable">
-                        <tbody>
-                            <tr>
-                                <td class="font-bold bg-gray-100">NAME</td>
-                                <td class="clickable-cell" id="nameCell" style="cursor: pointer;">
-                                    <span id="studentName"></span>
-                                </td>
-                                <td class="font-bold bg-gray-100">TERM</td>
-                                <td class="clickable-cell" id="termCell" style="cursor: pointer;">
-                                    <span id="term">2ND TERM</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="font-bold bg-gray-100">CLASS</td>
-                                <td class="clickable-cell" id="classCell" style="cursor: pointer;">
-                                    <span id="class">JSS 1</span>
-                                </td>
-                                <td class="font-bold bg-gray-100">SESSION</td>
-                                <td class="clickable-cell" id="sessionCell" style="cursor: pointer;">
-                                    <span id="session">2025/2026</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            
-            <!-- Table Controls -->
-            <div class="table-controls no-print">
-                <div class="text-sm text-gray-600">
-                    <i class="fas fa-info-circle mr-1"></i>
-                    Double-click cells to edit, use buttons to add/delete rows
-                </div>
-                <button class="add-row-btn" onclick="addNewRow()">
-                    <i class="fas fa-plus"></i> Add New Row
-                </button>
-            </div>
-            
-            <!-- BREAKDOWN TABLE - WITH RESPONSIVE SCROLLABLE WRAPPER -->
-            <div class="table-responsive relative avoid-break table-watermark-container">
-                <table class="invoice-table" id="feesTable">
-                    <thead>
-                        <tr class="bg-gray-800 text-white">
-                            <th>DESCRIPTION</th>
-                            <th style="width: 150px;">AMOUNT (₦)</th>
-                            <th style="width: 100px;" class="no-print">ACTIONS</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody">
-                        <!-- Rows will be generated by JavaScript -->
-                    </tbody>
-                    <tfoot>
-                        <tr class="bg-gray-800 text-white font-bold">
-                            <td>GRAND TOTAL OUTSTANDING:</td>
-                            <td class="text-right" id="grandTotal">₦21,000.00</td>
-                            <td class="no-print"></td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-            
-            <div class="edit-instruction no-print mt-2">
-                <i class="fas fa-info-circle"></i>
-                Amount in words updates automatically based on the grand total
-            </div>
-            
-            <div class="mt-6 avoid-break">
-                <div class="amount-in-words">
-                    Amount in Words: <span id="amountInWords">Twenty-One Thousand Naira Only</span>
-                </div>
-            </div>
+                <!-- Main Invoice Container - FITS MOBILE PROPERLY WITH MARGINS -->
+                <div class="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden main-content print-page">
+                    <!-- UPDATED HEADER DESIGN -->
+                    <div class="school-header avoid-break">
+                        <div class="header-container print-header-container">
+                            <div class="logo-container print-logo-container">
+                                <div class="logo-wrapper">
+                                    <img src="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/EMILIA%20LOGO.png" 
+                                         alt="School Logo" 
+                                         class="w-full h-auto">
+                                </div>
+                            </div>
+                            
+                            <div class="school-info print-school-info">
+                                <h1 class="school-name">EMILIA FOREMOST HIGH SCHOOL</h1>
+                                <p class="school-address">2, Olasupo Avenue, Off Adeyemi Street, Oke-Agbo, Ojo, Lagos</p>
+                                <p class="school-phone school-phone-editable" onclick="editSchoolPhone()" ondblclick="editSchoolPhone()">
+                                    Tel: <span id="schoolPhoneDisplay">09053336429, 08112734458</span>
+                                    <input type="text" id="schoolPhoneInput" value="09053336429, 08112734458" 
+                                           class="hidden school-phone-input" onblur="saveSchoolPhone()" 
+                                           onkeypress="if(event.key === 'Enter') saveSchoolPhone()">
+                                </p>
+                                <div class="edit-instruction-white no-print mt-1">
+                                    <i class="fas fa-info-circle"></i>
+                                    Click or double-click on phone number to edit
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Page 1 Content -->
+                    <div class="p-6 md:p-8 print-page">
+                        <!-- Invoice Title -->
+                        <div class="invoice-header text-center avoid-break">
+                            <h1 class="text-2xl md:text-3xl lg:text-4xl font-bold uppercase tracking-wider" style="font-family: 'Times New Roman', serif;">BREAKDOWN OF OUTSTANDING BALANCE</h1>
+                        </div>
+                        
+                        <!-- Student Information Table - WITH MODAL POPUPS -->
+                        <div class="mb-10 avoid-break">
+                            <div class="student-info-controls no-print">
+                                <button class="student-edit-btn" onclick="editStudentInfo()">
+                                    <i class="fas fa-edit mr-1"></i> Edit Student Info
+                                </button>
+                                <button class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-1 px-3 rounded text-sm" onclick="resetStudentInfo()">
+                                    <i class="fas fa-redo mr-1"></i> Reset
+                                </button>
+                            </div>
+                            
+                            <div class="edit-instruction no-print mb-2">
+                                <i class="fas fa-info-circle"></i>
+                                Click on any field below to select from options
+                            </div>
+                            
+                            <div class="table-responsive">
+                                <table class="invoice-table mb-4" id="studentInfoTable">
+                                    <tbody>
+                                        <tr>
+                                            <td class="font-bold bg-gray-100">NAME</td>
+                                            <td class="clickable-cell" id="nameCell" style="cursor: pointer;">
+                                                <span id="studentName"></span>
+                                            </td>
+                                            <td class="font-bold bg-gray-100">TERM</td>
+                                            <td class="clickable-cell" id="termCell" style="cursor: pointer;">
+                                                <span id="term">2ND TERM</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="font-bold bg-gray-100">CLASS</td>
+                                            <td class="clickable-cell" id="classCell" style="cursor: pointer;">
+                                                <span id="class">JSS 1</span>
+                                            </td>
+                                            <td class="font-bold bg-gray-100">SESSION</td>
+                                            <td class="clickable-cell" id="sessionCell" style="cursor: pointer;">
+                                                <span id="session">2025/2026</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- Table Controls -->
+                        <div class="table-controls no-print">
+                            <div class="text-sm text-gray-600">
+                                <i class="fas fa-info-circle mr-1"></i>
+                                Double-click cells to edit, use buttons to add/delete rows
+                            </div>
+                            <button class="add-row-btn" onclick="addNewRow()">
+                                <i class="fas fa-plus"></i> Add New Row
+                            </button>
+                        </div>
+                        
+                        <!-- BREAKDOWN TABLE - WITH RESPONSIVE SCROLLABLE WRAPPER -->
+                        <div class="table-responsive relative avoid-break table-watermark-container">
+                            <table class="invoice-table" id="feesTable">
+                                <thead>
+                                    <tr class="bg-gray-800 text-white">
+                                        <th>DESCRIPTION</th>
+                                        <th style="width: 150px;">AMOUNT (₦)</th>
+                                        <th style="width: 100px;" class="no-print">ACTIONS</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tableBody">
+                                    <!-- Rows will be generated by JavaScript -->
+                                </tbody>
+                                <tfoot>
+                                    <tr class="bg-gray-800 text-white font-bold">
+                                        <td>GRAND TOTAL OUTSTANDING:</td>
+                                        <td class="text-right" id="grandTotal">₦21,000.00</td>
+                                        <td class="no-print"></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        
+                        <div class="edit-instruction no-print mt-2">
+                            <i class="fas fa-info-circle"></i>
+                            Amount in words updates automatically based on the grand total
+                        </div>
+                        
+                        <div class="mt-6 avoid-break">
+                            <div class="amount-in-words">
+                                Amount in Words: <span id="amountInWords">Twenty-One Thousand Naira Only</span>
+                            </div>
+                        </div>
 
-            <!-- IMPORTANT NOTICE SECTION -->
-            <div class="mt-8 p-4 border-l-4 border-blue-500 bg-blue-50 avoid-break">
-                <div class="no-print mb-2">
-                    <button class="edit-bank-btn" onclick="editImportantNotice()">
-                        <i class="fas fa-edit mr-1"></i> Edit Important Notice
-                    </button>
-                    <button class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-1 px-3 rounded text-sm" onclick="resetImportantNotice()">
-                        <i class="fas fa-redo mr-1"></i> Reset
-                    </button>
-                </div>
-                
-                <div class="edit-instruction no-print mb-2">
-                    <i class="fas fa-info-circle"></i>
-                    Click or double-click on any text below to edit the Important Notice
-                </div>
-                
-                <h3 class="font-bold text-lg mb-2 bank-editable" onclick="editImportantNoticeField('noticeTitle')" ondblclick="editImportantNoticeField('noticeTitle')" style="font-family: 'Times New Roman', serif; cursor: pointer;">
-                    <span id="noticeTitle">IMPORTANT NOTICE FOR REPORT CARD COLLECTION</span>
-                    <input type="text" id="noticeTitle-input" value="IMPORTANT NOTICE FOR REPORT CARD COLLECTION" 
-                           class="hidden w-full p-2 border border-gray-300 rounded" onblur="saveImportantNoticeField('noticeTitle')" 
-                           onkeypress="if(event.key === 'Enter') saveImportantNoticeField('noticeTitle')">
-                </h3>
-                <p class="mb-2 bank-editable" onclick="editImportantNoticeField('noticePara1')" ondblclick="editImportantNoticeField('noticePara1')" style="font-family: 'Times New Roman', serif; cursor: pointer;">
-                    <span id="noticePara1">To download and collect your ward's First Term Report Card, the account must be in good standing.</span>
-                    <input type="text" id="noticePara1-input" value="To download and collect your ward's First Term Report Card, the account must be in good standing." 
-                           class="hidden w-full p-2 border border-gray-300 rounded" onblur="saveImportantNoticeField('noticePara1')" 
-                           onkeypress="if(event.key === 'Enter') saveImportantNoticeField('noticePara1')">
-                </p>
-                <p class="mb-2 bank-editable" onclick="editImportantNoticeField('noticePara2')" ondblclick="editImportantNoticeField('noticePara2')" style="font-family: 'Times New Roman', serif; cursor: pointer;">
-                    <strong>Required Action:</strong> 
-                    <span id="noticePara2">Please clear the overdue balance of ₦ 12,000.00 to enable report card access.</span>
-                    <input type="text" id="noticePara2-input" value="Please clear the overdue balance of ₦ 12,000.00 to enable report card access." 
-                           class="hidden w-full p-2 border border-gray-300 rounded" onblur="saveImportantNoticeField('noticePara2')" 
-                           onkeypress="if(event.key === 'Enter') saveImportantNoticeField('noticePara2')">
-                </p>
-                <p class="bank-editable" onclick="editImportantNoticeField('noticePara3')" ondblclick="editImportantNoticeField('noticePara3')" style="font-family: 'Times New Roman', serif; cursor: pointer;">
-                    <span id="noticePara3">Full settlement of the entire balance (₦ 21,000.00) is required for seamless re-registration and participation in Second Term activities.</span>
-                    <input type="text" id="noticePara3-input" value="Full settlement of the entire balance (₦ 21,000.00) is required for seamless re-registration and participation in Second Term activities." 
-                           class="hidden w-full p-2 border border-gray-300 rounded" onblur="saveImportantNoticeField('noticePara3')" 
-                           onkeypress="if(event.key === 'Enter') saveImportantNoticeField('noticePara3')">
-                </p>
-            </div>
+                        <!-- IMPORTANT NOTICE SECTION -->
+                        <div class="mt-8 p-4 border-l-4 border-blue-500 bg-blue-50 avoid-break">
+                            <div class="no-print mb-2">
+                                <button class="edit-bank-btn" onclick="editImportantNotice()">
+                                    <i class="fas fa-edit mr-1"></i> Edit Important Notice
+                                </button>
+                                <button class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-1 px-3 rounded text-sm" onclick="resetImportantNotice()">
+                                    <i class="fas fa-redo mr-1"></i> Reset
+                                </button>
+                            </div>
+                            
+                            <div class="edit-instruction no-print mb-2">
+                                <i class="fas fa-info-circle"></i>
+                                Click or double-click on any text below to edit the Important Notice
+                            </div>
+                            
+                            <h3 class="font-bold text-lg mb-2 bank-editable" onclick="editImportantNoticeField('noticeTitle')" ondblclick="editImportantNoticeField('noticeTitle')" style="font-family: 'Times New Roman', serif; cursor: pointer;">
+                                <span id="noticeTitle">IMPORTANT NOTICE FOR REPORT CARD COLLECTION</span>
+                                <input type="text" id="noticeTitle-input" value="IMPORTANT NOTICE FOR REPORT CARD COLLECTION" 
+                                       class="hidden w-full p-2 border border-gray-300 rounded" onblur="saveImportantNoticeField('noticeTitle')" 
+                                       onkeypress="if(event.key === 'Enter') saveImportantNoticeField('noticeTitle')">
+                            </h3>
+                            <p class="mb-2 bank-editable" onclick="editImportantNoticeField('noticePara1')" ondblclick="editImportantNoticeField('noticePara1')" style="font-family: 'Times New Roman', serif; cursor: pointer;">
+                                <span id="noticePara1">To download and collect your ward's First Term Report Card, the account must be in good standing.</span>
+                                <input type="text" id="noticePara1-input" value="To download and collect your ward's First Term Report Card, the account must be in good standing." 
+                                       class="hidden w-full p-2 border border-gray-300 rounded" onblur="saveImportantNoticeField('noticePara1')" 
+                                       onkeypress="if(event.key === 'Enter') saveImportantNoticeField('noticePara1')">
+                            </p>
+                            <p class="mb-2 bank-editable" onclick="editImportantNoticeField('noticePara2')" ondblclick="editImportantNoticeField('noticePara2')" style="font-family: 'Times New Roman', serif; cursor: pointer;">
+                                <strong>Required Action:</strong> 
+                                <span id="noticePara2">Please clear the overdue balance of ₦ 12,000.00 to enable report card access.</span>
+                                <input type="text" id="noticePara2-input" value="Please clear the overdue balance of ₦ 12,000.00 to enable report card access." 
+                                       class="hidden w-full p-2 border border-gray-300 rounded" onblur="saveImportantNoticeField('noticePara2')" 
+                                       onkeypress="if(event.key === 'Enter') saveImportantNoticeField('noticePara2')">
+                            </p>
+                            <p class="bank-editable" onclick="editImportantNoticeField('noticePara3')" ondblclick="editImportantNoticeField('noticePara3')" style="font-family: 'Times New Roman', serif; cursor: pointer;">
+                                <span id="noticePara3">Full settlement of the entire balance (₦ 21,000.00) is required for seamless re-registration and participation in Second Term activities.</span>
+                                <input type="text" id="noticePara3-input" value="Full settlement of the entire balance (₦ 21,000.00) is required for seamless re-registration and participation in Second Term activities." 
+                                       class="hidden w-full p-2 border border-gray-300 rounded" onblur="saveImportantNoticeField('noticePara3')" 
+                                       onkeypress="if(event.key === 'Enter') saveImportantNoticeField('noticePara3')">
+                            </p>
+                        </div>
 
-            <!-- FOR IMMEDIATE RESOLUTION & PAYMENT SECTION -->
-            <div class="mt-6 avoid-break">
-                <div class="no-print mb-2">
-                    <button class="edit-bank-btn" onclick="editResolutionSection()">
-                        <i class="fas fa-edit mr-1"></i> Edit Resolution Section
-                    </button>
-                    <button class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-1 px-3 rounded text-sm" onclick="resetResolutionSection()">
-                        <i class="fas fa-redo mr-1"></i> Reset
-                    </button>
+                        <!-- FOR IMMEDIATE RESOLUTION & PAYMENT SECTION -->
+                        <div class="mt-6 avoid-break">
+                            <div class="no-print mb-2">
+                                <button class="edit-bank-btn" onclick="editResolutionSection()">
+                                    <i class="fas fa-edit mr-1"></i> Edit Resolution Section
+                                </button>
+                                <button class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-1 px-3 rounded text-sm" onclick="resetResolutionSection()">
+                                    <i class="fas fa-redo mr-1"></i> Reset
+                                </button>
+                            </div>
+                            
+                            <div class="edit-instruction no-print mb-2">
+                                <i class="fas fa-info-circle"></i>
+                                Click or double-click on any text below to edit the Resolution Section
+                            </div>
+                            
+                            <h3 class="font-bold text-lg mb-2 bank-editable" onclick="editResolutionField('resolutionTitle')" ondblclick="editResolutionField('resolutionTitle')" style="font-family: 'Times New Roman', serif; cursor: pointer;">
+                                <span id="resolutionTitle">FOR IMMEDIATE RESOLUTION & PAYMENT</span>
+                                <input type="text" id="resolutionTitle-input" value="FOR IMMEDIATE RESOLUTION & PAYMENT" 
+                                       class="hidden w-full p-2 border border-gray-300 rounded" onblur="saveResolutionField('resolutionTitle')" 
+                                       onkeypress="if(event.key === 'Enter') saveResolutionField('resolutionTitle')">
+                            </h3>
+                            <p class="mb-2 bank-editable" onclick="editResolutionField('resolutionIntro')" ondblclick="editResolutionField('resolutionIntro')" style="font-family: 'Times New Roman', serif; cursor: pointer;">
+                                <span id="resolutionIntro">Bank Transfer Details for Payment:</span>
+                                <input type="text" id="resolutionIntro-input" value="Bank Transfer Details for Payment:" 
+                                       class="hidden w-full p-2 border border-gray-300 rounded" onblur="saveResolutionField('resolutionIntro')" 
+                                       onkeypress="if(event.key === 'Enter') saveResolutionField('resolutionIntro')">
+                            </p>
+                            <div class="pl-4">
+                                <p class="mb-1 bank-editable" onclick="editResolutionField('bankLine')" ondblclick="editResolutionField('bankLine')" style="font-family: 'Times New Roman', serif; cursor: pointer;">
+                                    <strong>Bank:</strong> 
+                                    <span id="bankLine">UBA</span>
+                                    <input type="text" id="bankLine-input" value="UBA" 
+                                           class="hidden" onblur="saveResolutionField('bankLine')" 
+                                           onkeypress="if(event.key === 'Enter') saveResolutionField('bankLine')">
+                                </p>
+                                <p class="mb-1 bank-editable" onclick="editResolutionField('accountNameLine')" ondblclick="editResolutionField('accountNameLine')" style="font-family: 'Times New Roman', serif; cursor: pointer;">
+                                    <strong>Account Name:</strong> 
+                                    <span id="accountNameLine">EMILIA FOREMOST HIGH SCHOOL OKEAGBO</span>
+                                    <input type="text" id="accountNameLine-input" value="EMILIA FOREMOST HIGH SCHOOL OKEAGBO" 
+                                           class="hidden" onblur="saveResolutionField('accountNameLine')" 
+                                           onkeypress="if(event.key === 'Enter') saveResolutionField('accountNameLine')">
+                                </p>
+                                <p class="mb-1 bank-editable" onclick="editResolutionField('accountNumberLine')" ondblclick="editResolutionField('accountNumberLine')" style="font-family: 'Times New Roman', serif; cursor: pointer;">
+                                    <strong>Account Number:</strong> 
+                                    <span id="accountNumberLine">1008189775</span>
+                                    <input type="text" id="accountNumberLine-input" value="1008189775" 
+                                           class="hidden" onblur="saveResolutionField('accountNumberLine')" 
+                                           onkeypress="if(event.key === 'Enter') saveResolutionField('accountNumberLine')">
+                                </p>
+                            </div>
+                            <p class="mt-2 bank-editable" onclick="editResolutionField('paymentReference')" ondblclick="editResolutionField('paymentReference')" style="font-family: 'Times New Roman', serif; cursor: pointer;">
+                                <strong>Payment Reference:</strong> 
+                                <span id="paymentReference">Student Name, Class & ID (e.g., Ige Deborah, JSS 3, EMFHS-YYYY-NNN-XX)</span>
+                                <input type="text" id="paymentReference-input" value="Student Name, Class & ID (e.g., Ige Deborah, JSS 3, EMFHS-YYYY-NNN-XX)" 
+                                       class="hidden w-full p-2 border border-gray-300 rounded" onblur="saveResolutionField('paymentReference')" 
+                                       onkeypress="if(event.key === 'Enter') saveResolutionField('paymentReference')">
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Page Break for Page 2 -->
+                    <div class="page-break" style="margin-top: 1.5cm;"></div>
+                    
+                    <!-- Page 2 Content -->
+                    <div class="p-6 md:p-8 border-t border-gray-300 print-page page-2-content">
+                        <div class="mb-4 pb-3 border-b border-gray-300 avoid-break page-2-header page-2-border-line">
+                            <div class="flex items-center justify-between print-header-container">
+                                <div class="print-logo-container page-2-logo page-2-logo-container" style="width: 120px !important; height: 120px !important;">
+                                    <div class="page-2-logo-wrapper">
+                                        <img src="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/EMILIA%20LOGO.png" 
+                                             alt="School Logo" 
+                                             class="w-full h-auto">
+                                    </div>
+                                </div>
+                                <div class="print-school-info">
+                                    <h2 style="font-size: 22pt !important; font-family: Georgia, 'Times New Roman', serif !important; font-weight: bold !important; margin: 0 !important; line-height: 1.1 !important; letter-spacing: 0.5px !important;">
+                                        EMILIA FOREMOST HIGH SCHOOL
+                                    </h2>
+                                    <p style="font-size: 12pt !important; font-family: 'Times New Roman', serif !important; margin: 3px 0 !important; line-height: 1.3 !important;">
+                                        2, Olasupo Avenue, Off Adeyemi Street, Oke-Agbo, Ojo, Lagos
+                                    </p>
+                                    <p style="font-size: 12pt !important; font-family: 'Times New Roman', serif !important; margin: 3px 0 !important; line-height: 1.3 !important;" class="school-phone-editable" onclick="editSchoolPhonePage2()" ondblclick="editSchoolPhonePage2()">
+                                        Tel: <span id="page2SchoolPhoneDisplay">09053336429, 08112734458</span>
+                                        <input type="text" id="page2SchoolPhoneInput" value="09053336429, 08112734458" 
+                                               class="hidden school-phone-input" onblur="saveSchoolPhonePage2()" 
+                                               onkeypress="if(event.key === 'Enter') saveSchoolPhonePage2()">
+                                    </p>
+                                    <div class="edit-instruction no-print mt-1">
+                                        <i class="fas fa-info-circle"></i>
+                                        Click or double-click on phone number to edit
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h2 class="text-xl md:text-2xl lg:text-3xl font-bold mb-4 md:mb-6 text-center uppercase avoid-break" style="font-family: 'Times New Roman', serif; margin-top: 0.2cm !important;">PAYMENT INSTRUCTIONS</h2>
+                        
+                        <div class="edit-instruction no-print mb-2">
+                            <i class="fas fa-info-circle"></i>
+                            Click or double-click on the text below to edit payment instructions
+                        </div>
+                        
+                        <p class="mb-4 md:mb-6 text-lg md:text-xl avoid-break bank-editable" onclick="editPaymentInstructions()" ondblclick="editPaymentInstructions()" style="font-family: 'Times New Roman', serif; cursor: pointer;">
+                            <span id="paymentInstructions">Please ensure payment is made on or before the Due Date to facilitate a smooth resumption for your ward.</span>
+                            <input type="text" id="paymentInstructions-input" value="Please ensure payment is made on or before the Due Date to facilitate a smooth resumption for your ward." 
+                                   class="hidden w-full p-2 border border-gray-300 rounded" onblur="savePaymentInstructions()" 
+                                   onkeypress="if(event.key === 'Enter') savePaymentInstructions()">
+                        </p>
+                        
+                        <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mb-6 md:mb-8 avoid-break">
+                            <div class="bank-controls no-print">
+                                <button class="edit-bank-btn" onclick="editBankDetails()">
+                                    <i class="fas fa-edit mr-1"></i> Edit Bank Details
+                                </button>
+                                <button class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-1 px-3 rounded text-sm" onclick="resetBankDetails()">
+                                    <i class="fas fa-redo mr-1"></i> Reset
+                                </button>
+                            </div>
+                            
+                            <div class="edit-instruction no-print mb-2">
+                                <i class="fas fa-info-circle"></i>
+                                Click or double-click on any bank detail to edit it
+                            </div>
+                            
+                            <h3 class="font-bold text-lg md:text-xl mb-2" style="font-family: 'Times New Roman', serif;">Bank Transfer Details</h3>
+                            <p class="mb-1 text-base md:text-lg bank-editable" onclick="editBankField('bank')" ondblclick="editBankField('bank')" id="bankCell">
+                                <span class="font-bold">Bank:</span> 
+                                <span id="bank">UBA</span>
+                                <input type="text" id="bank-input" value="UBA" 
+                                       class="hidden" onblur="saveBankField('bank')" 
+                                       onkeypress="if(event.key === 'Enter') saveBankField('bank')">
+                            </p>
+                            <p class="mb-1 text-base md:text-lg bank-editable" onclick="editBankField('accountName')" ondblclick="editBankField('accountName')">
+                                <span class="font-bold">Account Name:</span> 
+                                <span id="accountName">EMILIA FOREMOST HIGH SCHOOL OKEAGBO</span>
+                                <input type="text" id="accountName-input" value="EMILIA FOREMOST HIGH SCHOOL OKEAGBO" 
+                                       class="hidden" onblur="saveBankField('accountName')" 
+                                       onkeypress="if(event.key === 'Enter') saveBankField('accountName')">
+                            </p>
+                            <p class="mb-1 text-base md:text-lg bank-editable" onclick="editBankField('accountNumber')" ondblclick="editBankField('accountNumber')">
+                                <span class="font-bold">Account Number:</span> 
+                                <span id="accountNumber">1008189775</span>
+                                <input type="text" id="accountNumber-input" value="1008189775" 
+                                       class="hidden" onblur="saveBankField('accountNumber')" 
+                                       onkeypress="if(event.key === 'Enter') saveBankField('accountNumber')">
+                            </p>
+                        </div>
+                        
+                        <div class="mb-6 md:mb-8 avoid-break">
+                            <div class="notes-controls no-print">
+                                <div class="flex gap-2">
+                                    <button class="edit-notes-btn" onclick="editPaymentNotes()">
+                                        <i class="fas fa-edit mr-1"></i> Edit All Notes
+                                    </button>
+                                    <button class="add-note-btn" onclick="addNewNote()">
+                                        <i class="fas fa-plus mr-1"></i> Add New Note
+                                    </button>
+                                </div>
+                                <button class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-1 px-3 rounded text-sm" onclick="resetPaymentNotes()">
+                                    <i class="fas fa-redo mr-1"></i> Reset
+                                </button>
+                            </div>
+                            
+                            <div class="edit-instruction no-print mb-2">
+                                <i class="fas fa-info-circle"></i>
+                                Click or double-click on any note to edit it. Use buttons to add/delete notes
+                            </div>
+                            
+                            <h3 class="text-xl md:text-2xl font-bold mb-3 md:mb-4 uppercase" style="font-family: 'Times New Roman', serif;">IMPORTANT PAYMENT NOTES:</h3>
+                            <ol class="list-decimal pl-4 md:pl-5 space-y-1 md:space-y-2 text-base md:text-lg notes-editable" style="font-family: 'Times New Roman', serif;" id="paymentNotesList">
+                                <!-- Notes will be generated by JavaScript -->
+                            </ol>
+                        </div>
+                        
+                        <div class="bg-blue-50 p-4 rounded-lg avoid-break">
+                            <h3 class="text-xl md:text-2xl font-bold mb-3 md:mb-4 uppercase" style="font-family: 'Times New Roman', serif;">FOR QUESTIONS & ENQUIRES</h3>
+                            
+                            <div class="edit-instruction no-print mb-2">
+                                <i class="fas fa-info-circle"></i>
+                                Click or double-click on email or phone to edit contact information
+                            </div>
+                            
+                            <p class="mb-2 text-base md:text-lg bank-editable" onclick="editContactField('billingEmail')" ondblclick="editContactField('billingEmail')" style="font-family: 'Times New Roman', serif;">
+                                <span class="font-bold">School Billing Offices:</span> Emilia Foremost: 
+                                <span id="billingEmail">emiliaforemost@gmail.com</span>
+                                <input type="text" id="billingEmail-input" value="emiliaforemost@gmail.com" 
+                                       class="hidden" onblur="saveContactField('billingEmail')" 
+                                       onkeypress="if(event.key === 'Enter') saveContactField('billingEmail')">
+                            </p>
+                            <p class="mb-2 text-base md:text-lg bank-editable" onclick="editContactField('contactPhone')" ondblclick="editContactField('contactPhone')" style="font-family: 'Times New Roman', serif;">
+                                <span class="font-bold">Phone:</span> 
+                                <span id="contactPhone">08022854677 / 09057147497</span>
+                                <input type="text" id="contactPhone-input" value="08022854677 / 09057147497" 
+                                       class="hidden" onblur="saveContactField('contactPhone')" 
+                                       onkeypress="if(event.key === 'Enter') saveContactField('contactPhone')">
+                            </p>
+                        </div>
+                        
+                        <div class="mt-6 md:mt-10 text-center italic text-gray-700 avoid-break">
+                            <div class="edit-instruction no-print mb-2">
+                                <i class="fas fa-info-circle"></i>
+                                Click or double-click on the thank you note to edit it
+                            </div>
+                            
+                            <p class="text-base md:text-lg bank-editable" onclick="editThankYouNote()" ondblclick="editThankYouNote()" style="font-family: 'Times New Roman', serif; cursor: pointer;">
+                                <span id="thankYouNote">Thank you for your continued partnership in your child's education.</span>
+                                <input type="text" id="thankYouNote-input" value="Thank you for your continued partnership in your child's education." 
+                                       class="hidden w-full p-2 border border-gray-300 rounded" onblur="saveThankYouNote()" 
+                                       onkeypress="if(event.key === 'Enter') saveThankYouNote()">
+                            </p>
+                        </div>
+                        
+                        <div class="mt-6 md:mt-8 p-4 border border-gray-300 rounded-lg avoid-break">
+                            <h3 class="font-bold mb-3 text-lg md:text-xl" style="font-family: 'Times New Roman', serif;">Student Information Summary</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+                                <div>
+                                    <p class="text-base md:text-lg" style="font-family: 'Times New Roman', serif;"><span class="font-bold">Student Name:</span> <span id="summaryName"></span></p>
+                                    <p class="text-base md:text-lg" style="font-family: 'Times New Roman', serif;"><span class="font-bold">Class:</span> <span id="summaryClass">JSS 1</span></p>
+                                </div>
+                                <div>
+                                    <p class="text-base md:text-lg" style="font-family: 'Times New Roman', serif;"><span class="font-bold">Term:</span> <span id="summaryTerm">2ND TERM</span></p>
+                                    <p class="text-base md:text-lg" style="font-family: 'Times New Roman', serif;"><span class="font-bold">Session:</span> <span id="summarySession">2025/2026</span></p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 md:mt-10 p-4 border border-gray-300 rounded-lg no-print">
+                            <h3 class="font-bold mb-2" style="font-family: 'Times New Roman', serif;">Due Date Calculator</h3>
+                            <div class="flex flex-col md:flex-row md:flex-wrap items-start md:items-center gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1" style="font-family: 'Times New Roman', serif;">Select Due Date:</label>
+                                    <input type="date" id="dueDate" class="border border-gray-300 rounded px-3 py-2 w-full md:w-auto">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1" style="font-family: 'Times New Roman', serif;">Days Until Due:</label>
+                                    <div id="daysUntilDue" class="text-xl font-bold text-blue-600">--</div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1" style="font-family: 'Times New Roman', serif;">Late Fee Applicable:</label>
+                                    <div id="lateFeeStatus" class="text-xl font-bold">--</div>
+                                </div>
+                                <button onclick="calculateDueDate()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded w-full md:w-auto">Calculate</button>
+                            </div>
+                            <div id="totalWithLateFee" class="mt-4 hidden p-3 bg-red-50 border border-red-200 rounded">
+                                <p class="font-bold text-red-700" style="font-family: 'Times New Roman', serif;">Total with Late Fee: <span id="lateFeeTotal">₦0.00</span></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="edit-instruction no-print mb-2">
-                    <i class="fas fa-info-circle"></i>
-                    Click or double-click on any text below to edit the Resolution Section
-                </div>
-                
-                <h3 class="font-bold text-lg mb-2 bank-editable" onclick="editResolutionField('resolutionTitle')" ondblclick="editResolutionField('resolutionTitle')" style="font-family: 'Times New Roman', serif; cursor: pointer;">
-                    <span id="resolutionTitle">FOR IMMEDIATE RESOLUTION & PAYMENT</span>
-                    <input type="text" id="resolutionTitle-input" value="FOR IMMEDIATE RESOLUTION & PAYMENT" 
-                           class="hidden w-full p-2 border border-gray-300 rounded" onblur="saveResolutionField('resolutionTitle')" 
-                           onkeypress="if(event.key === 'Enter') saveResolutionField('resolutionTitle')">
-                </h3>
-                <p class="mb-2 bank-editable" onclick="editResolutionField('resolutionIntro')" ondblclick="editResolutionField('resolutionIntro')" style="font-family: 'Times New Roman', serif; cursor: pointer;">
-                    <span id="resolutionIntro">Bank Transfer Details for Payment:</span>
-                    <input type="text" id="resolutionIntro-input" value="Bank Transfer Details for Payment:" 
-                           class="hidden w-full p-2 border border-gray-300 rounded" onblur="saveResolutionField('resolutionIntro')" 
-                           onkeypress="if(event.key === 'Enter') saveResolutionField('resolutionIntro')">
-                </p>
-                <div class="pl-4">
-                    <p class="mb-1 bank-editable" onclick="editResolutionField('bankLine')" ondblclick="editResolutionField('bankLine')" style="font-family: 'Times New Roman', serif; cursor: pointer;">
-                        <strong>Bank:</strong> 
-                        <span id="bankLine">UBA</span>
-                        <input type="text" id="bankLine-input" value="UBA" 
-                               class="hidden" onblur="saveResolutionField('bankLine')" 
-                               onkeypress="if(event.key === 'Enter') saveResolutionField('bankLine')">
-                    </p>
-                    <p class="mb-1 bank-editable" onclick="editResolutionField('accountNameLine')" ondblclick="editResolutionField('accountNameLine')" style="font-family: 'Times New Roman', serif; cursor: pointer;">
-                        <strong>Account Name:</strong> 
-                        <span id="accountNameLine">EMILIA FOREMOST HIGH SCHOOL OKEAGBO</span>
-                        <input type="text" id="accountNameLine-input" value="EMILIA FOREMOST HIGH SCHOOL OKEAGBO" 
-                               class="hidden" onblur="saveResolutionField('accountNameLine')" 
-                               onkeypress="if(event.key === 'Enter') saveResolutionField('accountNameLine')">
-                    </p>
-                    <p class="mb-1 bank-editable" onclick="editResolutionField('accountNumberLine')" ondblclick="editResolutionField('accountNumberLine')" style="font-family: 'Times New Roman', serif; cursor: pointer;">
-                        <strong>Account Number:</strong> 
-                        <span id="accountNumberLine">1008189775</span>
-                        <input type="text" id="accountNumberLine-input" value="1008189775" 
-                               class="hidden" onblur="saveResolutionField('accountNumberLine')" 
-                               onkeypress="if(event.key === 'Enter') saveResolutionField('accountNumberLine')">
-                    </p>
-                </div>
-                <p class="mt-2 bank-editable" onclick="editResolutionField('paymentReference')" ondblclick="editResolutionField('paymentReference')" style="font-family: 'Times New Roman', serif; cursor: pointer;">
-                    <strong>Payment Reference:</strong> 
-                    <span id="paymentReference">Student Name, Class & ID (e.g., Ige Deborah, JSS 3, EMFHS-YYYY-NNN-XX)</span>
-                    <input type="text" id="paymentReference-input" value="Student Name, Class & ID (e.g., Ige Deborah, JSS 3, EMFHS-YYYY-NNN-XX)" 
-                           class="hidden w-full p-2 border border-gray-300 rounded" onblur="saveResolutionField('paymentReference')" 
-                           onkeypress="if(event.key === 'Enter') saveResolutionField('paymentReference')">
-                </p>
-            </div>
-        </div>
-        
-        <!-- Page Break for Page 2 -->
-        <div class="page-break" style="margin-top: 1.5cm;"></div>
-        
-        <!-- Page 2 Content -->
-        <div class="p-6 md:p-8 border-t border-gray-300 print-page page-2-content">
-            <div class="mb-4 pb-3 border-b border-gray-300 avoid-break page-2-header page-2-border-line">
-                <div class="flex items-center justify-between print-header-container">
-                    <div class="print-logo-container page-2-logo page-2-logo-container" style="width: 120px !important; height: 120px !important;">
-                        <div class="page-2-logo-wrapper">
+                <!-- Footer -->
+                <div class="mt-8 text-center text-gray-500 text-sm no-print">
+                    <p style="font-family: 'Times New Roman', serif;">This is a digital invoice system. All changes are saved automatically.</p>
+                    <p class="mt-2" style="font-family: 'Times New Roman', serif;">Generated on: <span id="currentDate"></span></p>
+                    <div class="mt-4 flex flex-col md:flex-row justify-center items-center space-y-2 md:space-y-0 md:space-x-4">
+                        <div class="w-16 h-16 bg-white rounded-full p-2 shadow-md">
                             <img src="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/EMILIA%20LOGO.png" 
                                  alt="School Logo" 
-                                 class="w-full h-auto">
+                                 class="w-full h-auto rounded-full">
                         </div>
-                    </div>
-                    <div class="print-school-info">
-                        <h2 style="font-size: 22pt !important; font-family: Georgia, 'Times New Roman', serif !important; font-weight: bold !important; margin: 0 !important; line-height: 1.1 !important; letter-spacing: 0.5px !important;">
-                            EMILIA FOREMOST HIGH SCHOOL
-                        </h2>
-                        <p style="font-size: 12pt !important; font-family: 'Times New Roman', serif !important; margin: 3px 0 !important; line-height: 1.3 !important;">
-                            2, Olasupo Avenue, Off Adeyemi Street, Oke-Agbo, Ojo, Lagos
-                        </p>
-                        <p style="font-size: 12pt !important; font-family: 'Times New Roman', serif !important; margin: 3px 0 !important; line-height: 1.3 !important;" class="school-phone-editable" onclick="editSchoolPhonePage2()" ondblclick="editSchoolPhonePage2()">
-                            Tel: <span id="page2SchoolPhoneDisplay">09053336429, 08112734458</span>
-                            <input type="text" id="page2SchoolPhoneInput" value="09053336429, 08112734458" 
-                                   class="hidden school-phone-input" onblur="saveSchoolPhonePage2()" 
-                                   onkeypress="if(event.key === 'Enter') saveSchoolPhonePage2()">
-                        </p>
-                        <div class="edit-instruction no-print mt-1">
-                            <i class="fas fa-info-circle"></i>
-                            Click or double-click on phone number to edit
-                        </div>
+                        <p class="font-bold" style="font-family: Georgia, 'Times New Roman', serif;">EMILIA FOREMOST HIGH SCHOOL</p>
                     </div>
                 </div>
             </div>
-            
-            <h2 class="text-xl md:text-2xl lg:text-3xl font-bold mb-4 md:mb-6 text-center uppercase avoid-break" style="font-family: 'Times New Roman', serif; margin-top: 0.2cm !important;">PAYMENT INSTRUCTIONS</h2>
-            
-            <div class="edit-instruction no-print mb-2">
-                <i class="fas fa-info-circle"></i>
-                Click or double-click on the text below to edit payment instructions
-            </div>
-            
-            <p class="mb-4 md:mb-6 text-lg md:text-xl avoid-break bank-editable" onclick="editPaymentInstructions()" ondblclick="editPaymentInstructions()" style="font-family: 'Times New Roman', serif; cursor: pointer;">
-                <span id="paymentInstructions">Please ensure payment is made on or before the Due Date to facilitate a smooth resumption for your ward.</span>
-                <input type="text" id="paymentInstructions-input" value="Please ensure payment is made on or before the Due Date to facilitate a smooth resumption for your ward." 
-                       class="hidden w-full p-2 border border-gray-300 rounded" onblur="savePaymentInstructions()" 
-                       onkeypress="if(event.key === 'Enter') savePaymentInstructions()">
-            </p>
-            
-            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mb-6 md:mb-8 avoid-break">
-                <div class="bank-controls no-print">
-                    <button class="edit-bank-btn" onclick="editBankDetails()">
-                        <i class="fas fa-edit mr-1"></i> Edit Bank Details
-                    </button>
-                    <button class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-1 px-3 rounded text-sm" onclick="resetBankDetails()">
-                        <i class="fas fa-redo mr-1"></i> Reset
-                    </button>
-                </div>
-                
-                <div class="edit-instruction no-print mb-2">
-                    <i class="fas fa-info-circle"></i>
-                    Click or double-click on any bank detail to edit it
-                </div>
-                
-                <h3 class="font-bold text-lg md:text-xl mb-2" style="font-family: 'Times New Roman', serif;">Bank Transfer Details</h3>
-                <p class="mb-1 text-base md:text-lg bank-editable" onclick="editBankField('bank')" ondblclick="editBankField('bank')" id="bankCell">
-                    <span class="font-bold">Bank:</span> 
-                    <span id="bank">UBA</span>
-                    <input type="text" id="bank-input" value="UBA" 
-                           class="hidden" onblur="saveBankField('bank')" 
-                           onkeypress="if(event.key === 'Enter') saveBankField('bank')">
-                </p>
-                <p class="mb-1 text-base md:text-lg bank-editable" onclick="editBankField('accountName')" ondblclick="editBankField('accountName')">
-                    <span class="font-bold">Account Name:</span> 
-                    <span id="accountName">EMILIA FOREMOST HIGH SCHOOL OKEAGBO</span>
-                    <input type="text" id="accountName-input" value="EMILIA FOREMOST HIGH SCHOOL OKEAGBO" 
-                           class="hidden" onblur="saveBankField('accountName')" 
-                           onkeypress="if(event.key === 'Enter') saveBankField('accountName')">
-                </p>
-                <p class="mb-1 text-base md:text-lg bank-editable" onclick="editBankField('accountNumber')" ondblclick="editBankField('accountNumber')">
-                    <span class="font-bold">Account Number:</span> 
-                    <span id="accountNumber">1008189775</span>
-                    <input type="text" id="accountNumber-input" value="1008189775" 
-                           class="hidden" onblur="saveBankField('accountNumber')" 
-                           onkeypress="if(event.key === 'Enter') saveBankField('accountNumber')">
-                </p>
-            </div>
-            
-            <div class="mb-6 md:mb-8 avoid-break">
-                <div class="notes-controls no-print">
-                    <div class="flex gap-2">
-                        <button class="edit-notes-btn" onclick="editPaymentNotes()">
-                            <i class="fas fa-edit mr-1"></i> Edit All Notes
-                        </button>
-                        <button class="add-note-btn" onclick="addNewNote()">
-                            <i class="fas fa-plus mr-1"></i> Add New Note
-                        </button>
-                    </div>
-                    <button class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-1 px-3 rounded text-sm" onclick="resetPaymentNotes()">
-                        <i class="fas fa-redo mr-1"></i> Reset
-                    </button>
-                </div>
-                
-                <div class="edit-instruction no-print mb-2">
-                    <i class="fas fa-info-circle"></i>
-                    Click or double-click on any note to edit it. Use buttons to add/delete notes
-                </div>
-                
-                <h3 class="text-xl md:text-2xl font-bold mb-3 md:mb-4 uppercase" style="font-family: 'Times New Roman', serif;">IMPORTANT PAYMENT NOTES:</h3>
-                <ol class="list-decimal pl-4 md:pl-5 space-y-1 md:space-y-2 text-base md:text-lg notes-editable" style="font-family: 'Times New Roman', serif;" id="paymentNotesList">
-                    <!-- Notes will be generated by JavaScript -->
-                </ol>
-            </div>
-            
-            <div class="bg-blue-50 p-4 rounded-lg avoid-break">
-                <h3 class="text-xl md:text-2xl font-bold mb-3 md:mb-4 uppercase" style="font-family: 'Times New Roman', serif;">FOR QUESTIONS & ENQUIRES</h3>
-                
-                <div class="edit-instruction no-print mb-2">
-                    <i class="fas fa-info-circle"></i>
-                    Click or double-click on email or phone to edit contact information
-                </div>
-                
-                <p class="mb-2 text-base md:text-lg bank-editable" onclick="editContactField('billingEmail')" ondblclick="editContactField('billingEmail')" style="font-family: 'Times New Roman', serif;">
-                    <span class="font-bold">School Billing Offices:</span> Emilia Foremost: 
-                    <span id="billingEmail">emiliaforemost@gmail.com</span>
-                    <input type="text" id="billingEmail-input" value="emiliaforemost@gmail.com" 
-                           class="hidden" onblur="saveContactField('billingEmail')" 
-                           onkeypress="if(event.key === 'Enter') saveContactField('billingEmail')">
-                </p>
-                <p class="mb-2 text-base md:text-lg bank-editable" onclick="editContactField('contactPhone')" ondblclick="editContactField('contactPhone')" style="font-family: 'Times New Roman', serif;">
-                    <span class="font-bold">Phone:</span> 
-                    <span id="contactPhone">08022854677 / 09057147497</span>
-                    <input type="text" id="contactPhone-input" value="08022854677 / 09057147497" 
-                           class="hidden" onblur="saveContactField('contactPhone')" 
-                           onkeypress="if(event.key === 'Enter') saveContactField('contactPhone')">
-                </p>
-            </div>
-            
-            <div class="mt-6 md:mt-10 text-center italic text-gray-700 avoid-break">
-                <div class="edit-instruction no-print mb-2">
-                    <i class="fas fa-info-circle"></i>
-                    Click or double-click on the thank you note to edit it
-                </div>
-                
-                <p class="text-base md:text-lg bank-editable" onclick="editThankYouNote()" ondblclick="editThankYouNote()" style="font-family: 'Times New Roman', serif; cursor: pointer;">
-                    <span id="thankYouNote">Thank you for your continued partnership in your child's education.</span>
-                    <input type="text" id="thankYouNote-input" value="Thank you for your continued partnership in your child's education." 
-                           class="hidden w-full p-2 border border-gray-300 rounded" onblur="saveThankYouNote()" 
-                           onkeypress="if(event.key === 'Enter') saveThankYouNote()">
-                </p>
-            </div>
-            
-            <div class="mt-6 md:mt-8 p-4 border border-gray-300 rounded-lg avoid-break">
-                <h3 class="font-bold mb-3 text-lg md:text-xl" style="font-family: 'Times New Roman', serif;">Student Information Summary</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
-                    <div>
-                        <p class="text-base md:text-lg" style="font-family: 'Times New Roman', serif;"><span class="font-bold">Student Name:</span> <span id="summaryName"></span></p>
-                        <p class="text-base md:text-lg" style="font-family: 'Times New Roman', serif;"><span class="font-bold">Class:</span> <span id="summaryClass">JSS 1</span></p>
-                    </div>
-                    <div>
-                        <p class="text-base md:text-lg" style="font-family: 'Times New Roman', serif;"><span class="font-bold">Term:</span> <span id="summaryTerm">2ND TERM</span></p>
-                        <p class="text-base md:text-lg" style="font-family: 'Times New Roman', serif;"><span class="font-bold">Session:</span> <span id="summarySession">2025/2026</span></p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="mt-6 md:mt-10 p-4 border border-gray-300 rounded-lg no-print">
-                <h3 class="font-bold mb-2" style="font-family: 'Times New Roman', serif;">Due Date Calculator</h3>
-                <div class="flex flex-col md:flex-row md:flex-wrap items-start md:items-center gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1" style="font-family: 'Times New Roman', serif;">Select Due Date:</label>
-                        <input type="date" id="dueDate" class="border border-gray-300 rounded px-3 py-2 w-full md:w-auto">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1" style="font-family: 'Times New Roman', serif;">Days Until Due:</label>
-                        <div id="daysUntilDue" class="text-xl font-bold text-blue-600">--</div>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1" style="font-family: 'Times New Roman', serif;">Late Fee Applicable:</label>
-                        <div id="lateFeeStatus" class="text-xl font-bold">--</div>
-                    </div>
-                    <button onclick="calculateDueDate()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded w-full md:w-auto">Calculate</button>
-                </div>
-                <div id="totalWithLateFee" class="mt-4 hidden p-3 bg-red-50 border border-red-200 rounded">
-                    <p class="font-bold text-red-700" style="font-family: 'Times New Roman', serif;">Total with Late Fee: <span id="lateFeeTotal">₦0.00</span></p>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Footer -->
-    <div class="mt-8 text-center text-gray-500 text-sm no-print">
-        <p style="font-family: 'Times New Roman', serif;">This is a digital invoice system. All changes are saved automatically.</p>
-        <p class="mt-2" style="font-family: 'Times New Roman', serif;">Generated on: <span id="currentDate"></span></p>
-        <div class="mt-4 flex flex-col md:flex-row justify-center items-center space-y-2 md:space-y-0 md:space-x-4">
-            <div class="w-16 h-16 bg-white rounded-full p-2 shadow-md">
-                <img src="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/EMILIA%20LOGO.png" 
-                     alt="School Logo" 
-                     class="w-full h-auto rounded-full">
-            </div>
-            <p class="font-bold" style="font-family: Georgia, 'Times New Roman', serif;">EMILIA FOREMOST HIGH SCHOOL</p>
         </div>
     </div>
 
     <script>
+        // ========== ROCK SOLID SCROLL - NO RUBBER BAND EVER ==========
+        const scrollContainer = document.getElementById('scrollContainer');
+        
+        if (scrollContainer) {
+            let touchStartY = 0;
+            let touchStartScrollTop = 0;
+            
+            // Store scroll positions
+            let scrollTop = 0;
+            let scrollHeight = 0;
+            let clientHeight = 0;
+            
+            // Function to enforce scroll boundaries - NO RUBBER BAND
+            function enforceBoundaries() {
+                if (!scrollContainer) return;
+                
+                scrollTop = scrollContainer.scrollTop;
+                scrollHeight = scrollContainer.scrollHeight;
+                clientHeight = scrollContainer.clientHeight;
+                
+                // Hard stop at top
+                if (scrollTop < 0) {
+                    scrollContainer.scrollTop = 0;
+                    return;
+                }
+                
+                // Hard stop at bottom
+                if (scrollTop + clientHeight > scrollHeight) {
+                    scrollContainer.scrollTop = Math.max(0, scrollHeight - clientHeight);
+                    return;
+                }
+            }
+            
+            // Prevent any rubber band effect on touch move
+            scrollContainer.addEventListener('touchstart', function(e) {
+                touchStartY = e.touches[0].clientY;
+                touchStartScrollTop = scrollContainer.scrollTop;
+            }, { passive: false });
+            
+            scrollContainer.addEventListener('touchmove', function(e) {
+                const currentY = e.touches[0].clientY;
+                const deltaY = currentY - touchStartY;
+                const currentScrollTop = scrollContainer.scrollTop;
+                const maxScrollTop = scrollContainer.scrollHeight - scrollContainer.clientHeight;
+                
+                // If at top and trying to pull down - PREVENT
+                if (currentScrollTop <= 0 && deltaY > 0) {
+                    e.preventDefault();
+                    return false;
+                }
+                
+                // If at bottom and trying to pull up - PREVENT
+                if (currentScrollTop >= maxScrollTop - 1 && deltaY < 0) {
+                    e.preventDefault();
+                    return false;
+                }
+            }, { passive: false });
+            
+            // Enforce boundaries on scroll
+            scrollContainer.addEventListener('scroll', function() {
+                enforceBoundaries();
+            });
+            
+            // Enforce boundaries on resize
+            window.addEventListener('resize', function() {
+                enforceBoundaries();
+            });
+            
+            // Initial enforcement
+            enforceBoundaries();
+            
+            // iOS specific fixes
+            if ('ontouchstart' in window) {
+                scrollContainer.style.WebkitOverflowScrolling = 'touch';
+            }
+        }
+        
+        // ========== ALL YOUR EXISTING JAVASCRIPT BELOW (unchanged) ==========
+        
         // Set current date
         document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', {
             year: 'numeric',
@@ -2272,9 +2581,8 @@
             lateFeeTotalElement.textContent = formatCurrency(totalWithLateFee);
         }
         
-        // ========== PDF FILENAME FUNCTIONS - EXACT FORMAT WITH SPACES AND SLASHES ==========
+        // ========== PDF FILENAME FUNCTIONS ==========
         function generatePrintFilename() {
-            // Clean name - capitalize first letter of each word
             const cleanName = (studentInfo.studentName || 'Student')
                 .trim()
                 .replace(/\s+/g, ' ')
@@ -2282,7 +2590,6 @@
                 .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
                 .join(' ');
             
-            // Clean class - format nicely
             let cleanClass = studentInfo.class.trim();
             if (cleanClass === 'JSS 1') cleanClass = 'JSS 1';
             else if (cleanClass === 'JSS 2') cleanClass = 'JSS 2';
@@ -2291,23 +2598,19 @@
             else if (cleanClass === 'SS 2') cleanClass = 'SS 2';
             else if (cleanClass === 'SS 3') cleanClass = 'SS 3';
             
-            // Clean term - format nicely
             let cleanTerm = studentInfo.term.trim();
             if (cleanTerm === '1ST TERM') cleanTerm = '1st Term';
             else if (cleanTerm === '2ND TERM') cleanTerm = '2nd Term';
             else if (cleanTerm === '3RD TERM') cleanTerm = '3rd Term';
             
-            // Clean session - keep the slash
             const cleanSession = studentInfo.session.trim();
             
-            // Get current date formatted as DD/MM/YYYY
             const now = new Date();
             const day = now.getDate().toString().padStart(2, '0');
             const month = (now.getMonth() + 1).toString().padStart(2, '0');
             const year = now.getFullYear();
             const formattedDate = `${day}/${month}/${year}`;
             
-            // Build filename with spaces and slashes exactly as requested
             const filename = `Outstanding Balance - ${cleanName} - ${cleanClass} - ${cleanTerm} - ${cleanSession} - ${formattedDate}.pdf`;
             return filename;
         }
