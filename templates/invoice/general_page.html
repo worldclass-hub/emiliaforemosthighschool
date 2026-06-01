@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
     <title>EMIFORPHS Finance Portal | Dashboard</title>
 
     <!-- Favicon - Emilia Logo -->
-  <link rel="icon" type="image/x-icon" href="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/emilia_logo_circle.png">
+    <link rel="icon" type="image/x-icon" href="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/emilia_logo_circle.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     
     <style>
-        /* ========== NO OVERSCOLL/BOUNCE SYSTEM - FIXED ========== */
+        /* ========== ROCK SOLID SCROLL SYSTEM - NO RUBBER BAND EVER ========== */
         * {
             font-family: 'Inter', sans-serif;
             margin: 0;
@@ -23,69 +23,84 @@
             -webkit-tap-highlight-color: transparent;
         }
         
-        /* FIXED: Remove position: fixed from html/body */
-        html {
+        /* 1. FIXED POSITION BODY - Completely prevents any body movement */
+        html, body {
             width: 100%;
             height: 100%;
-            overflow: hidden;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-        }
-        
-        body {
-            width: 100%;
-            height: 100%;
+            position: fixed;
             overflow: hidden;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             margin: 0;
             padding: 0;
-            touch-action: pan-y;
-            position: relative;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            /* CRITICAL: Prevents rubber band */
+            overscroll-behavior: none;
+            touch-action: pan-y pinch-zoom;
         }
         
-        /* Main scrollable container - FIXED */
+        /* 2. SINGLE SCROLL CONTAINER - Only this can scroll internally */
         .scroll-container {
             width: 100%;
-            height: 100vh;
-            height: 100dvh;
+            height: 100%;
             overflow-y: auto;
             overflow-x: hidden;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            -webkit-overflow-scrolling: touch;
-            overscroll-behavior: contain;
             position: relative;
-            scrollbar-width: none; /* Firefox */
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            /* Smooth scrolling for iOS but NO rubber band */
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: none;
+            /* Prevent scroll chaining */
+            touch-action: pan-y;
+            scroll-behavior: smooth;
         }
         
-        /* Hide scrollbar for Chrome, Safari and Opera */
+        /* 3. Hide scrollbar for cleaner look */
         .scroll-container::-webkit-scrollbar {
-            display: none;
+            width: 6px;
         }
         
-        /* Main content wrapper */
-        .content-wrapper {
+        .scroll-container::-webkit-scrollbar-track {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        
+        .scroll-container::-webkit-scrollbar-thumb {
+            background: #1e40af;
+            border-radius: 3px;
+        }
+        
+        /* 4. MAIN WRAPPER */
+        .main-wrapper {
             width: 100%;
             min-height: 100%;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            padding: 20px;
+            display: flex;
+            flex-direction: column;
         }
         
-        /* Prevent any element from causing overflow */
-        .no-overscroll {
-            max-width: 100%;
-            overflow: hidden;
+        /* 5. Content wrapper */
+        .content-wrapper {
+            flex: 1 0 auto;
+            width: 100%;
+            position: relative;
+            padding: 20px;
         }
         
         /* Mobile adjustments */
         @media (max-width: 768px) {
             .content-wrapper {
                 padding: 12px;
-                background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+                padding-bottom: 80px;
             }
-            
-            .scroll-container {
-                -webkit-overflow-scrolling: touch;
-                overscroll-behavior: contain;
-            }
+        }
+        
+        /* Prevent any element from causing overflow */
+        .no-overscroll {
+            max-width: 100%;
+            overflow: hidden;
         }
         
         /* Original Styles */
@@ -166,10 +181,6 @@
                 margin-right: 12px;
             }
             
-            .content-wrapper {
-                padding-bottom: 80px; /* Space for home button */
-            }
-            
             /* Compact main cards */
             .main-card {
                 padding: 20px !important;
@@ -245,27 +256,6 @@
             
             .main-card button span {
                 font-size: 0.9rem !important;
-            }
-        }
-        
-        /* Special class to prevent overscroll on children */
-        .prevent-overscroll {
-            touch-action: pan-y;
-            -webkit-user-drag: none;
-            user-select: none;
-        }
-        
-        /* iOS specific fixes */
-        @supports (-webkit-touch-callout: none) {
-            .scroll-container {
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                overflow-y: auto;
-                -webkit-overflow-scrolling: touch;
-                height: 100vh;
             }
         }
         
@@ -347,17 +337,6 @@
                     0 0 0 3px rgba(255, 255, 255, 0.3),
                     0 0 0 6px rgba(118, 75, 162, 0.2);
             }
-        }
-        
-        /* Particle effects */
-        .home-button-particle {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 50%;
-            pointer-events: none;
-            opacity: 0;
         }
         
         /* Mobile responsive */
@@ -498,306 +477,307 @@
         <div class="home-button-tooltip">Dashboard Home</div>
     </div>
 
-    <!-- Scroll Container - Only this can scroll -->
+    <!-- Scroll Container - Only this can scroll (ROCK SOLID) -->
     <div class="scroll-container" id="scrollContainer">
-        <!-- Content Wrapper -->
-        <div class="content-wrapper">
-            <!-- School Header with Logo -->
-            <div class="school-header fade-in no-overscroll">
-                <div class="flex flex-col md:flex-row items-center justify-between">
-                    <div class="text-center md:text-left mb-4 md:mb-0">
-                        <div class="flex flex-col md:flex-row items-center justify-center md:justify-start mb-2">
-                            <!-- School Logo -->
-                            <div class="logo-container mr-0 md:mr-4 mb-3 md:mb-0">
-                                <img src="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/EMILIA%20LOGO.png" 
-                                     alt="EMILIA FOREMOST HIGH SCHOOL Logo"
-                                     onerror="this.onerror=null; this.src='https://via.placeholder.com/80x80/1e40af/ffffff?text=EMFORHS';">
-                            </div>
-                            <div class="text-center md:text-left">
-                                <h1 class="text-xl md:text-3xl font-bold">EMILIA FOREMOST HIGH SCHOOL</h1>
-                                <p class="text-blue-100 text-sm md:text-base">Excellence in Education Since 2007</p>
-                                <div class="mt-1 inline-block bg-white/20 px-2 py-1 rounded-full text-xs">
-                                    School ID: SCH-EMF-2023
+        <div class="main-wrapper">
+            <div class="content-wrapper">
+                <!-- School Header with Logo -->
+                <div class="school-header fade-in no-overscroll">
+                    <div class="flex flex-col md:flex-row items-center justify-between">
+                        <div class="text-center md:text-left mb-4 md:mb-0">
+                            <div class="flex flex-col md:flex-row items-center justify-center md:justify-start mb-2">
+                                <!-- School Logo -->
+                                <div class="logo-container mr-0 md:mr-4 mb-3 md:mb-0">
+                                    <img src="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/EMILIA%20LOGO.png" 
+                                         alt="EMILIA FOREMOST HIGH SCHOOL Logo"
+                                         onerror="this.onerror=null; this.src='https://via.placeholder.com/80x80/1e40af/ffffff?text=EMFORHS';">
+                                </div>
+                                <div class="text-center md:text-left">
+                                    <h1 class="text-xl md:text-3xl font-bold">EMILIA FOREMOST HIGH SCHOOL</h1>
+                                    <p class="text-blue-100 text-sm md:text-base">Excellence in Education Since 2007</p>
+                                    <div class="mt-1 inline-block bg-white/20 px-2 py-1 rounded-full text-xs">
+                                        School ID: SCH-EMF-2023
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="text-center mt-4 md:mt-0">
-                        <div class="bg-white text-blue-800 font-bold text-lg md:text-xl py-2 px-4 rounded-full shadow-lg">
-                            EMIFORPHS
-                        </div>
-                        <p class="text-blue-100 mt-1 text-xs md:text-sm">Finance Management System</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Header -->
-            <header class="mb-8 md:mb-12 text-center fade-in no-overscroll px-2">
-                <h1 class="text-2xl md:text-4xl font-bold text-gray-800 mb-3">
-                    <i class="fas fa-chart-line text-blue-600 mr-2"></i>
-                    EMIFORPHS Finance Portal
-                </h1>
-                <p class="text-gray-600 text-base md:text-lg max-w-3xl mx-auto">
-                    Intelligent dashboard for managing school finances at Emilia Foremost High School.
-                </p>
-                
-                <div class="mt-6 inline-flex items-center bg-gradient-to-r from-blue-50 to-indigo-50 rounded-full px-4 py-2 shadow-md no-overscroll">
-                    <div class="w-2 h-2 bg-green-500 rounded-full mr-2 pulse-animation"></div>
-                    <span class="text-gray-700 font-medium text-sm">System Status: <span class="text-green-600">All Services Operational</span></span>
-                </div>
-                
-                <div class="mt-4 text-gray-500 text-sm">
-                    <i class="fas fa-calendar-alt mr-1"></i>
-                    <span id="academicYearTerm">Academic Year: 2023-2024 | Current Term: 3rd Term</span>
-                </div>
-            </header>
-            
-            <!-- Dashboard Stats -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 fade-in px-2">
-                <div class="bg-white rounded-xl p-4 shadow-lg no-overscroll">
-                    <div class="flex items-center">
-                        <div class="bg-blue-100 p-2 rounded-lg mr-3">
-                            <i class="fas fa-users text-blue-600 text-lg"></i>
-                        </div>
-                        <div>
-                            <p class="text-gray-500 text-xs">Active Students</p>
-                            <p class="text-xl font-bold text-gray-800">2,847</p>
-                            <p class="text-green-600 text-xs mt-1">
-                                <i class="fas fa-arrow-up mr-1"></i> 5.2% from last term
-                            </p>
+                        <div class="text-center mt-4 md:mt-0">
+                            <div class="bg-white text-blue-800 font-bold text-lg md:text-xl py-2 px-4 rounded-full shadow-lg">
+                                EMIFORPHS
+                            </div>
+                            <p class="text-blue-100 mt-1 text-xs md:text-sm">Finance Management System</p>
                         </div>
                     </div>
                 </div>
                 
-                <div class="bg-white rounded-xl p-4 shadow-lg no-overscroll">
-                    <div class="flex items-center">
-                        <div class="bg-green-100 p-2 rounded-lg mr-3">
-                            <i class="fas fa-dollar-sign text-green-600 text-lg"></i>
-                        </div>
-                        <div>
-                            <p class="text-gray-500 text-xs">Annual Revenue</p>
-                            <p class="text-xl font-bold text-gray-800">$4.2M</p>
-                            <p class="text-green-600 text-xs mt-1">
-                                <i class="fas fa-arrow-up mr-1"></i> 12.7% from last year
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-white rounded-xl p-4 shadow-lg no-overscroll">
-                    <div class="flex items-center">
-                        <div class="bg-purple-100 p-2 rounded-lg mr-3">
-                            <i class="fas fa-percentage text-purple-600 text-lg"></i>
-                        </div>
-                        <div>
-                            <p class="text-gray-500 text-xs">Payment Completion</p>
-                            <p class="text-xl font-bold text-gray-800">94.7%</p>
-                            <p class="text-green-600 text-xs mt-1">
-                                <i class="fas fa-arrow-up mr-1"></i> 3.1% from last term
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Main Navigation Cards -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto px-2">
-                <!-- Card 1: SCHOOL TUITION AND BILL SUMMARY -->
-                <div class="card-hover-effect main-card bg-gradient-to-br from-blue-500 to-indigo-700 rounded-xl p-6 shadow-xl overflow-hidden relative glow-effect no-overscroll">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16"></div>
-                    <div class="absolute bottom-0 left-0 w-48 h-48 bg-white opacity-5 rounded-full -ml-32 -mb-32"></div>
-                    
-                    <div class="relative z-10">
-                        <div class="flex items-center mb-4">
-                            <div class="bg-white p-3 rounded-lg mr-4">
-                                <i class="fas fa-file-invoice-dollar text-2xl text-blue-600"></i>
-                            </div>
-                            <div>
-                                <h2 class="text-2xl font-bold text-white">Tuition & Bill Summary</h2>
-                                <p class="text-blue-100 text-sm">EMIFORPHS Detailed Financial Overview</p>
-                            </div>
-                        </div>
-                        
-                        <p class="text-blue-100 mb-6 text-base">
-                            Access comprehensive breakdown of tuition fees, payment schedules, pending bills, and payment history.
-                        </p>
-                        
-                        <div class="space-y-3 mb-6">
-                            <div class="flex items-center">
-                                <i class="fas fa-check-circle text-green-300 mr-2 text-sm"></i>
-                                <span class="text-white text-sm">Real-time payment tracking</span>
-                            </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-check-circle text-green-300 mr-2 text-sm"></i>
-                                <span class="text-white text-sm">Downloadable invoices with logo</span>
-                            </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-check-circle text-green-300 mr-2 text-sm"></i>
-                                <span class="text-white text-sm">Payment deadline alerts</span>
-                            </div>
-                        </div>
-                        
-                        <button id="tuitionBtn" class="compact-button bg-white text-blue-700 hover:bg-blue-50">
-                            <span>Access EMIFORPHS Dashboard</span>
-                            <i class="fas fa-arrow-right"></i>
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Card 2: TERM-END ACCOUNT STATEMENT -->
-                <div class="card-hover-effect main-card bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl p-6 shadow-xl overflow-hidden relative no-overscroll">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16"></div>
-                    <div class="absolute bottom-0 left-0 w-48 h-48 bg-white opacity-5 rounded-full -ml-32 -mb-32"></div>
-                    
-                    <div class="relative z-10">
-                        <div class="flex items-center mb-4">
-                            <div class="bg-white p-3 rounded-lg mr-4">
-                                <i class="fas fa-chart-bar text-2xl text-purple-600"></i>
-                            </div>
-                            <div>
-                                <h2 class="text-2xl font-bold text-white">Term-End Statement</h2>
-                                <p class="text-purple-100 text-sm">EMIFORPHS Comprehensive Financial Report</p>
-                            </div>
-                        </div>
-                        
-                        <p class="text-purple-100 mb-6 text-base">
-                            View complete account statements including all transactions, adjustments, and balance summaries.
-                        </p>
-                        
-                        <div class="space-y-3 mb-6">
-                            <div class="flex items-center">
-                                <i class="fas fa-check-circle text-pink-300 mr-2 text-sm"></i>
-                                <span class="text-white text-sm">Visual financial analytics</span>
-                            </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-check-circle text-pink-300 mr-2 text-sm"></i>
-                                <span class="text-white text-sm">Export to PDF/Excel with branding</span>
-                            </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-check-circle text-pink-300 mr-2 text-sm"></i>
-                                <span class="text-white text-sm">Year-over-year comparisons</span>
-                            </div>
-                        </div>
-                        
-                        <button id="statementBtn" class="compact-button bg-white text-purple-700 hover:bg-purple-50">
-                            <span>View EMIFORPHS Statements</span>
-                            <i class="fas fa-arrow-right"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Quick Access Section -->
-            <div class="mt-12 bg-white rounded-xl p-6 shadow-lg max-w-6xl mx-auto fade-in no-overscroll px-2">
-                <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">
-                    <i class="fas fa-bolt text-yellow-500 mr-2"></i>
-                    EMIFORPHS Quick Access
-                </h3>
-                
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    <a href="#" class="bg-blue-50 hover:bg-blue-100 rounded-lg p-3 text-center transition duration-300 no-overscroll">
-                        <div class="bg-blue-100 w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2">
-                            <i class="fas fa-calendar-day text-blue-600"></i>
-                        </div>
-                        <h4 class="font-bold text-gray-800 text-sm">Payment Calendar</h4>
-                    </a>
-                    
-                    <a href="#" class="bg-green-50 hover:bg-green-100 rounded-lg p-3 text-center transition duration-300 no-overscroll">
-                        <div class="bg-green-100 w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2">
-                            <i class="fas fa-history text-green-600"></i>
-                        </div>
-                        <h4 class="font-bold text-gray-800 text-sm">Payment History</h4>
-                    </a>
-                    
-                    <a href="#" class="bg-purple-50 hover:bg-purple-100 rounded-lg p-3 text-center transition duration-300 no-overscroll">
-                        <div class="bg-purple-100 w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2">
-                            <i class="fas fa-file-download text-purple-600"></i>
-                        </div>
-                        <h4 class="font-bold text-gray-800 text-sm">Download Forms</h4>
-                    </a>
-                    
-                    <a href="#" class="bg-red-50 hover:bg-red-100 rounded-lg p-3 text-center transition duration-300 no-overscroll">
-                        <div class="bg-red-100 w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2">
-                            <i class="fas fa-headset text-red-600"></i>
-                        </div>
-                        <h4 class="font-bold text-gray-800 text-sm">EMIFORPHS Support</h4>
-                    </a>
-                </div>
-            </div>
-            
-            <!-- Additional Information Section -->
-            <div class="mt-12 bg-white rounded-xl p-6 shadow-lg max-w-4xl mx-auto fade-in no-overscroll px-2">
-                <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">
-                    <i class="fas fa-info-circle text-blue-600 mr-2"></i>
-                    How to Use This Portal
-                </h3>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="text-center p-3 no-overscroll">
-                        <div class="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
-                            <i class="fas fa-mouse-pointer text-blue-600"></i>
-                        </div>
-                        <h4 class="font-bold text-gray-800 mb-2 text-sm">1. Select a Dashboard</h4>
-                        <p class="text-gray-600 text-xs">Click on either of the two main cards above.</p>
-                    </div>
-                    
-                    <div class="text-center p-3 no-overscroll">
-                        <div class="bg-green-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
-                            <i class="fas fa-search text-green-600"></i>
-                        </div>
-                        <h4 class="font-bold text-gray-800 mb-2 text-sm">2. Explore Information</h4>
-                        <p class="text-gray-600 text-xs">Navigate through detailed reports and visualizations.</p>
-                    </div>
-                    
-                    <div class="text-center p-3 no-overscroll">
-                        <div class="bg-purple-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
-                            <i class="fas fa-download text-purple-600"></i>
-                        </div>
-                        <h4 class="font-bold text-gray-800 mb-2 text-sm">3. Export & Share</h4>
-                        <p class="text-gray-600 text-xs">Download reports as PDF or Excel files.</p>
-                    </div>
-                </div>
-                
-                <div class="mt-6 pt-6 border-t border-gray-200 text-center">
-                    <p class="text-gray-600 text-sm">
-                        <i class="fas fa-shield-alt text-green-500 mr-2"></i>
-                        All EMIFORPHS financial data is encrypted with bank-level security.
+                <!-- Header -->
+                <header class="mb-8 md:mb-12 text-center fade-in no-overscroll px-2">
+                    <h1 class="text-2xl md:text-4xl font-bold text-gray-800 mb-3">
+                        <i class="fas fa-chart-line text-blue-600 mr-2"></i>
+                        EMIFORPHS Finance Portal
+                    </h1>
+                    <p class="text-gray-600 text-base md:text-lg max-w-3xl mx-auto">
+                        Intelligent dashboard for managing school finances at Emilia Foremost High School.
                     </p>
-                    <p class="text-gray-600 text-sm mt-2">
-                        <i class="fas fa-phone-alt text-blue-500 mr-2"></i>
-                        Need help? Contact EMIFORPHS Finance Office: +234 8022854677-EMFS
-                    </p>
-                </div>
-            </div>
-            
-            <!-- Footer -->
-            <footer class="mt-12 mb-8 text-center text-gray-500 text-xs fade-in no-overscroll px-2">
-                <div class="bg-white rounded-xl p-4 shadow-lg max-w-4xl mx-auto no-overscroll">
-                    <div class="flex flex-col md:flex-row items-center justify-between">
-                        <div class="mb-3 md:mb-0 flex items-center">
-                            <div class="logo-container mr-3" style="width: 40px; height: 40px;">
-                                <img src="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/EMILIA%20LOGO.png" 
-                                     alt="EMIFORPHSLogo"
-                                     onerror="this.onerror=null; this.src='https://via.placeholder.com/40x40/1e40af/ffffff?text=E';">
+                    
+                    <div class="mt-6 inline-flex items-center bg-gradient-to-r from-blue-50 to-indigo-50 rounded-full px-4 py-2 shadow-md no-overscroll">
+                        <div class="w-2 h-2 bg-green-500 rounded-full mr-2 pulse-animation"></div>
+                        <span class="text-gray-700 font-medium text-sm">System Status: <span class="text-green-600">All Services Operational</span></span>
+                    </div>
+                    
+                    <div class="mt-4 text-gray-500 text-sm">
+                        <i class="fas fa-calendar-alt mr-1"></i>
+                        <span id="academicYearTerm">Academic Year: 2023-2024 | Current Term: 3rd Term</span>
+                    </div>
+                </header>
+                
+                <!-- Dashboard Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 fade-in px-2">
+                    <div class="bg-white rounded-xl p-4 shadow-lg no-overscroll">
+                        <div class="flex items-center">
+                            <div class="bg-blue-100 p-2 rounded-lg mr-3">
+                                <i class="fas fa-users text-blue-600 text-lg"></i>
                             </div>
                             <div>
-                                <h4 class="font-bold text-gray-800 text-base">EMILIA FOREMOST HIGH SCHOOL</h4>
-                                <p class="text-gray-600 text-xs">Excellence in Education Since 2007</p>
+                                <p class="text-gray-500 text-xs">Active Students</p>
+                                <p class="text-xl font-bold text-gray-800">2,847</p>
+                                <p class="text-green-600 text-xs mt-1">
+                                    <i class="fas fa-arrow-up mr-1"></i> 5.2% from last term
+                                </p>
                             </div>
                         </div>
-                        <div class="text-center">
-                            <p id="footerCopyright">© 2023 EMIFORPHS Finance Portal. All rights reserved.</p>
-                            <p class="mt-1 text-xs">Powered by EMIFORPHS Financial Systems v4.2</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl p-4 shadow-lg no-overscroll">
+                        <div class="flex items-center">
+                            <div class="bg-green-100 p-2 rounded-lg mr-3">
+                                <i class="fas fa-dollar-sign text-green-600 text-lg"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-500 text-xs">Annual Revenue</p>
+                                <p class="text-xl font-bold text-gray-800">$4.2M</p>
+                                <p class="text-green-600 text-xs mt-1">
+                                    <i class="fas fa-arrow-up mr-1"></i> 12.7% from last year
+                                </p>
+                            </div>
                         </div>
                     </div>
-                    <div class="mt-4 pt-4 border-t border-gray-200">
-                        <p class="text-gray-600 text-xs">
-                            <i class="fas fa-map-marker-alt mr-2"></i>
-                            123 Education Boulevard, Academic City, AC 12345
+                    
+                    <div class="bg-white rounded-xl p-4 shadow-lg no-overscroll">
+                        <div class="flex items-center">
+                            <div class="bg-purple-100 p-2 rounded-lg mr-3">
+                                <i class="fas fa-percentage text-purple-600 text-lg"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-500 text-xs">Payment Completion</p>
+                                <p class="text-xl font-bold text-gray-800">94.7%</p>
+                                <p class="text-green-600 text-xs mt-1">
+                                    <i class="fas fa-arrow-up mr-1"></i> 3.1% from last term
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Main Navigation Cards -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto px-2">
+                    <!-- Card 1: SCHOOL TUITION AND BILL SUMMARY -->
+                    <div class="card-hover-effect main-card bg-gradient-to-br from-blue-500 to-indigo-700 rounded-xl p-6 shadow-xl overflow-hidden relative glow-effect no-overscroll">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16"></div>
+                        <div class="absolute bottom-0 left-0 w-48 h-48 bg-white opacity-5 rounded-full -ml-32 -mb-32"></div>
+                        
+                        <div class="relative z-10">
+                            <div class="flex items-center mb-4">
+                                <div class="bg-white p-3 rounded-lg mr-4">
+                                    <i class="fas fa-file-invoice-dollar text-2xl text-blue-600"></i>
+                                </div>
+                                <div>
+                                    <h2 class="text-2xl font-bold text-white">Tuition & Bill Summary</h2>
+                                    <p class="text-blue-100 text-sm">EMIFORPHS Detailed Financial Overview</p>
+                                </div>
+                            </div>
+                            
+                            <p class="text-blue-100 mb-6 text-base">
+                                Access comprehensive breakdown of tuition fees, payment schedules, pending bills, and payment history.
+                            </p>
+                            
+                            <div class="space-y-3 mb-6">
+                                <div class="flex items-center">
+                                    <i class="fas fa-check-circle text-green-300 mr-2 text-sm"></i>
+                                    <span class="text-white text-sm">Real-time payment tracking</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-check-circle text-green-300 mr-2 text-sm"></i>
+                                    <span class="text-white text-sm">Downloadable invoices with logo</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-check-circle text-green-300 mr-2 text-sm"></i>
+                                    <span class="text-white text-sm">Payment deadline alerts</span>
+                                </div>
+                            </div>
+                            
+                            <button id="tuitionBtn" class="compact-button bg-white text-blue-700 hover:bg-blue-50">
+                                <span>Access EMIFORPHS Dashboard</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 2: TERM-END ACCOUNT STATEMENT -->
+                    <div class="card-hover-effect main-card bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl p-6 shadow-xl overflow-hidden relative no-overscroll">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16"></div>
+                        <div class="absolute bottom-0 left-0 w-48 h-48 bg-white opacity-5 rounded-full -ml-32 -mb-32"></div>
+                        
+                        <div class="relative z-10">
+                            <div class="flex items-center mb-4">
+                                <div class="bg-white p-3 rounded-lg mr-4">
+                                    <i class="fas fa-chart-bar text-2xl text-purple-600"></i>
+                                </div>
+                                <div>
+                                    <h2 class="text-2xl font-bold text-white">Term-End Statement</h2>
+                                    <p class="text-purple-100 text-sm">EMIFORPHS Comprehensive Financial Report</p>
+                                </div>
+                            </div>
+                            
+                            <p class="text-purple-100 mb-6 text-base">
+                                View complete account statements including all transactions, adjustments, and balance summaries.
+                            </p>
+                            
+                            <div class="space-y-3 mb-6">
+                                <div class="flex items-center">
+                                    <i class="fas fa-check-circle text-pink-300 mr-2 text-sm"></i>
+                                    <span class="text-white text-sm">Visual financial analytics</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-check-circle text-pink-300 mr-2 text-sm"></i>
+                                    <span class="text-white text-sm">Export to PDF/Excel with branding</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-check-circle text-pink-300 mr-2 text-sm"></i>
+                                    <span class="text-white text-sm">Year-over-year comparisons</span>
+                                </div>
+                            </div>
+                            
+                            <button id="statementBtn" class="compact-button bg-white text-purple-700 hover:bg-purple-50">
+                                <span>View EMIFORPHS Statements</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Quick Access Section -->
+                <div class="mt-12 bg-white rounded-xl p-6 shadow-lg max-w-6xl mx-auto fade-in no-overscroll px-2">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">
+                        <i class="fas fa-bolt text-yellow-500 mr-2"></i>
+                        EMIFORPHS Quick Access
+                    </h3>
+                    
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <a href="#" class="bg-blue-50 hover:bg-blue-100 rounded-lg p-3 text-center transition duration-300 no-overscroll">
+                            <div class="bg-blue-100 w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2">
+                                <i class="fas fa-calendar-day text-blue-600"></i>
+                            </div>
+                            <h4 class="font-bold text-gray-800 text-sm">Payment Calendar</h4>
+                        </a>
+                        
+                        <a href="#" class="bg-green-50 hover:bg-green-100 rounded-lg p-3 text-center transition duration-300 no-overscroll">
+                            <div class="bg-green-100 w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2">
+                                <i class="fas fa-history text-green-600"></i>
+                            </div>
+                            <h4 class="font-bold text-gray-800 text-sm">Payment History</h4>
+                        </a>
+                        
+                        <a href="#" class="bg-purple-50 hover:bg-purple-100 rounded-lg p-3 text-center transition duration-300 no-overscroll">
+                            <div class="bg-purple-100 w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2">
+                                <i class="fas fa-file-download text-purple-600"></i>
+                            </div>
+                            <h4 class="font-bold text-gray-800 text-sm">Download Forms</h4>
+                        </a>
+                        
+                        <a href="#" class="bg-red-50 hover:bg-red-100 rounded-lg p-3 text-center transition duration-300 no-overscroll">
+                            <div class="bg-red-100 w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2">
+                                <i class="fas fa-headset text-red-600"></i>
+                            </div>
+                            <h4 class="font-bold text-gray-800 text-sm">EMIFORPHS Support</h4>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Additional Information Section -->
+                <div class="mt-12 bg-white rounded-xl p-6 shadow-lg max-w-4xl mx-auto fade-in no-overscroll px-2">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">
+                        <i class="fas fa-info-circle text-blue-600 mr-2"></i>
+                        How to Use This Portal
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="text-center p-3 no-overscroll">
+                            <div class="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="fas fa-mouse-pointer text-blue-600"></i>
+                            </div>
+                            <h4 class="font-bold text-gray-800 mb-2 text-sm">1. Select a Dashboard</h4>
+                            <p class="text-gray-600 text-xs">Click on either of the two main cards above.</p>
+                        </div>
+                        
+                        <div class="text-center p-3 no-overscroll">
+                            <div class="bg-green-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="fas fa-search text-green-600"></i>
+                            </div>
+                            <h4 class="font-bold text-gray-800 mb-2 text-sm">2. Explore Information</h4>
+                            <p class="text-gray-600 text-xs">Navigate through detailed reports and visualizations.</p>
+                        </div>
+                        
+                        <div class="text-center p-3 no-overscroll">
+                            <div class="bg-purple-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="fas fa-download text-purple-600"></i>
+                            </div>
+                            <h4 class="font-bold text-gray-800 mb-2 text-sm">3. Export & Share</h4>
+                            <p class="text-gray-600 text-xs">Download reports as PDF or Excel files.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 pt-6 border-t border-gray-200 text-center">
+                        <p class="text-gray-600 text-sm">
+                            <i class="fas fa-shield-alt text-green-500 mr-2"></i>
+                            All EMIFORPHS financial data is encrypted with bank-level security.
+                        </p>
+                        <p class="text-gray-600 text-sm mt-2">
+                            <i class="fas fa-phone-alt text-blue-500 mr-2"></i>
+                            Need help? Contact EMIFORPHS Finance Office: +234 8022854677-EMFS
                         </p>
                     </div>
                 </div>
-            </footer>
+                
+                <!-- Footer -->
+                <footer class="mt-12 mb-8 text-center text-gray-500 text-xs fade-in no-overscroll px-2">
+                    <div class="bg-white rounded-xl p-4 shadow-lg max-w-4xl mx-auto no-overscroll">
+                        <div class="flex flex-col md:flex-row items-center justify-between">
+                            <div class="mb-3 md:mb-0 flex items-center">
+                                <div class="logo-container mr-3" style="width: 40px; height: 40px;">
+                                    <img src="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/EMILIA%20LOGO.png" 
+                                         alt="EMIFORPHSLogo"
+                                         onerror="this.onerror=null; this.src='https://via.placeholder.com/40x40/1e40af/ffffff?text=E';">
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800 text-base">EMILIA FOREMOST HIGH SCHOOL</h4>
+                                    <p class="text-gray-600 text-xs">Excellence in Education Since 2007</p>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <p id="footerCopyright">© 2023 EMIFORPHS Finance Portal. All rights reserved.</p>
+                                <p class="mt-1 text-xs">Powered by EMIFORPHS Financial Systems v4.2</p>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-gray-200">
+                            <p class="text-gray-600 text-xs">
+                                <i class="fas fa-map-marker-alt mr-2"></i>
+                                123 Education Boulevard, Academic City, AC 12345
+                            </p>
+                        </div>
+                    </div>
+                </footer>
+            </div>
         </div>
     </div>
 
@@ -823,6 +803,83 @@
     </div>
 
     <script>
+        // ========== ROCK SOLID SCROLL - NO RUBBER BAND EVER ==========
+        const scrollContainer = document.getElementById('scrollContainer');
+        
+        if (scrollContainer) {
+            // Store scroll positions
+            let scrollTop = 0;
+            let scrollHeight = 0;
+            let clientHeight = 0;
+            
+            // Function to enforce scroll boundaries - NO RUBBER BAND
+            function enforceBoundaries() {
+                if (!scrollContainer) return;
+                
+                scrollTop = scrollContainer.scrollTop;
+                scrollHeight = scrollContainer.scrollHeight;
+                clientHeight = scrollContainer.clientHeight;
+                
+                // Hard stop at top
+                if (scrollTop < 0) {
+                    scrollContainer.scrollTop = 0;
+                    return;
+                }
+                
+                // Hard stop at bottom
+                if (scrollTop + clientHeight > scrollHeight) {
+                    scrollContainer.scrollTop = Math.max(0, scrollHeight - clientHeight);
+                    return;
+                }
+            }
+            
+            // Prevent any rubber band effect on touch move
+            let touchStartY = 0;
+            let touchStartScrollTop = 0;
+            
+            scrollContainer.addEventListener('touchstart', function(e) {
+                touchStartY = e.touches[0].clientY;
+                touchStartScrollTop = scrollContainer.scrollTop;
+            }, { passive: false });
+            
+            scrollContainer.addEventListener('touchmove', function(e) {
+                const currentY = e.touches[0].clientY;
+                const deltaY = currentY - touchStartY;
+                const currentScrollTop = scrollContainer.scrollTop;
+                const maxScrollTop = scrollContainer.scrollHeight - scrollContainer.clientHeight;
+                
+                // If at top and trying to pull down - PREVENT
+                if (currentScrollTop <= 0 && deltaY > 0) {
+                    e.preventDefault();
+                    return false;
+                }
+                
+                // If at bottom and trying to pull up - PREVENT
+                if (currentScrollTop >= maxScrollTop - 1 && deltaY < 0) {
+                    e.preventDefault();
+                    return false;
+                }
+            }, { passive: false });
+            
+            // Enforce boundaries on scroll
+            scrollContainer.addEventListener('scroll', function() {
+                enforceBoundaries();
+            });
+            
+            // Enforce boundaries on resize
+            window.addEventListener('resize', function() {
+                enforceBoundaries();
+            });
+            
+            // Initial enforcement
+            enforceBoundaries();
+            
+            // iOS specific fixes
+            if ('ontouchstart' in window) {
+                scrollContainer.style.WebkitOverflowScrolling = 'touch';
+            }
+        }
+        
         // ========== SUPER POWERFUL HOME BUTTON FUNCTIONS ==========
         const superHomeButton = document.getElementById('superHomeButton');
         const HOME_PAGE_URL = "{% url 'dashboard_exam_page' %}";  // Django URL for dashboard_exam_page
@@ -860,9 +917,15 @@
                 particle.classList.add("home-button-particle");
                 particle.style.left = `${centerX}px`;
                 particle.style.top = `${centerY}px`;
+                particle.style.position = 'absolute';
+                particle.style.width = '3px';
+                particle.style.height = '3px';
+                particle.style.background = 'rgba(255, 255, 255, 0.8)';
+                particle.style.borderRadius = '50%';
+                particle.style.pointerEvents = 'none';
+                particle.style.opacity = '0';
                 
                 const angle = (Math.PI * 2 * i) / 6;
-                const speed = 2 + Math.random() * 2;
                 const distance = 30 + Math.random() * 30;
                 
                 document.body.appendChild(particle);
@@ -889,40 +952,42 @@
         }
         
         // Super home button click handler
-        superHomeButton.addEventListener('click', function(event) {
-            // Create ripple effect
-            createRipple(event);
+        if (superHomeButton) {
+            superHomeButton.addEventListener('click', function(event) {
+                // Create ripple effect
+                createRipple(event);
+                
+                // Create particle explosion
+                createParticles(event);
+                
+                // Add click animation
+                this.style.animation = 'none';
+                this.style.transform = 'scale(0.9)';
+                
+                setTimeout(() => {
+                    this.style.animation = 'float 3s ease-in-out infinite, glow 2s ease-in-out infinite alternate';
+                    this.style.transform = 'scale(1)';
+                }, 150);
+                
+                // Show confirmation modal
+                showModal(
+                    "Return to Dashboard Home",
+                    "You are about to return to the main EMIFORPHS Dashboard. All your progress will be saved automatically.",
+                    HOME_PAGE_URL
+                );
+            });
             
-            // Create particle explosion
-            createParticles(event);
-            
-            // Add click animation
-            this.style.animation = 'none';
-            this.style.transform = 'scale(0.9)';
-            
-            setTimeout(() => {
-                this.style.animation = 'float 3s ease-in-out infinite, glow 2s ease-in-out infinite alternate';
-                this.style.transform = 'scale(1)';
-            }, 150);
-            
-            // Show confirmation modal
-            showModal(
-                "Return to Dashboard Home",
-                "You are about to return to the main EMIFORPHS Dashboard. All your progress will be saved automatically.",
-                HOME_PAGE_URL
-            );
-        });
-        
-        // Add hover particle effects
-        superHomeButton.addEventListener('mouseenter', function() {
-            createParticles({ currentTarget: this });
-        });
+            // Add hover particle effects
+            superHomeButton.addEventListener('mouseenter', function() {
+                createParticles({ currentTarget: this });
+            });
+        }
         
         // Keyboard shortcut for home button (Ctrl+H or Cmd+H)
         document.addEventListener('keydown', function(e) {
             if ((e.ctrlKey || e.metaKey) && e.key === 'h') {
                 e.preventDefault();
-                superHomeButton.click();
+                if (superHomeButton) superHomeButton.click();
             }
         });
         
@@ -993,58 +1058,20 @@
         const modalMessage = document.getElementById('modalMessage');
         const proceedRedirect = document.getElementById('proceedRedirect');
         const cancelModal = document.getElementById('cancelModal');
-        const scrollContainer = document.getElementById('scrollContainer');
         
         // ========== URL CONFIGURATION ==========
         const TUITION_URL = "{% url 'new_term_bill_payment' %}";
         const STATEMENT_URL = "{% url 'term_end_account' %}";
         
-        // ========== PREVENT OVERSCROLL/BOUNCE - FIXED ==========
-        // Simplified approach - let the container handle everything
-        scrollContainer.addEventListener('touchstart', function(e) {
-            // Allow touch events to propagate normally
-        }, { passive: true });
-        
-        scrollContainer.addEventListener('touchmove', function(e) {
-            // Allow touch move events to propagate normally
-        }, { passive: true });
-        
-        // Prevent body scroll when modal is open
-        function preventBodyScroll() {
-            document.body.style.overflow = 'hidden';
-        }
-        
-        function allowBodyScroll() {
-            document.body.style.overflow = '';
-        }
-        
-        // ========== REDIRECT FUNCTIONS ==========
+        // ========== MODAL FUNCTIONS ==========
         let currentRedirectUrl = '';
         
-        tuitionBtn.addEventListener('click', function() {
-            showModal(
-                "Redirecting to EMIFORPHS Tuition Dashboard",
-                "You are now being taken to the Emilia Foremost High School Tuition and Bill Summary page.",
-                TUITION_URL
-            );
-        });
-        
-        statementBtn.addEventListener('click', function() {
-            showModal(
-                "Accessing EMIFORPHS Term-End Statements",
-                "You are now being redirected to the Term-End Account Statement portal.",
-                STATEMENT_URL
-            );
-        });
-        
-        // ========== MODAL FUNCTIONS ==========
         function showModal(title, message, url) {
             modalTitle.textContent = title;
             modalMessage.textContent = message;
             currentRedirectUrl = url;
             
             successModal.classList.remove('hidden');
-            preventBodyScroll();
             
             setTimeout(() => {
                 const modalContent = successModal.querySelector('div > div');
@@ -1060,39 +1087,64 @@
             
             setTimeout(() => {
                 successModal.classList.add('hidden');
-                allowBodyScroll();
             }, 300);
         }
         
-        proceedRedirect.addEventListener('click', function() {
-            hideModal();
-            
-            setTimeout(() => {
-                if (currentRedirectUrl) {
-                    window.location.href = currentRedirectUrl;
-                } else {
-                    console.error("No redirect URL specified!");
-                }
-            }, 350);
-        });
+        // Button event handlers
+        if (tuitionBtn) {
+            tuitionBtn.addEventListener('click', function() {
+                showModal(
+                    "Redirecting to EMIFORPHS Tuition Dashboard",
+                    "You are now being taken to the Emilia Foremost High School Tuition and Bill Summary page.",
+                    TUITION_URL
+                );
+            });
+        }
         
-        cancelModal.addEventListener('click', hideModal);
+        if (statementBtn) {
+            statementBtn.addEventListener('click', function() {
+                showModal(
+                    "Accessing EMIFORPHS Term-End Statements",
+                    "You are now being redirected to the Term-End Account Statement portal.",
+                    STATEMENT_URL
+                );
+            });
+        }
         
-        successModal.addEventListener('click', function(e) {
-            if (e.target === successModal) {
+        if (proceedRedirect) {
+            proceedRedirect.addEventListener('click', function() {
                 hideModal();
-            }
-        });
+                setTimeout(() => {
+                    if (currentRedirectUrl) {
+                        window.location.href = currentRedirectUrl;
+                    }
+                }, 350);
+            });
+        }
+        
+        if (cancelModal) {
+            cancelModal.addEventListener('click', hideModal);
+        }
+        
+        if (successModal) {
+            successModal.addEventListener('click', function(e) {
+                if (e.target === successModal) {
+                    hideModal();
+                }
+            });
+        }
         
         // ========== INITIALIZATION ==========
         document.addEventListener('DOMContentLoaded', function() {
             updateAcademicInfo();
             
             // Initialize home button
-            setTimeout(() => {
-                superHomeButton.style.opacity = '1';
-                superHomeButton.style.transform = 'scale(1)';
-            }, 500);
+            if (superHomeButton) {
+                setTimeout(() => {
+                    superHomeButton.style.opacity = '1';
+                    superHomeButton.style.transform = 'scale(1)';
+                }, 500);
+            }
             
             // Handle image error for logo
             const logoImages = document.querySelectorAll('img[src*="EMILIA%20LOGO.png"]');
@@ -1101,90 +1153,32 @@
                     this.src = 'https://via.placeholder.com/80x80/1e40af/ffffff?text=EMFORHS';
                 });
             });
-            
-            // Ensure scroll container is properly sized
-            scrollContainer.style.height = window.innerHeight + 'px';
-            
-            // Fix iOS Safari 100vh issue
-            function setVH() {
-                const vh = window.innerHeight * 0.01;
-                document.documentElement.style.setProperty('--vh', `${vh}px`);
-            }
-            
-            setVH();
-            window.addEventListener('resize', setVH);
         });
         
         window.addEventListener('load', function() {
             setTimeout(() => {
-                console.log("EMIFORPHS Finance Portal loaded successfully!");
-                console.log("Press 'Ctrl+H' for Dashboard Home, '1' for Tuition Dashboard, or '2' for Term-End Statements");
-                
-                const schoolHeader = document.querySelector('.school-header');
-                if (schoolHeader) schoolHeader.classList.add('fade-in');
-                
-                console.log("Home URL:", HOME_PAGE_URL);
-                console.log("Tuition URL:", TUITION_URL);
-                console.log("Statement URL:", STATEMENT_URL);
+                console.log("EMIFORPHS Finance Portal loaded successfully with ROCK SOLID scrolling!");
+                console.log("Press 'Ctrl+H' for Dashboard Home");
             }, 1000);
         });
         
-        // ========== ADDITIONAL FUNCTIONALITY ==========
-        document.querySelectorAll('.card-hover-effect').forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.classList.add('glow-effect');
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                this.classList.remove('glow-effect');
-            });
-        });
-        
+        // Keyboard shortcuts
         document.addEventListener('keydown', function(e) {
-            if (e.key === '1') tuitionBtn.click();
-            if (e.key === '2') statementBtn.click();
+            if (e.key === '1' && tuitionBtn) tuitionBtn.click();
+            if (e.key === '2' && statementBtn) statementBtn.click();
             if (e.key === 'Escape') hideModal();
-            if (e.key === 'Enter' && !successModal.classList.contains('hidden')) {
+            if (e.key === 'Enter' && !successModal.classList.contains('hidden') && proceedRedirect) {
                 proceedRedirect.click();
-            }
-        });
-        
-        // Auto-hide home button when scrolling down
-        let lastScrollTop = 0;
-        let isScrolling = false;
-        
-        scrollContainer.addEventListener('scroll', function() {
-            const scrollTop = this.scrollTop;
-            
-            if (!isScrolling) {
-                window.requestAnimationFrame(function() {
-                    if (scrollTop > lastScrollTop && scrollTop > 100) {
-                        // Scrolling down
-                        superHomeButton.style.opacity = '0.7';
-                        superHomeButton.style.transform = 'translateY(80px) scale(0.8)';
-                    } else {
-                        // Scrolling up
-                        superHomeButton.style.opacity = '1';
-                        superHomeButton.style.transform = 'translateY(0) scale(1)';
-                    }
-                    
-                    lastScrollTop = scrollTop;
-                    isScrolling = false;
-                });
-                
-                isScrolling = true;
             }
         });
         
         // Handle orientation change on mobile
         window.addEventListener('orientationchange', function() {
             setTimeout(function() {
-                scrollContainer.style.height = window.innerHeight + 'px';
-                // Force a reflow to ensure proper rendering
-                document.body.style.overflow = 'hidden';
-                setTimeout(() => {
-                    document.body.style.overflow = '';
-                }, 50);
+                if (scrollContainer) {
+                    scrollContainer.style.height = window.innerHeight + 'px';
+                    enforceBoundaries();
+                }
             }, 300);
         });
         
@@ -1196,7 +1190,7 @@
             
             if (tapLength < 500 && tapLength > 0) {
                 // Double tap detected
-                if (e.target.closest('.school-header')) {
+                if (e.target.closest('.school-header') && scrollContainer) {
                     scrollContainer.scrollTo({
                         top: 0,
                         behavior: 'smooth'
@@ -1205,15 +1199,6 @@
             }
             
             lastTap = currentTime;
-        });
-        
-        // Handle window resize for responsiveness
-        let resizeTimeout;
-        window.addEventListener('resize', function() {
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(function() {
-                scrollContainer.style.height = window.innerHeight + 'px';
-            }, 250);
         });
     </script>
 </body>
