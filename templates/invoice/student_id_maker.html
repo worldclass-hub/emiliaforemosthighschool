@@ -43,7 +43,7 @@
             overflow-y: auto;
             overflow-x: hidden;
             position: relative;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 50%, #0f172a 100%);
             -webkit-overflow-scrolling: touch;
             overscroll-behavior: none;
             touch-action: pan-y;
@@ -56,7 +56,7 @@
         }
         
         .scroll-container::-webkit-scrollbar-track {
-            background: linear-gradient(180deg, #f8fafc, #e2e8f0);
+            background: linear-gradient(180deg, #f8fafc, #0f172a);
             border-radius: 10px;
         }
         
@@ -75,7 +75,7 @@
         .main-wrapper {
             width: 100%;
             min-height: 100%;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 50%, #0f172a 100%);
             display: flex;
             flex-direction: column;
         }
@@ -87,6 +87,42 @@
             position: relative;
             padding-top: 10px;
             padding-bottom: 10px;
+        }
+        
+        /* 6. FULL WIDTH FOOTER - DARK BLEND */
+        .page-footer {
+            flex-shrink: 0;
+            width: 100%;
+            background: #0f172a;
+            margin-top: auto;
+        }
+        
+        .full-width-footer {
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            background: #0f172a;
+        }
+        
+        /* Scroll progress indicator - matches dark theme */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, #3b82f6, #8b5cf6, #10b981);
+            transform-origin: 0%;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .scroll-progress.visible {
+            opacity: 1;
         }
         
         /* ==================== ORIGINAL STYLES BELOW (unchanged) ==================== */
@@ -145,24 +181,6 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
-        /* SCROLL PROGRESS INDICATOR - KEPT ORIGINAL */
-        .scroll-progress {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(to right, #3b82f6, #8b5cf6, #10b981);
-            transform-origin: 0%;
-            z-index: 9999;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .scroll-progress.visible {
-            opacity: 1;
-        }
-        
         /* HOVER SCROLL EFFECTS */
         .hover-scroll-effect {
             transition: transform 0.2s ease-out;
@@ -181,23 +199,6 @@
             width: 100%;
             max-width: 100%;
             position: relative;
-        }
-        
-        .page-footer {
-            flex-shrink: 0;
-            width: 100%;
-            background: #111827;
-            margin-top: auto;
-        }
-        
-        .full-width-footer {
-            width: 100vw;
-            position: relative;
-            left: 50%;
-            right: 50%;
-            margin-left: -50vw;
-            margin-right: -50vw;
-            background: #111827;
         }
         
         /* HEADER - NON-STICKY (FREE SCROLLING) */
@@ -427,6 +428,23 @@
                 margin-right: 4px !important;
             }
         }
+        
+        /* Dark bottom boundary - blends with footer */
+        .scroll-bottom-blend {
+            background: linear-gradient(to bottom, transparent, #0f172a 100%);
+            height: 60px;
+            width: 100%;
+            position: sticky;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 5;
+        }
+        
+        /* Footer dark blend */
+        .footer-dark-blend {
+            background: #0f172a;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
     </style>
     
     <script>
@@ -442,7 +460,8 @@
                         danger: '#ef4444',
                         dark: '#1f2937',
                         light: '#f8fafc',
-                        premium: '#8b5cf6'
+                        premium: '#8b5cf6',
+                        navy: '#0f172a'
                     },
                     fontFamily: {
                         'poppins': ['Poppins', 'sans-serif']
@@ -985,8 +1004,8 @@
                         </div>
                     </div>
                     
-                    <!-- FULL WIDTH FOOTER -->
-                    <footer class="full-width-footer page-footer mt-16">
+                    <!-- FULL WIDTH FOOTER - DARK BLEND -->
+                    <footer class="full-width-footer page-footer footer-dark-blend mt-16">
                         <div class="max-w-7xl mx-auto px-4 py-6 sm:py-8">
                             <div class="text-center">
                                 <p class="mb-2 text-white"><strong>EMIFORPHS Student ID Generator System • Ultimate Edition • AI-Powered</strong></p>
